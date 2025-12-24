@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+@media print {
+  body {
+    background: white;
+  }
+
+  aside,
+  header,
+  .no-print {
+    display: none !important;
+  }
+
+  .receipt-ticket {
+    width: 280px;
+    margin: 0 auto;
+    box-shadow: none;
+  }
+}
