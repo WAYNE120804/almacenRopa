@@ -1,0 +1,103 @@
+services:
+  caddy:
+    image: caddy:2.10
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - frontend
+      - backend
+      - n8n
+    networks:
+      - rifas_net
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: ${FRONTEND_VITE_API_URL:-https://api.rifasmejia.store/api}
+    restart: unless-stopped
+    networks:
+      - rifas_net
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${BACKEND_NODE_ENV:-production}
+      PORT: ${BACKEND_PORT:-3002}
+      DATABASE_URL: ${BACKEND_DATABASE_URL}
+      AUTH_SECRET: ${BACKEND_AUTH_SECRET}
+      AUTH_TTL_SECONDS: ${BACKEND_AUTH_TTL_SECONDS:-43200}
+      BOOTSTRAP_ADMIN_NAME: ${BACKEND_BOOTSTRAP_ADMIN_NAME}
+      BOOTSTRAP_ADMIN_EMAIL: ${BACKEND_BOOTSTRAP_ADMIN_EMAIL}
+      BOOTSTRAP_ADMIN_PASSWORD: ${BACKEND_BOOTSTRAP_ADMIN_PASSWORD}
+      WOMPI_ENV: ${BACKEND_WOMPI_ENV:-production}
+      WOMPI_PUBLIC_KEY: ${BACKEND_WOMPI_PUBLIC_KEY}
+      WOMPI_PRIVATE_KEY: ${BACKEND_WOMPI_PRIVATE_KEY}
+      WOMPI_EVENTS_SECRET: ${BACKEND_WOMPI_EVENTS_SECRET}
+      WOMPI_INTEGRITY_SECRET: ${BACKEND_WOMPI_INTEGRITY_SECRET}
+      WOMPI_REDIRECT_URL: ${BACKEND_WOMPI_REDIRECT_URL}
+      WOMPI_WEBHOOK_URL: ${BACKEND_WOMPI_WEBHOOK_URL}
+    depends_on:
+      - postgres
+    networks:
+      - rifas_net
+
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:1.89.2
+    restart: unless-stopped
+    environment:
+      N8N_HOST: ${N8N_HOST}
+      N8N_PROTOCOL: ${N8N_PROTOCOL:-https}
+      N8N_PORT: ${N8N_PORT:-5678}
+      N8N_EDITOR_BASE_URL: ${N8N_EDITOR_BASE_URL}
+      WEBHOOK_URL: ${WEBHOOK_URL}
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
+      N8N_BASIC_AUTH_ACTIVE: ${N8N_BASIC_AUTH_ACTIVE:-true}
+      N8N_BASIC_AUTH_USER: ${N8N_BASIC_AUTH_USER}
+      N8N_BASIC_AUTH_PASSWORD: ${N8N_BASIC_AUTH_PASSWORD}
+      N8N_PROXY_HOPS: ${N8N_PROXY_HOPS:-1}
+      N8N_RUNNERS_ENABLED: ${N8N_RUNNERS_ENABLED:-true}
+      N8N_DIAGNOSTICS_ENABLED: ${N8N_DIAGNOSTICS_ENABLED:-false}
+      N8N_PERSONALIZATION_ENABLED: ${N8N_PERSONALIZATION_ENABLED:-false}
+      DB_TYPE: ${N8N_DB_TYPE:-postgresdb}
+      DB_POSTGRESDB_HOST: ${N8N_DB_POSTGRESDB_HOST:-postgres}
+      DB_POSTGRESDB_PORT: ${N8N_DB_POSTGRESDB_PORT:-5432}
+      DB_POSTGRESDB_DATABASE: ${N8N_DB_POSTGRESDB_DATABASE:-rifas}
+      DB_POSTGRESDB_USER: ${N8N_DB_POSTGRESDB_USER}
+      DB_POSTGRESDB_PASSWORD: ${N8N_DB_POSTGRESDB_PASSWORD}
+    depends_on:
+      - postgres
+    volumes:
+      - n8n_data:/home/node/.n8n
+    networks:
+      - rifas_net
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-rifas}
+      POSTGRES_USER: ${POSTGRES_USER:-rifas_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - rifas_net
+
+volumes:
+  caddy_data:
+  caddy_config:
+  n8n_data:
+  postgres_data:
+
+networks:
+  rifas_net:
+    driver: bridge
