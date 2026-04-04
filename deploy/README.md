@@ -7,6 +7,7 @@
    - `www.rifasmejia.store` -> IP VPS o CNAME al raiz
    - `api.rifasmejia.store` -> IP VPS
    - `bot.rifasmejia.store` -> IP VPS
+   - `wa.rifasmejia.store` -> IP VPS
 4. Desde la raiz del repo ejecuta:
 
 ```bash
@@ -23,6 +24,7 @@ docker compose logs -f caddy backend frontend n8n postgres
 ## Notas
 
 - Solo `caddy` expone puertos publicos `80` y `443`.
-- `backend`, `n8n` y `postgres` quedan en la red privada de Docker.
+- `backend`, `n8n`, `n8n-worker`, `evolution-api`, `redis` y `postgres` quedan en la red privada de Docker.
 - El backend corre `prisma db push` al iniciar para sincronizar esquema.
 - Si luego sacas PostgreSQL a un servicio externo, elimina el servicio `postgres` del compose y cambia `BACKEND_DATABASE_URL` y variables `N8N_DB_*`.
+- `Evolution API` usa PostgreSQL y Redis segun su documentacion oficial, y `n8n` queda en modo `queue` usando Redis.

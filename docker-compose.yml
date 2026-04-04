@@ -13,6 +13,7 @@ services:
       - frontend
       - backend
       - n8n
+      - evolution-api
     networks:
       - rifas_net
 
@@ -67,6 +68,12 @@ services:
       N8N_RUNNERS_ENABLED: ${N8N_RUNNERS_ENABLED:-true}
       N8N_DIAGNOSTICS_ENABLED: ${N8N_DIAGNOSTICS_ENABLED:-false}
       N8N_PERSONALIZATION_ENABLED: ${N8N_PERSONALIZATION_ENABLED:-false}
+      EXECUTIONS_MODE: ${N8N_EXECUTIONS_MODE:-queue}
+      OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS: ${N8N_OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS:-true}
+      QUEUE_BULL_REDIS_HOST: ${N8N_QUEUE_BULL_REDIS_HOST:-redis}
+      QUEUE_BULL_REDIS_PORT: ${N8N_QUEUE_BULL_REDIS_PORT:-6379}
+      QUEUE_BULL_REDIS_PASSWORD: ${N8N_QUEUE_BULL_REDIS_PASSWORD:-}
+      QUEUE_HEALTH_CHECK_ACTIVE: ${N8N_QUEUE_HEALTH_CHECK_ACTIVE:-true}
       DB_TYPE: ${N8N_DB_TYPE:-postgresdb}
       DB_POSTGRESDB_HOST: ${N8N_DB_POSTGRESDB_HOST:-postgres}
       DB_POSTGRESDB_PORT: ${N8N_DB_POSTGRESDB_PORT:-5432}
@@ -75,8 +82,88 @@ services:
       DB_POSTGRESDB_PASSWORD: ${N8N_DB_POSTGRESDB_PASSWORD}
     depends_on:
       - postgres
+      - redis
     volumes:
       - n8n_data:/home/node/.n8n
+    networks:
+      - rifas_net
+
+  n8n-worker:
+    image: docker.n8n.io/n8nio/n8n:1.89.2
+    restart: unless-stopped
+    command: worker
+    environment:
+      N8N_HOST: ${N8N_HOST}
+      N8N_PROTOCOL: ${N8N_PROTOCOL:-https}
+      N8N_PORT: ${N8N_PORT:-5678}
+      WEBHOOK_URL: ${WEBHOOK_URL}
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
+      N8N_PROXY_HOPS: ${N8N_PROXY_HOPS:-1}
+      N8N_RUNNERS_ENABLED: ${N8N_RUNNERS_ENABLED:-true}
+      N8N_DIAGNOSTICS_ENABLED: ${N8N_DIAGNOSTICS_ENABLED:-false}
+      N8N_PERSONALIZATION_ENABLED: ${N8N_PERSONALIZATION_ENABLED:-false}
+      EXECUTIONS_MODE: ${N8N_EXECUTIONS_MODE:-queue}
+      QUEUE_BULL_REDIS_HOST: ${N8N_QUEUE_BULL_REDIS_HOST:-redis}
+      QUEUE_BULL_REDIS_PORT: ${N8N_QUEUE_BULL_REDIS_PORT:-6379}
+      QUEUE_BULL_REDIS_PASSWORD: ${N8N_QUEUE_BULL_REDIS_PASSWORD:-}
+      QUEUE_HEALTH_CHECK_ACTIVE: ${N8N_QUEUE_HEALTH_CHECK_ACTIVE:-true}
+      DB_TYPE: ${N8N_DB_TYPE:-postgresdb}
+      DB_POSTGRESDB_HOST: ${N8N_DB_POSTGRESDB_HOST:-postgres}
+      DB_POSTGRESDB_PORT: ${N8N_DB_POSTGRESDB_PORT:-5432}
+      DB_POSTGRESDB_DATABASE: ${N8N_DB_POSTGRESDB_DATABASE:-rifas}
+      DB_POSTGRESDB_USER: ${N8N_DB_POSTGRESDB_USER}
+      DB_POSTGRESDB_PASSWORD: ${N8N_DB_POSTGRESDB_PASSWORD}
+    depends_on:
+      - postgres
+      - redis
+      - n8n
+    networks:
+      - rifas_net
+
+  evolution-api:
+    image: atendai/evolution-api:v2.1.1
+    restart: unless-stopped
+    environment:
+      SERVER_TYPE: ${EVOLUTION_SERVER_TYPE:-http}
+      SERVER_PORT: ${EVOLUTION_SERVER_PORT:-8080}
+      SERVER_URL: ${EVOLUTION_SERVER_URL}
+      AUTHENTICATION_API_KEY: ${EVOLUTION_AUTHENTICATION_API_KEY}
+      TELEMETRY: ${EVOLUTION_TELEMETRY:-false}
+      DATABASE_ENABLED: ${EVOLUTION_DATABASE_ENABLED:-true}
+      DATABASE_PROVIDER: ${EVOLUTION_DATABASE_PROVIDER:-postgresql}
+      DATABASE_CONNECTION_URI: ${EVOLUTION_DATABASE_CONNECTION_URI}
+      DATABASE_CONNECTION_CLIENT_NAME: ${EVOLUTION_DATABASE_CONNECTION_CLIENT_NAME:-evolution_exchange}
+      DATABASE_SAVE_DATA_INSTANCE: ${EVOLUTION_DATABASE_SAVE_DATA_INSTANCE:-true}
+      DATABASE_SAVE_DATA_NEW_MESSAGE: ${EVOLUTION_DATABASE_SAVE_DATA_NEW_MESSAGE:-true}
+      DATABASE_SAVE_MESSAGE_UPDATE: ${EVOLUTION_DATABASE_SAVE_MESSAGE_UPDATE:-true}
+      DATABASE_SAVE_DATA_CONTACTS: ${EVOLUTION_DATABASE_SAVE_DATA_CONTACTS:-true}
+      DATABASE_SAVE_DATA_CHATS: ${EVOLUTION_DATABASE_SAVE_DATA_CHATS:-true}
+      DATABASE_SAVE_DATA_LABELS: ${EVOLUTION_DATABASE_SAVE_DATA_LABELS:-true}
+      DATABASE_SAVE_DATA_HISTORIC: ${EVOLUTION_DATABASE_SAVE_DATA_HISTORIC:-true}
+      CACHE_REDIS_ENABLED: ${EVOLUTION_CACHE_REDIS_ENABLED:-true}
+      CACHE_REDIS_URI: ${EVOLUTION_CACHE_REDIS_URI:-redis://redis:6379/6}
+      DEL_INSTANCE: ${EVOLUTION_DEL_INSTANCE:-false}
+      CONFIG_SESSION_PHONE_CLIENT: ${EVOLUTION_CONFIG_SESSION_PHONE_CLIENT:-RifasMejia}
+      CONFIG_SESSION_PHONE_NAME: ${EVOLUTION_CONFIG_SESSION_PHONE_NAME:-Chrome}
+      WEBSOCKET_ENABLED: ${EVOLUTION_WEBSOCKET_ENABLED:-true}
+      WEBSOCKET_GLOBAL_EVENTS: ${EVOLUTION_WEBSOCKET_GLOBAL_EVENTS:-true}
+      LOG_LEVEL: ${EVOLUTION_LOG_LEVEL:-ERROR,WARN,INFO,LOG}
+      LOG_COLOR: ${EVOLUTION_LOG_COLOR:-true}
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - evolution_instances:/evolution/instances
+      - evolution_store:/evolution/store
+    networks:
+      - rifas_net
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
     networks:
       - rifas_net
 
@@ -97,6 +184,9 @@ volumes:
   caddy_config:
   n8n_data:
   postgres_data:
+  redis_data:
+  evolution_instances:
+  evolution_store:
 
 networks:
   rifas_net:

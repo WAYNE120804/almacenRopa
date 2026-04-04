@@ -12,3 +12,8 @@ bot.rifasmejia.store {
   encode gzip zstd
   reverse_proxy n8n:5678
 }
+
+wa.rifasmejia.store {
+  encode gzip zstd
+  reverse_proxy evolution-api:8080
+}
