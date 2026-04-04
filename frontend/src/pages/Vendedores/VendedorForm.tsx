@@ -13,12 +13,15 @@ const initialForm = {
   direccion: '',
 };
 
+const isPaginaWebVendedor = (nombre) => nombre.trim().toUpperCase() === 'PAGINA WEB';
+
 const VendedorForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(Boolean(id));
   const [error, setError] = useState(null);
+  const requiresAutomaticAccess = !isPaginaWebVendedor(form.nombre);
 
   useEffect(() => {
     const loadVendedor = async () => {
@@ -93,7 +96,13 @@ const VendedorForm = () => {
                 name="documento"
                 value={form.documento}
                 onChange={handleChange}
+                required={requiresAutomaticAccess}
               />
+              <p className="mt-1 text-xs text-slate-500">
+                {requiresAutomaticAccess
+                  ? 'Se usara como login del vendedor.'
+                  : 'PAGINA WEB no crea usuario automatico.'}
+              </p>
             </label>
             <label className="text-sm">
               <span className="text-slate-600">Telefono</span>
@@ -102,7 +111,13 @@ const VendedorForm = () => {
                 name="telefono"
                 value={form.telefono}
                 onChange={handleChange}
+                required={requiresAutomaticAccess}
               />
+              <p className="mt-1 text-xs text-slate-500">
+                {requiresAutomaticAccess
+                  ? 'Sera la contrasena inicial del vendedor.'
+                  : 'Si luego creas un usuario manual, definiras sus credenciales aparte.'}
+              </p>
             </label>
             <label className="text-sm">
               <span className="text-slate-600">Direccion</span>

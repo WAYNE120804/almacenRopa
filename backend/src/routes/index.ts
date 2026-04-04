@@ -2,8 +2,11 @@ import { Router } from 'express';
 
 import { authRouter, usuarioRouter } from '../modules/auth/auth.routes';
 import { boletaRouter } from '../modules/boletas/boleta.routes';
+import { botRouter } from '../modules/bot/bot.routes';
 import { cajaRouter, subCajaRouter } from '../modules/cajas/caja.routes';
+import { clienteReciboRouter } from '../modules/cliente-recibos/cliente-recibo.routes';
 import { checkoutPublicoRouter } from '../modules/checkout-publico/checkout-publico.routes';
+import { clienteRouter } from '../modules/clientes/cliente.routes';
 import { configuracionRouter } from '../modules/configuracion/configuracion.routes';
 import { gastoReciboRouter } from '../modules/gasto-recibos/gasto-recibo.routes';
 import { gastoRouter } from '../modules/gastos/gasto.routes';
@@ -13,16 +16,20 @@ import { premioRouter } from '../modules/premios/premio.routes';
 import { reciboRouter } from '../modules/recibos/recibo.routes';
 import { rifaRouter } from '../modules/rifas/rifa.routes';
 import { rifaVendedorRouter } from '../modules/rifa-vendedores/rifa-vendedor.routes';
+import { supervisionRouter } from '../modules/supervision/supervision.routes';
 import { vendedorRouter } from '../modules/vendedores/vendedor.routes';
 
 export const apiRouter = Router();
 
 apiRouter.use('/health', healthRouter);
 apiRouter.use('/auth', authRouter);
+apiRouter.use('/bot', botRouter);
 apiRouter.use('/usuarios', usuarioRouter);
 apiRouter.use('/juego', juegoRouter);
 apiRouter.use('/premios', premioRouter);
 apiRouter.use('/configuracion', configuracionRouter);
+apiRouter.use('/clientes', clienteRouter);
+apiRouter.use('/cliente-recibos', clienteReciboRouter);
 apiRouter.use('/boletas', boletaRouter);
 apiRouter.use('/cajas', cajaRouter);
 apiRouter.use('/checkout-publico', checkoutPublicoRouter);
@@ -32,4 +39,5 @@ apiRouter.use('/gastos', gastoRouter);
 apiRouter.use('/recibos', reciboRouter);
 apiRouter.use('/rifas', rifaRouter);
 apiRouter.use('/rifa-vendedores', rifaVendedorRouter);
+apiRouter.use('/supervision', supervisionRouter);
 apiRouter.use('/vendedores', vendedorRouter);

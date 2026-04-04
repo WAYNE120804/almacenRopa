@@ -7,6 +7,7 @@ exports.getReciboByCodigo = getReciboByCodigo;
 exports.anularAbono = anularAbono;
 const app_error_1 = require("../../lib/app-error");
 const prisma_1 = require("../../lib/prisma");
+const auth_scope_1 = require("../auth/auth.scope");
 const abonoInclude = {
     usuario: {
         select: {
@@ -134,7 +135,8 @@ async function getRifaVendedorOrFail(rifaVendedorId) {
     }
     return relation;
 }
-async function listAbonosByRifaVendedor(rifaVendedorId, filters) {
+async function listAbonosByRifaVendedor(rifaVendedorId, filters, authUser) {
+    await (0, auth_scope_1.assertVendorCanAccessRifaVendedor)(authUser, rifaVendedorId);
     await getRifaVendedorOrFail(rifaVendedorId);
     return prismaClient().abonoVendedor.findMany({
         where: {
@@ -264,7 +266,7 @@ async function createAbono(rifaVendedorId, payload, usuarioId) {
         return recibo;
     });
 }
-async function getReciboById(id) {
+async function getReciboById(id, authUser) {
     const recibo = await prismaClient().recibo.findUnique({
         where: { id },
         include: reciboInclude,
@@ -272,6 +274,7 @@ async function getReciboById(id) {
     if (!recibo) {
         throw new app_error_1.AppError('El recibo no existe.', 404);
     }
+    await (0, auth_scope_1.assertVendorCanAccessRifaVendedor)(authUser, recibo.abono.rifaVendedorId);
     return recibo;
 }
 async function getReciboByCodigo(codigo) {

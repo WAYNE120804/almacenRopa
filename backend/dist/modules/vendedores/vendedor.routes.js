@@ -8,6 +8,7 @@ const vendedor_controller_1 = require("./vendedor.controller");
 exports.vendedorRouter = (0, express_1.Router)();
 exports.vendedorRouter.get('/', vendedor_controller_1.getAllVendedores);
 exports.vendedorRouter.get('/:id', vendedor_controller_1.getVendedor);
+exports.vendedorRouter.put('/:id/acceso', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN), vendedor_controller_1.putVendedorAccess);
 exports.vendedorRouter.post('/', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN), vendedor_controller_1.postVendedor);
 exports.vendedorRouter.put('/:id', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN), vendedor_controller_1.putVendedor);
 exports.vendedorRouter.delete('/:id', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN), vendedor_controller_1.removeVendedor);

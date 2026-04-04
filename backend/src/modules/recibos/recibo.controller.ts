@@ -12,7 +12,7 @@ export async function getRecibo(
   next: NextFunction
 ) {
   try {
-    const data = await getReciboById(getStringParam(req.params.id));
+    const data = await getReciboById(getStringParam(req.params.id), req.authUser);
     res.json(data);
   } catch (error) {
     next(error);

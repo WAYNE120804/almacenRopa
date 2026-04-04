@@ -18,6 +18,7 @@ type PublicBoletaListQueryInput = {
 type UpdateBoletaInput = {
   estado?: unknown;
   rifaVendedorId?: unknown;
+  juega?: unknown;
 };
 
 export type BoletaListFilters = {
@@ -32,6 +33,7 @@ export type BoletaListFilters = {
 export type UpdateBoletaPayload = {
   estado: EstadoBoleta;
   rifaVendedorId: string | null;
+  juega?: boolean;
 };
 
 export type PublicBoletaListFilters = {
@@ -113,10 +115,12 @@ export function parseUpdateBoletaPayload(
     typeof input.rifaVendedorId === 'string' && input.rifaVendedorId.trim().length > 0
       ? input.rifaVendedorId.trim()
       : null;
+  const juega = parseOptionalBoolean(input.juega);
 
   return {
     estado,
     rifaVendedorId,
+    juega,
   };
 }
 

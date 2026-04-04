@@ -19,7 +19,7 @@ export async function getAbonosRifaVendedor(
   try {
     const data = await listAbonosByRifaVendedor(getStringParam(req.params.id), {
       usuarioId: getStringParam(req.query.usuarioId as string | string[] | undefined),
-    });
+    }, req.authUser);
     res.json(data);
   } catch (error) {
     next(error);

@@ -24,7 +24,7 @@ async function getAllRifaVendedores(req, res, next) {
         const data = await (0, rifa_vendedor_service_1.listRifaVendedores)({
             rifaId: getStringParam(req.query.rifaId),
             vendedorId: getStringParam(req.query.vendedorId),
-        });
+        }, req.authUser);
         res.json(data);
     }
     catch (error) {
@@ -33,7 +33,7 @@ async function getAllRifaVendedores(req, res, next) {
 }
 async function getRifaVendedor(req, res, next) {
     try {
-        res.json(await (0, rifa_vendedor_service_1.getRifaVendedorById)(getStringParam(req.params.id)));
+        res.json(await (0, rifa_vendedor_service_1.getRifaVendedorByIdScoped)(getStringParam(req.params.id), req.authUser));
     }
     catch (error) {
         next(error);
@@ -72,7 +72,7 @@ async function getAsignacionesRifaVendedor(req, res, next) {
     try {
         const data = await (0, rifa_vendedor_service_1.listAsignacionesByRifaVendedor)(getStringParam(req.params.id), {
             usuarioId: getStringParam(req.query.usuarioId),
-        });
+        }, req.authUser);
         res.json(data);
     }
     catch (error) {
@@ -93,7 +93,7 @@ async function getDevolucionesRifaVendedor(req, res, next) {
     try {
         const data = await (0, rifa_vendedor_service_1.listDevolucionesByRifaVendedor)(getStringParam(req.params.id), {
             usuarioId: getStringParam(req.query.usuarioId),
-        });
+        }, req.authUser);
         res.json(data);
     }
     catch (error) {

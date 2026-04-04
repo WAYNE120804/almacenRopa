@@ -34,3 +34,9 @@ export function parsePrepareWebChannelPayload(input: { rifaId?: unknown }): Prep
     rifaId: parseRequiredString(input.rifaId, 'rifaId'),
   };
 }
+
+export function parsePrepareBotChannelPayload(input: { rifaId?: unknown }): PrepareWebChannelPayload {
+  return {
+    rifaId: parseRequiredString(input.rifaId, 'rifaId'),
+  };
+}

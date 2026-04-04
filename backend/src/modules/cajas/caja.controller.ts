@@ -7,9 +7,14 @@ import {
   getCajaResumenByRifa,
   listCajas,
   listSubCajasByRifa,
+  prepareBotChannelByRifa,
   prepareWebChannelByRifa,
 } from './caja.service';
-import { parseCreateSubCajaPayload, parsePrepareWebChannelPayload } from './caja.schemas';
+import {
+  parseCreateSubCajaPayload,
+  parsePrepareBotChannelPayload,
+  parsePrepareWebChannelPayload,
+} from './caja.schemas';
 
 function getStringParam(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value || '';
@@ -46,7 +51,7 @@ export async function getCajaResumen(req: Request, res: Response, next: NextFunc
 export async function getSubCajas(req: Request, res: Response, next: NextFunction) {
   try {
     const rifaId = getStringParam(req.query.rifaId as string | string[] | undefined);
-    const data = await listSubCajasByRifa(rifaId);
+    const data = await listSubCajasByRifa(rifaId, req.authUser);
     res.json(data);
   } catch (error) {
     next(error);
@@ -80,6 +85,20 @@ export async function postPrepareWebChannel(
   try {
     const payload = parsePrepareWebChannelPayload(req.body);
     const data = await prepareWebChannelByRifa(payload.rifaId);
+    res.status(201).json(data);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function postPrepareBotChannel(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const payload = parsePrepareBotChannelPayload(req.body);
+    const data = await prepareBotChannelByRifa(payload.rifaId);
     res.status(201).json(data);
   } catch (error) {
     next(error);

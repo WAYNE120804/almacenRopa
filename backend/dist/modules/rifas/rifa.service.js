@@ -1,12 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.listRifas = listRifas;
+exports.listPublicRifas = listPublicRifas;
 exports.getRifaById = getRifaById;
 exports.createRifa = createRifa;
 exports.updateRifa = updateRifa;
 exports.deleteRifa = deleteRifa;
 const app_error_1 = require("../../lib/app-error");
 const prisma_1 = require("../../lib/prisma");
+const auth_scope_1 = require("../auth/auth.scope");
 const rifaListSelect = {
     id: true,
     nombre: true,
@@ -105,15 +107,31 @@ function buildBoletas(rifaId, numeroCifras, precioBoleta) {
     }
     return boletas;
 }
-async function listRifas() {
+async function listRifas(authUser) {
+    const scope = await (0, auth_scope_1.resolveVendorAccessScope)(authUser);
     return prismaClient().rifa.findMany({
+        where: {
+            ...(scope.restricted ? { id: { in: scope.rifaIds } } : {}),
+        },
         select: rifaListSelect,
         orderBy: {
             createdAt: 'desc',
         },
     });
 }
-async function getRifaById(id) {
+async function listPublicRifas() {
+    return prismaClient().rifa.findMany({
+        where: {
+            estado: 'ACTIVA',
+        },
+        select: rifaListSelect,
+        orderBy: {
+            fechaFin: 'asc',
+        },
+    });
+}
+async function getRifaById(id, authUser) {
+    await (0, auth_scope_1.assertVendorCanAccessRifa)(authUser, id);
     const rifa = await prismaClient().rifa.findUnique({
         where: { id },
         include: rifaDetailInclude,

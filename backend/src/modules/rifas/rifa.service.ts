@@ -2,6 +2,7 @@ import { Prisma } from '../../lib/prisma-client';
 
 import { AppError } from '../../lib/app-error';
 import { getPrisma } from '../../lib/prisma';
+import { assertVendorCanAccessRifa, resolveVendorAccessScope } from '../auth/auth.scope';
 import type { RifaPayload } from './rifa.schemas';
 
 const rifaListSelect = {
@@ -110,8 +111,13 @@ function buildBoletas(rifaId: string, numeroCifras: number, precioBoleta: number
   return boletas;
 }
 
-export async function listRifas() {
+export async function listRifas(authUser?: Express.Request['authUser']) {
+  const scope = await resolveVendorAccessScope(authUser);
+
   return prismaClient().rifa.findMany({
+    where: {
+      ...(scope.restricted ? { id: { in: scope.rifaIds } } : {}),
+    },
     select: rifaListSelect,
     orderBy: {
       createdAt: 'desc',
@@ -119,7 +125,20 @@ export async function listRifas() {
   });
 }
 
-export async function getRifaById(id: string) {
+export async function listPublicRifas() {
+  return prismaClient().rifa.findMany({
+    where: {
+      estado: 'ACTIVA',
+    },
+    select: rifaListSelect,
+    orderBy: {
+      fechaFin: 'asc',
+    },
+  });
+}
+
+export async function getRifaById(id: string, authUser?: Express.Request['authUser']) {
+  await assertVendorCanAccessRifa(authUser, id);
   const rifa = await prismaClient().rifa.findUnique({
     where: { id },
     include: rifaDetailInclude,

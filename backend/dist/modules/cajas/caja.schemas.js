@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseCreateSubCajaPayload = parseCreateSubCajaPayload;
 exports.parsePrepareWebChannelPayload = parsePrepareWebChannelPayload;
+exports.parsePrepareBotChannelPayload = parsePrepareBotChannelPayload;
 const app_error_1 = require("../../lib/app-error");
 function parseRequiredString(value, fieldName) {
     if (typeof value !== 'string' || value.trim().length === 0) {
@@ -16,6 +17,11 @@ function parseCreateSubCajaPayload(input) {
     };
 }
 function parsePrepareWebChannelPayload(input) {
+    return {
+        rifaId: parseRequiredString(input.rifaId, 'rifaId'),
+    };
+}
+function parsePrepareBotChannelPayload(input) {
     return {
         rifaId: parseRequiredString(input.rifaId, 'rifaId'),
     };

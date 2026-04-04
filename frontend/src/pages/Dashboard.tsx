@@ -7,6 +7,7 @@ import EmptyState from '../components/common/EmptyState';
 import ErrorBanner from '../components/common/ErrorBanner';
 import Loading from '../components/common/Loading';
 import Topbar from '../components/Layout/Topbar';
+import { useAuth } from '../context/AuthContext';
 import { formatDateTime } from '../utils/dates';
 import { formatCOP } from '../utils/money';
 
@@ -234,6 +235,7 @@ const SimpleTable = ({
 );
 
 const Dashboard = () => {
+  const { user } = useAuth();
   const [state, setState] = useState({
     loading: true,
     error: null as string | null,
@@ -247,6 +249,31 @@ const Dashboard = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
+        if (user?.rol === 'VENDEDOR') {
+          const { data: relaciones } = await client.get(endpoints.rifaVendedores());
+          const { data: boletas } = await client.get(endpoints.boletas());
+          const abonosPorRelacion = await Promise.all(
+            relaciones.map((relacion: any) =>
+              client.get(endpoints.abonosByRifaVendedor(relacion.id)).then((response) => response.data)
+            )
+          );
+
+          setState({
+            loading: false,
+            error: null,
+            rifas: relaciones.map((relacion: any) => relacion.rifa).filter(Boolean),
+            activeRifa: null,
+            cajaResumen: {
+              relaciones,
+              boletas,
+              abonos: abonosPorRelacion.flat(),
+            },
+            gastos: [],
+            boletas,
+          });
+          return;
+        }
+
         const { data: rifas } = await client.get(endpoints.rifas());
         const activeRifa = rifas.find((rifa: any) => rifa.estado === 'ACTIVA') || null;
 
@@ -288,7 +315,7 @@ const Dashboard = () => {
     };
 
     void loadData();
-  }, []);
+  }, [user?.rol]);
 
   const gastoPorCategoria = useMemo(() => {
     const grouped = state.gastos.reduce((acc: Record<string, number>, gasto: any) => {
@@ -355,14 +382,86 @@ const Dashboard = () => {
     [state.cajaResumen]
   );
 
+  const vendorResumen = useMemo(() => {
+    if (user?.rol !== 'VENDEDOR') {
+      return null;
+    }
+
+    const relaciones = state.cajaResumen?.relaciones || [];
+    const abonos = state.cajaResumen?.abonos || [];
+
+    return {
+      rifasActivas: relaciones.filter((item: any) => item.rifa?.estado === 'ACTIVA').length,
+      boletasActuales: state.boletas.length,
+      deudaActual: relaciones.reduce((sum: number, item: any) => sum + toNumber(item.saldoActual), 0),
+      totalAbonado: abonos
+        .filter((item: any) => !item.anuladoAt)
+        .reduce((sum: number, item: any) => sum + toNumber(item.valor), 0),
+      relaciones,
+    };
+  }, [state.boletas, state.cajaResumen, user?.rol]);
+
   return (
     <div>
-      <Topbar title="Dashboard" />
+      <Topbar title={user?.rol === 'VENDEDOR' ? 'Inicio' : 'Dashboard'} />
       <div className="space-y-6 px-6 py-6">
         {state.loading ? <Loading label="Cargando dashboard de la rifa activa" /> : null}
         <ErrorBanner message={state.error} />
 
-        {!state.loading && !state.activeRifa ? (
+        {!state.loading && user?.rol === 'VENDEDOR' ? (
+          <>
+            {!vendorResumen?.relaciones?.length ? (
+              <div className="theme-section-card rounded-2xl p-8 shadow-sm">
+                <EmptyState
+                  title="Sin alcance asignado"
+                  description="Este usuario vendedor todavia no tiene relaciones rifa-vendedor activas para operar."
+                />
+              </div>
+            ) : (
+              <>
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+                  <SummaryCard
+                    label="Rifas activas"
+                    value={String(vendorResumen.rifasActivas)}
+                    helper="Rifas dentro de tu alcance"
+                  />
+                  <SummaryCard
+                    label="Boletas visibles"
+                    value={String(vendorResumen.boletasActuales)}
+                    helper="Boletas actualmente bajo tu alcance"
+                  />
+                  <SummaryCard
+                    label="Deuda actual"
+                    value={formatCOP(vendorResumen.deudaActual)}
+                    helper="Saldo operativo de tus relaciones"
+                    tone={vendorResumen.deudaActual > 0 ? 'warning' : 'success'}
+                  />
+                  <SummaryCard
+                    label="Total abonado"
+                    value={formatCOP(vendorResumen.totalAbonado)}
+                    helper="Abonos confirmados no anulados"
+                    tone="success"
+                  />
+                </div>
+
+                <SimpleTable
+                  title="Mis relaciones"
+                  subtitle="Vista restringida a tus rifas y vendedores asociados."
+                  columns={['Rifa', 'Vendedor', 'Boletas', 'Saldo actual', 'Estado']}
+                  rows={vendorResumen.relaciones.map((item: any) => [
+                    item.rifa?.nombre || 'Sin rifa',
+                    item.vendedor?.nombre || 'Sin vendedor',
+                    String(item._count?.boletas || 0),
+                    formatCOP(item.saldoActual || 0),
+                    item.rifa?.estado || 'N/D',
+                  ])}
+                />
+              </>
+            )}
+          </>
+        ) : null}
+
+        {!state.loading && user?.rol !== 'VENDEDOR' && !state.activeRifa ? (
           <div className="theme-section-card rounded-2xl p-8 shadow-sm">
             <EmptyState
               title="No hay rifa activa"
@@ -379,7 +478,7 @@ const Dashboard = () => {
           </div>
         ) : null}
 
-        {!state.loading && state.activeRifa && state.cajaResumen ? (
+        {!state.loading && user?.rol !== 'VENDEDOR' && state.activeRifa && state.cajaResumen ? (
           <>
             <div className="theme-section-card rounded-2xl p-6 shadow-sm">
               <div className="flex flex-wrap items-start justify-between gap-4">

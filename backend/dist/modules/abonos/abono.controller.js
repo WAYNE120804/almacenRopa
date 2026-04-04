@@ -12,7 +12,7 @@ async function getAbonosRifaVendedor(req, res, next) {
     try {
         const data = await (0, abono_service_1.listAbonosByRifaVendedor)(getStringParam(req.params.id), {
             usuarioId: getStringParam(req.query.usuarioId),
-        });
+        }, req.authUser);
         res.json(data);
     }
     catch (error) {

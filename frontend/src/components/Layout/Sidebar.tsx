@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { useAppConfig } from '../../context/AppConfigContext';
 import { useAuth } from '../../context/AuthContext';
 
-const navItems = [
+const adminNavItems = [
   { to: '/', label: 'Dashboard', adminOnly: true },
   { to: '/rifas', label: 'Rifas' },
   { to: '/boletas', label: 'Boletas' },
@@ -18,10 +18,33 @@ const navItems = [
   { to: '/configuracion-web', label: 'Configuracion pagina web', adminOnly: true },
 ];
 
+const vendedorNavItems = [
+  { to: '/', label: 'Inicio' },
+  { to: '/boletas', label: 'Mis boletas' },
+  { to: '/mis-clientes', label: 'Mis clientes' },
+  { to: '/mis-pagos', label: 'Mis pagos' },
+  { to: '/abonos', label: 'Mi cuenta' },
+  { to: '/mis-recibos', label: 'Mis recibos' },
+  { to: '/mis-informes', label: 'Mis informes' },
+];
+
 const Sidebar = () => {
   const { config } = useAppConfig();
   const { user, logout } = useAuth();
-  const visibleNavItems = navItems.filter((item) => !item.adminOnly || user?.rol === 'ADMIN');
+  const specialScopeName =
+    user?.rol === 'VENDEDOR'
+      ? user.scopes.items?.find((item) => {
+          const name = item.vendedorNombre?.toUpperCase() || '';
+          return name === 'PAGINA WEB' || name.includes('BOT');
+        })?.vendedorNombre || null
+      : null;
+  const visibleNavItems =
+    user?.rol === 'VENDEDOR'
+      ? [
+          ...vendedorNavItems,
+          ...(specialScopeName ? [{ to: '/supervision-canal', label: 'Supervision canal' }] : []),
+        ]
+      : adminNavItems.filter((item) => !item.adminOnly || user?.rol === 'ADMIN');
 
   return (
     <aside className="theme-sidebar flex h-screen w-60 flex-col border-r border-slate-200 p-6">
@@ -41,7 +64,13 @@ const Sidebar = () => {
           <h1 className="theme-main-title text-lg font-semibold text-slate-800">
             {config.nombreCasaRifera}
           </h1>
-          <p className="text-xs text-slate-500">Administrador de rifas</p>
+          <p className="text-xs text-slate-500">
+            {user?.rol === 'VENDEDOR'
+              ? specialScopeName
+                ? `Panel ${specialScopeName.toLowerCase()}`
+                : 'Panel vendedor'
+              : 'Administrador de rifas'}
+          </p>
         </div>
       </div>
       <nav className="mt-6 flex flex-col gap-2 text-sm">

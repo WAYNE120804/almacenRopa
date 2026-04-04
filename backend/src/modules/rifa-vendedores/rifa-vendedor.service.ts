@@ -2,6 +2,7 @@ import { Prisma } from '../../lib/prisma-client';
 
 import { AppError } from '../../lib/app-error';
 import { getPrisma } from '../../lib/prisma';
+import { assertVendorCanAccessRifaVendedor, resolveVendorAccessScope } from '../auth/auth.scope';
 import type {
   CreateAsignacionPayload,
   CreateDevolucionPayload,
@@ -281,9 +282,12 @@ function buildPartialReturnError(
 export async function listRifaVendedores(filters?: {
   rifaId?: string;
   vendedorId?: string;
-}) {
+}, authUser?: Express.Request['authUser']) {
+  const scope = await resolveVendorAccessScope(authUser);
+
   const rows = await prismaClient().rifaVendedor.findMany({
     where: {
+      ...(scope.restricted ? { id: { in: scope.rifaVendedorIds } } : {}),
       ...(filters?.rifaId ? { rifaId: filters.rifaId } : {}),
       ...(filters?.vendedorId ? { vendedorId: filters.vendedorId } : {}),
     },
@@ -306,6 +310,24 @@ export async function listRifaVendedores(filters?: {
 }
 
 export async function getRifaVendedorById(id: string) {
+  await assertVendorCanAccessRifaVendedor(undefined, id);
+  const relation = await prismaClient().rifaVendedor.findUnique({
+    where: { id },
+    include: rifaVendedorInclude,
+  });
+
+  if (!relation) {
+    throw new AppError('La relacion rifa-vendedor no existe.', 404);
+  }
+
+  return withTotalAbonado(relation);
+}
+
+export async function getRifaVendedorByIdScoped(
+  id: string,
+  authUser?: Express.Request['authUser']
+) {
+  await assertVendorCanAccessRifaVendedor(authUser, id);
   const relation = await prismaClient().rifaVendedor.findUnique({
     where: { id },
     include: rifaVendedorInclude,
@@ -348,12 +370,39 @@ export async function createRifaVendedor(payload: RifaVendedorPayload) {
 
   const precioCasa = calculatePrecioCasa(rifa.precioBoleta, payload.comisionPct);
 
-  return prisma.rifaVendedor.create({
-    data: {
-      ...payload,
-      precioCasa,
-    },
-    include: rifaVendedorInclude,
+  return prisma.$transaction(async (tx) => {
+    const relation = await tx.rifaVendedor.create({
+      data: {
+        ...payload,
+        precioCasa,
+      },
+    });
+
+    const vendorUsers = await tx.usuarioVendedorScope.findMany({
+      where: {
+        vendedorId: payload.vendedorId,
+      },
+      select: {
+        usuarioId: true,
+      },
+      distinct: ['usuarioId'],
+    });
+
+    if (vendorUsers.length > 0) {
+      await tx.usuarioVendedorScope.createMany({
+        data: vendorUsers.map((scope) => ({
+          usuarioId: scope.usuarioId,
+          vendedorId: payload.vendedorId,
+          rifaVendedorId: relation.id,
+        })),
+        skipDuplicates: true,
+      });
+    }
+
+    return tx.rifaVendedor.findUniqueOrThrow({
+      where: { id: relation.id },
+      include: rifaVendedorInclude,
+    });
   });
 }
 
@@ -373,8 +422,14 @@ export async function deleteRifaVendedor(id: string) {
     );
   }
 
-  await prisma.rifaVendedor.delete({
-    where: { id },
+  await prisma.$transaction(async (tx) => {
+    await tx.usuarioVendedorScope.deleteMany({
+      where: { rifaVendedorId: id },
+    });
+
+    await tx.rifaVendedor.delete({
+      where: { id },
+    });
   });
 }
 
@@ -400,9 +455,10 @@ export async function updateRifaVendedor(
 
 export async function listAsignacionesByRifaVendedor(
   id: string,
-  filters?: { usuarioId?: string }
+  filters?: { usuarioId?: string },
+  authUser?: Express.Request['authUser']
 ) {
-  await getRifaVendedorById(id);
+  await assertVendorCanAccessRifaVendedor(authUser, id);
 
   const rows = await prismaClient().asignacionBoletas.findMany({
     where: {
@@ -673,9 +729,10 @@ export async function createAsignacion(
 
 export async function listDevolucionesByRifaVendedor(
   id: string,
-  filters?: { usuarioId?: string }
+  filters?: { usuarioId?: string },
+  authUser?: Express.Request['authUser']
 ) {
-  await getRifaVendedorById(id);
+  await assertVendorCanAccessRifaVendedor(authUser, id);
 
   const rows = await prismaClient().devolucionBoletas.findMany({
     where: {

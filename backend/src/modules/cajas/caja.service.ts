@@ -1,10 +1,12 @@
 import { Prisma } from '../../lib/prisma-client';
 import { AppError } from '../../lib/app-error';
 import { getPrisma } from '../../lib/prisma';
+import { assertVendorCanAccessRifa } from '../auth/auth.scope';
 
 import type { CreateSubCajaPayload } from './caja.schemas';
 
 const WEB_VENDOR_NAME = 'PAGINA WEB';
+const BOT_VENDOR_NAME = 'BOT';
 const WOMPI_WEB_SUBCAJA = 'WOMPI WEB';
 
 const cajaInclude = {
@@ -142,7 +144,11 @@ export async function getCajaById(id: string) {
   return caja;
 }
 
-export async function listSubCajasByRifa(rifaId: string) {
+export async function listSubCajasByRifa(
+  rifaId: string,
+  authUser?: Express.Request['authUser']
+) {
+  await assertVendorCanAccessRifa(authUser, rifaId);
   const caja = await getCajaPrincipalByRifaId(rifaId);
   return caja.subcajas;
 }
@@ -252,6 +258,68 @@ async function ensureWebVendorForRifa(rifaId: string) {
   });
 }
 
+async function ensureBotVendorForRifa(rifaId: string) {
+  const prisma = prismaClient();
+
+  return prisma.$transaction(async (tx) => {
+    const rifa = await tx.rifa.findUnique({
+      where: { id: rifaId },
+      select: {
+        id: true,
+        nombre: true,
+        precioBoleta: true,
+      },
+    });
+
+    if (!rifa) {
+      throw new AppError('La rifa seleccionada no existe.', 404);
+    }
+
+    let vendedor = await tx.vendedor.findFirst({
+      where: {
+        nombre: BOT_VENDOR_NAME,
+      },
+    });
+
+    if (!vendedor) {
+      vendedor = await tx.vendedor.create({
+        data: {
+          nombre: BOT_VENDOR_NAME,
+          direccion: 'Canal automatizado administrado por el sistema',
+        },
+      });
+    }
+
+    let relacion = await tx.rifaVendedor.findUnique({
+      where: {
+        rifaId_vendedorId: {
+          rifaId,
+          vendedorId: vendedor.id,
+        },
+      },
+      include: webChannelRelationInclude,
+    });
+
+    if (!relacion) {
+      relacion = await tx.rifaVendedor.create({
+        data: {
+          rifaId,
+          vendedorId: vendedor.id,
+          comisionPct: 0,
+          precioCasa: rifa.precioBoleta,
+          saldoActual: 0,
+        },
+        include: webChannelRelationInclude,
+      });
+    }
+
+    return {
+      vendedor,
+      relacion,
+    };
+  });
+}
+
 export async function prepareWebChannelByRifa(rifaId: string) {
   const result = await ensureWebVendorForRifa(rifaId);
 
@@ -260,6 +328,15 @@ export async function prepareWebChannelByRifa(rifaId: string) {
     rifaVendedorId: result.relacion.id,
     subCajaId: result.subCaja.id,
     subCajaNombre: result.subCaja.nombre,
+  };
+}
+
+export async function prepareBotChannelByRifa(rifaId: string) {
+  const result = await ensureBotVendorForRifa(rifaId);
+
+  return {
+    vendedorNombre: result.vendedor.nombre,
+    rifaVendedorId: result.relacion.id,
   };
 }
 

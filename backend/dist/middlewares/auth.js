@@ -5,6 +5,7 @@ exports.requireRole = requireRole;
 const app_error_1 = require("../lib/app-error");
 const auth_token_1 = require("../lib/auth-token");
 const prisma_1 = require("../lib/prisma");
+const auth_utils_1 = require("../modules/auth/auth.utils");
 function getBearerToken(authorizationHeader) {
     if (!authorizationHeader?.startsWith('Bearer ')) {
         return '';
@@ -37,6 +38,12 @@ async function authenticateRequest(req, _res, next) {
                 email: true,
                 rol: true,
                 activo: true,
+                vendedorScopes: {
+                    select: {
+                        vendedorId: true,
+                        rifaVendedorId: true,
+                    },
+                },
             },
         });
         if (!usuario || !usuario.activo) {
@@ -49,6 +56,7 @@ async function authenticateRequest(req, _res, next) {
             nombre: usuario.nombre,
             email: usuario.email,
             rol: usuario.rol,
+            scopes: (0, auth_utils_1.serializeUserScopes)(usuario.vendedorScopes),
         };
         next();
     }

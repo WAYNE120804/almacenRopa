@@ -32,8 +32,16 @@ import ReciboView from './pages/Recibos/ReciboView';
 import LoginPage from './pages/Auth/LoginPage';
 import UsuariosPage from './pages/Usuarios/UsuariosPage';
 import PublicHomePage from './pages/Public/PublicHomePage';
+import PublicBoletaSharePage from './pages/Public/PublicBoletaSharePage';
 import PublicPagoRetornoPage from './pages/Public/PublicPagoRetornoPage';
 import PublicRifaPage from './pages/Public/PublicRifaPage';
+import ClienteReciboPublicView from './pages/Recibos/ClienteReciboPublicView';
+import ClienteReciboView from './pages/Recibos/ClienteReciboView';
+import VendedorReceiptsPage from './pages/Vendedor/VendedorReceiptsPage';
+import VendedorReportsPage from './pages/Vendedor/VendedorReportsPage';
+import VendedorClientsPage from './pages/Vendedor/VendedorClientsPage';
+import VendedorPaymentsPage from './pages/Vendedor/VendedorPaymentsPage';
+import VendedorSupervisionPage from './pages/Vendedor/VendedorSupervisionPage';
 
 const HomeRoute = () => {
   const { user } = useAuth();
@@ -50,10 +58,12 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/publico" element={<PublicHomePage />} />
+        <Route path="/publico/boletas/:token" element={<PublicBoletaSharePage />} />
         <Route path="/publico/rifas/:id" element={<PublicRifaPage />} />
         <Route path="/publico/pago/retorno" element={<PublicPagoRetornoPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/verificacion/abonos/:codigo" element={<ReciboPublicView />} />
+        <Route path="/verificacion/pagos-clientes/:codigo" element={<ClienteReciboPublicView />} />
         <Route
           path="*"
           element={
@@ -62,21 +72,159 @@ const App = () => {
                 <Routes>
                   <Route path="/" element={<HomeRoute />} />
                   <Route path="/boletas" element={<BoletaList />} />
-                  <Route path="/juego" element={<JuegoPage />} />
-                  <Route path="/rifas" element={<RifaList />} />
-                  <Route path="/rifas/crear" element={<RifaForm />} />
-                  <Route path="/rifas/:id/editar" element={<RifaForm />} />
-                  <Route path="/rifas/:id" element={<RifaDetail />} />
-                  <Route path="/rifas/:id/premios" element={<RifaPremiosPage />} />
-                  <Route path="/vendedores" element={<VendedorList />} />
-                  <Route path="/vendedores/crear" element={<VendedorForm />} />
-                  <Route path="/vendedores/:id/editar" element={<VendedorForm />} />
-                  <Route path="/vendedores/:id" element={<VendedorDetail />} />
-                  <Route path="/asignaciones" element={<AsignarBoletas />} />
-                  <Route path="/asignaciones/historial" element={<HistorialAsignaciones />} />
-                  <Route path="/devoluciones" element={<DevolucionesPage />} />
+                  <Route
+                    path="/juego"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <JuegoPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/rifas"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <RifaList />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/rifas/crear"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <RifaForm />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/rifas/:id/editar"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <RifaForm />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/rifas/:id"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <RifaDetail />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/rifas/:id/premios"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <RifaPremiosPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/vendedores"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <VendedorList />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/vendedores/crear"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <VendedorForm />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/vendedores/:id/editar"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <VendedorForm />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/vendedores/:id"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <VendedorDetail />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/asignaciones"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <AsignarBoletas />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/asignaciones/historial"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <HistorialAsignaciones />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/devoluciones"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <DevolucionesPage />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route path="/abonos" element={<HistorialAbonos />} />
-                  <Route path="/abonos/crear" element={<CrearAbono />} />
+                  <Route
+                    path="/mis-clientes"
+                    element={
+                      <ProtectedRoute allowedRoles={['VENDEDOR']}>
+                        <VendedorClientsPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/mis-recibos"
+                    element={
+                      <ProtectedRoute allowedRoles={['VENDEDOR']}>
+                        <VendedorReceiptsPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/mis-pagos"
+                    element={
+                      <ProtectedRoute allowedRoles={['VENDEDOR']}>
+                        <VendedorPaymentsPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/mis-informes"
+                    element={
+                      <ProtectedRoute allowedRoles={['VENDEDOR']}>
+                        <VendedorReportsPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/supervision-canal"
+                    element={
+                      <ProtectedRoute allowedRoles={['VENDEDOR']}>
+                        <VendedorSupervisionPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/abonos/crear"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <CrearAbono />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route
                     path="/gastos"
                     element={
@@ -158,6 +306,7 @@ const App = () => {
                     }
                   />
                   <Route path="/recibos/:id" element={<ReciboView />} />
+                  <Route path="/cliente-recibos/:id" element={<ClienteReciboView />} />
                 </Routes>
               </AppLayout>
             </ProtectedRoute>

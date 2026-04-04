@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllRifas = getAllRifas;
+exports.getAllPublicRifas = getAllPublicRifas;
 exports.getRifa = getRifa;
 exports.postRifa = postRifa;
 exports.putRifa = putRifa;
@@ -10,9 +11,17 @@ const rifa_schemas_1 = require("./rifa.schemas");
 function getIdParam(value) {
     return Array.isArray(value) ? value[0] : value || '';
 }
-async function getAllRifas(_req, res, next) {
+async function getAllRifas(req, res, next) {
     try {
-        res.json(await (0, rifa_service_1.listRifas)());
+        res.json(await (0, rifa_service_1.listRifas)(req.authUser));
+    }
+    catch (error) {
+        next(error);
+    }
+}
+async function getAllPublicRifas(_req, res, next) {
+    try {
+        res.json(await (0, rifa_service_1.listPublicRifas)());
     }
     catch (error) {
         next(error);
@@ -20,7 +29,7 @@ async function getAllRifas(_req, res, next) {
 }
 async function getRifa(req, res, next) {
     try {
-        res.json(await (0, rifa_service_1.getRifaById)(getIdParam(req.params.id)));
+        res.json(await (0, rifa_service_1.getRifaById)(getIdParam(req.params.id), req.authUser));
     }
     catch (error) {
         next(error);

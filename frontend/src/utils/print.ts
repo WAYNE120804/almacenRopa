@@ -62,6 +62,56 @@ type PrintableReceiptInput = {
   };
 };
 
+type PrintableClientReceiptInput = {
+  companyName: string;
+  logoDataUrl?: string | null;
+  responsableNombre?: string | null;
+  responsableTelefono?: string | null;
+  responsableDireccion?: string | null;
+  responsableCiudad?: string | null;
+  responsableDepartamento?: string | null;
+  numeroResolucionAutorizacion?: string | null;
+  entidadAutoriza?: string | null;
+  verificationUrl?: string;
+  copies?: number;
+  receipt: {
+    consecutivo: number;
+    codigoUnico: string;
+    fecha: string;
+    pagoCliente: {
+      monto: number | string;
+      metodoPago: string;
+      descripcion?: string | null;
+      subCaja?: {
+        nombre?: string | null;
+      } | null;
+      usuario?: {
+        nombre?: string | null;
+      } | null;
+      venta: {
+        total: number | string;
+        saldoPendiente: number | string;
+        cliente: {
+          nombre: string;
+          documento?: string | null;
+          telefono?: string | null;
+        };
+        rifa: {
+          nombre: string;
+        };
+        rifaVendedor?: {
+          vendedor?: {
+            nombre?: string | null;
+          } | null;
+        } | null;
+        boletas: Array<{
+          numero: string;
+        }>;
+      };
+    };
+  };
+};
+
 type PrintableAbonosSummaryInput = {
   companyName: string;
   logoDataUrl?: string | null;
@@ -183,6 +233,99 @@ type PrintableCajaReportInput = {
     categoria: string;
     valor: number | string;
   }>;
+};
+
+type PrintableVendorReportInput = {
+  companyName: string;
+  logoDataUrl?: string | null;
+  responsableNombre?: string | null;
+  responsableTelefono?: string | null;
+  responsableDireccion?: string | null;
+  responsableCiudad?: string | null;
+  responsableDepartamento?: string | null;
+  numeroResolucionAutorizacion?: string | null;
+  entidadAutoriza?: string | null;
+  reportTitle: string;
+  relationLabel: string;
+  metrics: {
+    totalAbonado: number | string;
+    deudaActual: number | string;
+    boletasTotales: number;
+    boletasPagadas: number;
+    boletasPendientes: number;
+  };
+  paymentMethods: Array<{
+    label: string;
+    value: number | string;
+  }>;
+  relations: Array<{
+    rifaNombre: string;
+    vendedorNombre: string;
+    boletas: number;
+    totalAbonado: number | string;
+    saldoActual: number | string;
+  }>;
+};
+
+type PrintablePublicBoletaFichaInput = {
+  companyName: string;
+  logoDataUrl?: string | null;
+  supportText?: string | null;
+  supportPhone?: string | null;
+  supportWhatsapp?: string | null;
+  supportEmail?: string | null;
+  backgroundDataUrl?: string | null;
+  publicUrl?: string | null;
+  ficha: {
+    numero: string;
+    estado: string;
+    total: number | string;
+    totalAbonado: number | string;
+    saldoPendiente: number | string;
+    juega: boolean;
+    clienteNombre?: string | null;
+    clienteDocumento?: string | null;
+    clienteTelefono?: string | null;
+    vendedorNombre?: string | null;
+    rifaNombre: string;
+    boletasRelacionadas: string[];
+    historialPagos: Array<{
+      monto: number | string;
+      fecha: string;
+      metodoPago: string;
+      descripcion?: string | null;
+    }>;
+  };
+};
+
+type PrintablePublicPurchaseSummaryInput = {
+  companyName: string;
+  logoDataUrl?: string | null;
+  supportText?: string | null;
+  supportPhone?: string | null;
+  supportWhatsapp?: string | null;
+  supportEmail?: string | null;
+  backgroundDataUrl?: string | null;
+  purchase: {
+    estadoPago: string;
+    referencia: string | null;
+    transaccionId: string | null;
+    fechaPago?: string | null;
+    metodoPago?: string | null;
+    descripcionPago?: string | null;
+    total: number | string;
+    cliente: {
+      nombre: string;
+      documento?: string | null;
+      telefono?: string | null;
+      email?: string | null;
+    };
+    vendedorNombre?: string | null;
+    boletas: Array<{
+      numero: string;
+      estado: string;
+    }>;
+  };
 };
 
 const ROWS_PER_PAGE = 35;
@@ -872,6 +1015,157 @@ export async function printReceiptTicket({
         }
       </style>
       ${copiesHtml}
+    `
+  );
+}
+
+export async function printClientReceiptTicket({
+  companyName,
+  logoDataUrl,
+  responsableNombre,
+  responsableTelefono,
+  responsableDireccion,
+  responsableCiudad,
+  responsableDepartamento,
+  numeroResolucionAutorizacion,
+  entidadAutoriza,
+  verificationUrl,
+  receipt,
+  copies = 1,
+}: PrintableClientReceiptInput) {
+  const safeCopies = Math.max(1, Math.min(2, Math.floor(copies)));
+  const pago = receipt.pagoCliente;
+  const venta = pago.venta;
+  const cliente = venta.cliente;
+  const qrDataUrl = verificationUrl
+    ? await QRCode.toDataURL(verificationUrl, {
+        margin: 1,
+        width: 160,
+        color: {
+          dark: '#111827',
+          light: '#ffffff',
+        },
+      })
+    : '';
+
+  const copiesHtml = Array.from({ length: safeCopies }, () => {
+    const qrHtml = qrDataUrl
+      ? `<div class="qr-wrap"><img src="${qrDataUrl}" alt="QR" class="qr-image" /></div>`
+      : '';
+
+    return `
+      <section class="ticket">
+        <div class="ticket-head">
+          ${
+            logoDataUrl
+              ? `<img src="${logoDataUrl}" alt="${escapeHtml(companyName)}" class="ticket-logo" />`
+              : ''
+          }
+          <div class="ticket-company">${escapeHtml(companyName.toUpperCase())}</div>
+          <div class="ticket-subtitle">RECIBO DE CLIENTE</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="block-title">RESPONSABLE Y AUTORIZACION</div>
+        <div class="text-line"><span class="label-inline">RESPONSABLE:</span> ${escapeHtml(
+          responsableNombre || 'SIN RESPONSABLE'
+        )}</div>
+        <div class="text-line"><span class="label-inline">TEL. RESPONSABLE:</span> ${escapeHtml(
+          responsableTelefono || 'SIN TELEFONO'
+        )}</div>
+        <div class="text-line"><span class="label-inline">UBICACION:</span> ${escapeHtml(
+          [responsableDireccion, responsableCiudad, responsableDepartamento]
+            .filter(Boolean)
+            .join(' - ') || 'SIN UBICACION'
+        )}</div>
+        <div class="text-line"><span class="label-inline">AUTORIZA:</span> ${escapeHtml(
+          entidadAutoriza || 'SIN ENTIDAD'
+        )}</div>
+        <div class="text-line"><span class="label-inline">RESOLUCION:</span> ${escapeHtml(
+          numeroResolucionAutorizacion || 'SIN RESOLUCION'
+        )}</div>
+
+        <div class="divider"></div>
+
+        <div class="row"><span>RIFA</span><strong>${escapeHtml(venta.rifa.nombre)}</strong></div>
+        <div class="row"><span>CONSEC.</span><strong>${escapeHtml(
+          `CLI-${String(receipt.consecutivo).padStart(6, '0')}`
+        )}</strong></div>
+        <div class="row"><span>CODIGO</span><strong class="code">${escapeHtml(
+          receipt.codigoUnico
+        )}</strong></div>
+        <div class="row"><span>FECHA</span><strong>${escapeHtml(
+          formatReceiptDateTime(new Date(receipt.fecha))
+        )}</strong></div>
+
+        <div class="divider"></div>
+
+        <div class="block-title">CLIENTE</div>
+        <div class="text-line"><span class="label-inline">NOMBRE:</span> ${escapeHtml(
+          cliente.nombre
+        )}</div>
+        <div class="text-line"><span class="label-inline">DOCUMENTO:</span> ${escapeHtml(
+          cliente.documento || 'SIN DOCUMENTO'
+        )}</div>
+        <div class="text-line"><span class="label-inline">TELEFONO:</span> ${escapeHtml(
+          cliente.telefono || 'SIN TELEFONO'
+        )}</div>
+        <div class="text-line"><span class="label-inline">CANAL:</span> ${escapeHtml(
+          venta.rifaVendedor?.vendedor?.nombre || 'SIN CANAL'
+        )}</div>
+
+        <div class="divider"></div>
+
+        <div class="row"><span>PAGO</span><strong>${escapeHtml(
+          formatReceiptMoney(pago.monto)
+        )}</strong></div>
+        <div class="row"><span>TOTAL VENTA</span><strong>${escapeHtml(
+          formatReceiptMoney(venta.total)
+        )}</strong></div>
+        <div class="row"><span>SALDO</span><strong>${escapeHtml(
+          formatReceiptMoney(venta.saldoPendiente)
+        )}</strong></div>
+        <div class="row"><span>METODO</span><strong>${escapeHtml(pago.metodoPago)}</strong></div>
+        <div class="row"><span>SUBCAJA</span><strong>${escapeHtml(
+          pago.subCaja?.nombre || 'SIN SUBCAJA'
+        )}</strong></div>
+        <div class="row"><span>REGISTRO</span><strong>${escapeHtml(
+          pago.usuario?.nombre || 'SISTEMA'
+        )}</strong></div>
+
+        <div class="divider"></div>
+
+        <div class="block-title">BOLETAS</div>
+        <div class="text-box">${escapeHtml(
+          (venta.boletas || []).map((item) => item.numero).join(', ') || 'SIN BOLETAS'
+        )}</div>
+
+        <div class="divider"></div>
+
+        <div class="block-title">DESCRIPCION</div>
+        <div class="text-box">${escapeHtml(pago.descripcion || 'SIN DESCRIPCION')}</div>
+
+        <div class="divider"></div>
+
+        <div class="ticket-foot">
+          ${
+            qrHtml
+              ? `${qrHtml}<div class="verification-copy">Escanea este codigo para verificar el recibo.</div>`
+              : '<div class="verification-copy">Recibo interno generado por el sistema.</div>'
+          }
+        </div>
+      </section>
+    `;
+  }).join('<div class="ticket-gap"></div>');
+
+  printHtmlDocument(
+    `${companyName} - Recibo de cliente`,
+    `
+      <style>
+        ${sharedReceiptStyles}
+      </style>
+      <main class="ticket-sheet">${copiesHtml}</main>
     `
   );
 }
@@ -2071,6 +2365,524 @@ export function printCajaLetterReport({
         </section>
 
         <div class="footer-note">Informe general de caja generado automaticamente desde el panel administrativo.</div>
+      </section>
+    `
+  );
+}
+
+export function printVendorLetterReport({
+  companyName,
+  logoDataUrl,
+  responsableNombre,
+  responsableTelefono,
+  responsableDireccion,
+  responsableCiudad,
+  responsableDepartamento,
+  numeroResolucionAutorizacion,
+  entidadAutoriza,
+  reportTitle,
+  relationLabel,
+  metrics,
+  paymentMethods,
+  relations,
+}: PrintableVendorReportInput) {
+  const printedAt = formatPrintDateTime(new Date());
+  const paymentMethodRows = paymentMethods
+    .map(
+      (item) => `
+        <tr>
+          <td>${escapeHtml(item.label)}</td>
+          <td class="money">${escapeHtml(formatReceiptMoney(item.value))}</td>
+        </tr>
+      `
+    )
+    .join('');
+
+  const relationRows = relations
+    .map(
+      (item) => `
+        <tr>
+          <td>${escapeHtml(item.rifaNombre)}</td>
+          <td>${escapeHtml(item.vendedorNombre)}</td>
+          <td>${item.boletas}</td>
+          <td class="money">${escapeHtml(formatReceiptMoney(item.totalAbonado))}</td>
+          <td class="money">${escapeHtml(formatReceiptMoney(item.saldoActual))}</td>
+        </tr>
+      `
+    )
+    .join('');
+
+  printHtmlDocument(
+    `${companyName} - Informe operativo de vendedor`,
+    `
+      <style>
+        @page { size: letter; margin: 12mm; }
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: #0f172a; background: #fff; }
+        .report { width: 100%; }
+        .header {
+          display:grid; grid-template-columns:88px 1fr; gap:18px; align-items:center;
+          border:1px solid #cbd5e1; border-radius:16px; padding:16px 18px;
+          background:linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+        }
+        .logo-wrap {
+          width:88px; height:88px; border-radius:18px; border:1px solid #dbeafe;
+          background:#fff; display:flex; align-items:center; justify-content:center; overflow:hidden;
+        }
+        .logo-wrap img { max-width:80px; max-height:80px; object-fit:contain; }
+        .eyebrow { font-size:11px; font-weight:700; letter-spacing:.18em; color:#64748b; text-transform:uppercase; }
+        .title { margin:6px 0 0; font-size:28px; line-height:1.1; font-weight:800; text-transform:uppercase; }
+        .subtitle { margin:6px 0 0; font-size:13px; color:#475569; }
+        .meta-grid { margin-top:12px; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; }
+        .meta-card { border:1px solid #dbeafe; border-radius:14px; padding:12px; background:#f8fafc; }
+        .meta-label { font-size:10px; font-weight:700; letter-spacing:.12em; color:#64748b; text-transform:uppercase; }
+        .meta-value { margin-top:8px; font-size:14px; font-weight:700; line-height:1.3; }
+        .summary-grid { margin-top:16px; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }
+        .summary-card { border:1px solid #cbd5e1; border-radius:14px; padding:14px; background:#fff; min-height:102px; }
+        .summary-value { margin-top:10px; font-size:18px; font-weight:800; line-height:1.1; letter-spacing:-0.03em; }
+        .section { margin-top:18px; border:1px solid #cbd5e1; border-radius:16px; padding:16px; page-break-inside:avoid; }
+        .section h2 { margin:0; font-size:18px; font-weight:800; text-transform:uppercase; }
+        .section p { margin:6px 0 0; color:#64748b; font-size:12px; }
+        .grid-2 { margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+        table { width:100%; border-collapse:collapse; table-layout:fixed; }
+        th, td { border:1px solid #cbd5e1; padding:8px 10px; font-size:11px; vertical-align:top; }
+        th { background:#f1f5f9; text-align:left; font-weight:800; }
+        .money { text-align:right; white-space:nowrap; font-weight:700; }
+        .footer-note { margin-top:14px; font-size:11px; color:#64748b; text-align:right; }
+      </style>
+      <section class="report">
+        <section class="header">
+          <div class="logo-wrap">${logoDataUrl ? `<img src="${logoDataUrl}" alt="${escapeHtml(companyName)}" />` : ''}</div>
+          <div>
+            <div class="eyebrow">Panel vendedor</div>
+            <div class="title">${escapeHtml(reportTitle)}</div>
+            <div class="subtitle">Consolidado operativo del vendedor sobre el alcance ${escapeHtml(relationLabel)}.</div>
+          </div>
+        </section>
+
+        <section class="meta-grid">
+          <div class="meta-card"><div class="meta-label">Casa rifera</div><div class="meta-value">${escapeHtml(companyName)}</div></div>
+          <div class="meta-card"><div class="meta-label">Responsable</div><div class="meta-value">${escapeHtml(responsableNombre || 'Sin responsable')}</div></div>
+          <div class="meta-card"><div class="meta-label">Ubicacion</div><div class="meta-value">${escapeHtml([responsableDireccion, responsableCiudad, responsableDepartamento].filter(Boolean).join(' - ') || 'Sin ubicacion')}</div></div>
+          <div class="meta-card"><div class="meta-label">Autorizacion</div><div class="meta-value">${escapeHtml([entidadAutoriza, numeroResolucionAutorizacion].filter(Boolean).join(' / ') || 'Sin dato')}</div></div>
+        </section>
+
+        <section class="summary-grid">
+          <div class="summary-card"><div class="meta-label">Boletas</div><div class="summary-value">${metrics.boletasTotales}</div></div>
+          <div class="summary-card"><div class="meta-label">Pagadas</div><div class="summary-value">${metrics.boletasPagadas}</div></div>
+          <div class="summary-card"><div class="meta-label">Pendientes</div><div class="summary-value">${metrics.boletasPendientes}</div></div>
+          <div class="summary-card"><div class="meta-label">Abonado</div><div class="summary-value">${escapeHtml(formatReceiptMoney(metrics.totalAbonado))}</div></div>
+          <div class="summary-card"><div class="meta-label">Deuda actual</div><div class="summary-value">${escapeHtml(formatReceiptMoney(metrics.deudaActual))}</div></div>
+        </section>
+
+        <section class="section">
+          <h2>Estado por relacion</h2>
+          <p>Resumen de boletas, recaudo y saldo en cada relacion del vendedor.</p>
+          <table style="margin-top: 14px;">
+            <thead>
+              <tr>
+                <th>RIFA</th>
+                <th>VENDEDOR</th>
+                <th>BOLETAS</th>
+                <th class="money">ABONADO</th>
+                <th class="money">SALDO</th>
+              </tr>
+            </thead>
+            <tbody>${relationRows || '<tr><td colspan="5">Sin datos</td></tr>'}</tbody>
+          </table>
+        </section>
+
+        <section class="section">
+          <h2>Recaudo por metodo</h2>
+          <p>Distribucion de abonos vigentes por forma de pago.</p>
+          <div class="grid-2">
+            <table>
+              <thead>
+                <tr>
+                  <th>METODO</th>
+                  <th class="money">TOTAL</th>
+                </tr>
+              </thead>
+              <tbody>${paymentMethodRows || '<tr><td>Sin abonos</td><td class="money">$ 0</td></tr>'}</tbody>
+            </table>
+            <table>
+              <thead>
+                <tr>
+                  <th>CONCEPTO</th>
+                  <th class="money">VALOR</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Abonado acumulado</td><td class="money">${escapeHtml(formatReceiptMoney(metrics.totalAbonado))}</td></tr>
+                <tr><td>Deuda actual</td><td class="money">${escapeHtml(formatReceiptMoney(metrics.deudaActual))}</td></tr>
+                <tr><td>Impreso</td><td class="money">${escapeHtml(printedAt)}</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="footer-note">Informe generado automaticamente desde el panel vendedor.</div>
+        </section>
+      </section>
+    `
+  );
+}
+
+export async function printPublicBoletaFicha({
+  companyName,
+  logoDataUrl,
+  supportText,
+  supportPhone,
+  supportWhatsapp,
+  supportEmail,
+  backgroundDataUrl,
+  publicUrl,
+  ficha,
+}: PrintablePublicBoletaFichaInput) {
+  const qrDataUrl = publicUrl
+    ? await QRCode.toDataURL(publicUrl, {
+        margin: 1,
+        width: 160,
+        color: {
+          dark: '#0f172a',
+          light: '#ffffff',
+        },
+      })
+    : '';
+
+  const pagosHtml = ficha.historialPagos.length
+    ? ficha.historialPagos
+        .map(
+          (pago) => `
+            <tr>
+              <td>${escapeHtml(formatReceiptDateTime(new Date(pago.fecha)))}</td>
+              <td>${escapeHtml(pago.metodoPago)}</td>
+              <td>${escapeHtml(pago.descripcion || 'Pago registrado')}</td>
+              <td class="money">${escapeHtml(formatReceiptMoney(pago.monto))}</td>
+            </tr>
+          `
+        )
+        .join('')
+    : '<tr><td colspan="4">Sin abonos registrados</td></tr>';
+
+  printHtmlDocument(
+    `${companyName} - Ficha boleta ${ficha.numero}`,
+    `
+      <style>
+        @page { size: letter; margin: 12mm; }
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: #0f172a; background: #fff; }
+        .sheet { width: 100%; }
+        .hero {
+          border:1px solid #cbd5e1; border-radius: 22px; overflow: hidden; background: #fff;
+        }
+        .hero-top {
+          padding: 20px 22px;
+          background: linear-gradient(135deg, #12385f 0%, #2f8c63 100%);
+          color: #fff;
+        }
+        .brand { display:flex; gap:16px; align-items:center; }
+        .brand img { width:72px; height:72px; border-radius:18px; object-fit:contain; background:#fff; border:1px solid #e2e8f0; padding:8px; }
+        .eyebrow { font-size:11px; letter-spacing:.28em; font-weight:700; text-transform:uppercase; color:rgba(255,255,255,.72); }
+        .title-row { margin-top:14px; display:flex; justify-content:space-between; align-items:flex-start; gap:12px; }
+        .big-number { font-size:44px; line-height:1; font-weight:900; letter-spacing:.08em; }
+        .pill { border:1px solid rgba(255,255,255,.34); border-radius:999px; padding:10px 16px; font-size:12px; font-weight:800; letter-spacing:.18em; text-transform:uppercase; background:rgba(255,255,255,.16); color:#fff; }
+        .ticket-shell {
+          position: relative;
+          overflow: hidden;
+          background: linear-gradient(135deg, #12385f 0%, #2f8c63 100%);
+        }
+        .ticket-shell::before {
+          content:'';
+          position:absolute;
+          inset:0;
+          background:${backgroundDataUrl ? `linear-gradient(rgba(10,18,40,.14), rgba(10,18,40,.32)), url('${backgroundDataUrl}') center/cover no-repeat` : 'linear-gradient(135deg, rgba(255,255,255,.08), rgba(255,255,255,.02))'};
+          opacity: 1;
+        }
+        .ticket-shell::after {
+          content:'';
+          position:absolute;
+          inset:0;
+          background: linear-gradient(to top, rgba(15,23,42,.58), rgba(15,23,42,.2));
+        }
+        .content-top { padding: 18px 22px 0; display:grid; grid-template-columns: 1.15fr .85fr; gap:16px; position: relative; z-index: 2; }
+        .card {
+          border:1px solid rgba(255,255,255,.12);
+          border-radius:18px;
+          padding:16px;
+          background:rgba(2,6,23,.78);
+          color:#fff;
+          box-shadow: 0 14px 36px rgba(15,23,42,.24);
+        }
+        .mini-grid { display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:12px; }
+        .label { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.78); font-weight:700; }
+        .value { margin-top:8px; font-size:20px; font-weight:900; line-height:1.2; color:#fff; text-shadow:0 1px 1px rgba(0,0,0,.22); }
+        .value-money { white-space:nowrap; font-variant-numeric: tabular-nums; }
+        .ticket-wrap {
+          margin: 18px 22px 0;
+          min-height: 320px;
+          border:1px solid rgba(255,255,255,.16);
+          border-radius: 22px;
+          overflow:hidden;
+          position: relative;
+          background: transparent;
+        }
+        .ticket-content { position:relative; z-index:1; min-height:320px; display:flex; align-items:flex-end; justify-content:space-between; gap:16px; padding: 22px; }
+        .ticket-panel {
+          max-width: 68%;
+          border:1px solid rgba(255,255,255,.12);
+          border-radius: 18px;
+          padding: 16px;
+          background: rgba(2,6,23,.82);
+          color:#fff;
+          box-shadow: 0 14px 36px rgba(15,23,42,.24);
+        }
+        .ticket-panel .label {
+          color: rgba(255,255,255,.78);
+        }
+        .ticket-footer {
+          margin-top: 18px;
+          padding: 0 22px 22px;
+          display:grid; grid-template-columns: 1fr 210px; gap:16px;
+        }
+        .chips { display:flex; flex-wrap:wrap; gap:10px; }
+        .chip { border:1px solid rgba(255,255,255,.18); border-radius: 999px; padding: 10px 14px; font-weight: 800; background:rgba(255,255,255,.18); color:#fff; }
+        .chip-primary { background:#fff; color:#0f172a; border-color:#fff; }
+        .qr-card { text-align:center; background:#ffffffea; color:#0f172a; }
+        .qr-card img { width:120px; height:120px; object-fit:contain; }
+        .section { margin-top:18px; border:1px solid #cbd5e1; border-radius:18px; padding:18px; }
+        table { width:100%; border-collapse:collapse; table-layout:fixed; margin-top:12px; }
+        th, td { border:1px solid #cbd5e1; padding:8px 10px; font-size:11px; vertical-align:top; }
+        th { background:#f1f5f9; text-align:left; font-weight:800; }
+        .money { text-align:right; white-space:nowrap; font-weight:800; }
+        .support-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:12px; }
+      </style>
+      <section class="sheet">
+        <section class="hero ticket-shell">
+          <div class="hero-top">
+            <div class="brand">
+              ${logoDataUrl ? `<img src="${logoDataUrl}" alt="${escapeHtml(companyName)}" />` : ''}
+              <div>
+                <div class="eyebrow">Ficha compartible</div>
+                <div class="value">${escapeHtml(companyName)}</div>
+                <div style="margin-top:6px; color:rgba(255,255,255,.84);">${escapeHtml(ficha.rifaNombre)}</div>
+              </div>
+            </div>
+            <div class="title-row">
+              <div>
+                <div class="big-number">${escapeHtml(ficha.numero)}</div>
+                <div style="margin-top:10px; color:rgba(255,255,255,.84);">Vendedor / canal: ${escapeHtml(ficha.vendedorNombre || 'Sin vendedor')}</div>
+              </div>
+              <div class="pill">${escapeHtml(ficha.estado)}</div>
+            </div>
+          </div>
+
+          <div class="content-top">
+              <div class="card">
+                <div class="label">Cliente</div>
+                <div class="value">${escapeHtml(ficha.clienteNombre || 'Pendiente de confirmar')}</div>
+                <div style="margin-top:10px; color:rgba(255,255,255,.9); line-height:1.75; font-size:13px; font-weight:600;">
+                  <div>Documento: ${escapeHtml(ficha.clienteDocumento || 'Oculto')}</div>
+                  <div>Telefono: ${escapeHtml(ficha.clienteTelefono || 'Oculto')}</div>
+                  <div>Vendedor: ${escapeHtml(ficha.vendedorNombre || 'Sin vendedor')}</div>
+                </div>
+              </div>
+            <div class="mini-grid">
+              <div class="card">
+                <div class="label">Total</div>
+                <div class="value value-money">${escapeHtml(formatReceiptMoney(ficha.total))}</div>
+              </div>
+              <div class="card">
+                <div class="label">Abonado</div>
+                <div class="value value-money">${escapeHtml(formatReceiptMoney(ficha.totalAbonado))}</div>
+              </div>
+              <div class="card">
+                <div class="label">Saldo</div>
+                <div class="value value-money">${escapeHtml(formatReceiptMoney(ficha.saldoPendiente))}</div>
+              </div>
+              <div class="card">
+                <div class="label">Juega</div>
+                <div class="value">${ficha.juega ? 'SI' : 'NO'}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ticket-wrap">
+            <div class="ticket-content">
+              <div class="ticket-panel">
+                <div class="label">Boletas de la venta</div>
+                <div class="chips" style="margin-top:12px;">
+                  ${ficha.boletasRelacionadas
+                    .map(
+                      (numero) =>
+                        `<span class="chip ${numero === ficha.numero ? 'chip-primary' : ''}">${escapeHtml(numero)}</span>`
+                    )
+                    .join('')}
+                </div>
+              </div>
+
+              <div class="card qr-card">
+                <div class="label" style="color:#64748b;">QR de la ficha</div>
+                ${qrDataUrl ? `<img src="${qrDataUrl}" alt="QR de ficha publica" />` : ''}
+                <div style="font-size:10px; color:#64748b; line-height:1.5;">Escanea para abrir esta boleta virtual.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ticket-footer">
+            <div class="card">
+              <div class="label">Enlace publico</div>
+              <div style="margin-top:10px; font-size:12px; line-height:1.6; color:#fff;">${escapeHtml(publicUrl || 'Sin enlace publico')}</div>
+            </div>
+            <div class="card qr-card">
+              <div class="label" style="color:#64748b;">Verificacion</div>
+              <div style="margin-top:12px; font-size:12px; font-weight:700;">${escapeHtml(ficha.estado)}</div>
+              <div style="margin-top:8px; font-size:11px; color:#64748b;">${escapeHtml(ficha.vendedorNombre || 'Sin vendedor')}</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="label">Historial de abonos</div>
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Metodo</th>
+                <th>Descripcion</th>
+                <th class="money">Valor</th>
+              </tr>
+            </thead>
+            <tbody>${pagosHtml}</tbody>
+          </table>
+        </section>
+
+        <section class="section">
+          <div class="label">Soporte</div>
+          <div class="support-grid">
+            <div class="card">
+              <div class="value" style="font-size:15px;">${escapeHtml(supportText || 'Si tienes dudas sobre tu boleta, contacta al equipo comercial.')}</div>
+            </div>
+            <div class="card">
+              <div>Telefono: ${escapeHtml(supportPhone || 'No disponible')}</div>
+              <div style="margin-top:8px;">WhatsApp: ${escapeHtml(supportWhatsapp || 'No disponible')}</div>
+              <div style="margin-top:8px;">Email: ${escapeHtml(supportEmail || 'No disponible')}</div>
+            </div>
+          </div>
+        </section>
+      </section>
+    `
+  );
+}
+
+export function printPublicPurchaseSummary({
+  companyName,
+  logoDataUrl,
+  supportText,
+  supportPhone,
+  supportWhatsapp,
+  supportEmail,
+  backgroundDataUrl,
+  purchase,
+}: PrintablePublicPurchaseSummaryInput) {
+  const boletasHtml = purchase.boletas
+    .map(
+      (boleta) => `
+        <div class="boleta">
+          <div class="label">Boleta</div>
+          <div class="value boleta-number">${escapeHtml(boleta.numero)}</div>
+          <div class="meta">${escapeHtml(boleta.estado)}</div>
+        </div>
+      `
+    )
+    .join('');
+
+  printHtmlDocument(
+    `${companyName} - Comprobante de compra`,
+    `
+      <style>
+        @page { size: letter; margin: 12mm; }
+        * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        body { margin:0; font-family: Arial, Helvetica, sans-serif; color:#0f172a; background:#fff; }
+        .sheet { width:100%; }
+        .hero { border:1px solid #cbd5e1; border-radius:22px; overflow:hidden; background:#fff; }
+        .hero-top { padding:20px 22px; border-bottom:1px solid #e2e8f0; background:linear-gradient(135deg,#f8fafc 0%, #ffffff 100%); }
+        .brand { display:flex; gap:16px; align-items:center; }
+        .brand img { width:72px; height:72px; border-radius:18px; object-fit:contain; background:#fff; border:1px solid #e2e8f0; padding:8px; }
+        .eyebrow { font-size:11px; letter-spacing:.28em; font-weight:700; text-transform:uppercase; color:#64748b; }
+        .title { margin-top:12px; font-size:34px; line-height:1.1; font-weight:900; }
+        .subtitle { margin-top:8px; color:#475569; }
+        .summary-grid { padding:18px 22px; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; }
+        .card { border:1px solid #cbd5e1; border-radius:18px; padding:16px; background:#fff; }
+        .label { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#64748b; font-weight:700; }
+        .value { margin-top:8px; font-size:18px; font-weight:800; line-height:1.25; }
+        .value-money { white-space:nowrap; font-variant-numeric: tabular-nums; }
+        .banner { margin:0 22px 18px; border:1px solid #dbeafe; border-radius:22px; min-height:220px; background:${backgroundDataUrl ? `url('${backgroundDataUrl}') center/cover no-repeat` : 'linear-gradient(135deg,#eff6ff 0%, #f8fafc 100%)'}; position:relative; overflow:hidden; }
+        .banner::after { content:''; position:absolute; inset:0; background:linear-gradient(rgba(255,255,255,.24), rgba(255,255,255,.58)); }
+        .section { margin-top:18px; border:1px solid #cbd5e1; border-radius:18px; padding:18px; }
+        .detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:12px; }
+        .boletas-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-top:14px; }
+        .boleta { border:1px solid #cbd5e1; border-radius:18px; padding:16px; background:#f8fafc; }
+        .boleta-number { font-size:28px; line-height:1; letter-spacing:.08em; }
+        .meta { margin-top:8px; color:#475569; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.14em; }
+      </style>
+      <section class="sheet">
+        <section class="hero">
+          <div class="hero-top">
+            <div class="brand">
+              ${logoDataUrl ? `<img src="${logoDataUrl}" alt="${escapeHtml(companyName)}" />` : ''}
+              <div>
+                <div class="eyebrow">Comprobante de compra web</div>
+                <div class="value">${escapeHtml(companyName)}</div>
+              </div>
+            </div>
+            <div class="title">Pago ${escapeHtml(purchase.estadoPago)}</div>
+            <div class="subtitle">Referencia ${escapeHtml(purchase.referencia || 'Sin referencia')} · Vendedor / canal ${escapeHtml(purchase.vendedorNombre || 'PAGINA WEB')}</div>
+          </div>
+
+          <div class="summary-grid">
+            <div class="card"><div class="label">Total</div><div class="value value-money">${escapeHtml(formatReceiptMoney(purchase.total))}</div></div>
+            <div class="card"><div class="label">Metodo</div><div class="value">${escapeHtml(purchase.metodoPago || 'Sin definir')}</div></div>
+            <div class="card"><div class="label">Fecha</div><div class="value">${escapeHtml(purchase.fechaPago ? formatReceiptDateTime(new Date(purchase.fechaPago)) : 'Pendiente')}</div></div>
+            <div class="card"><div class="label">Transaccion</div><div class="value">${escapeHtml(purchase.transaccionId || 'Pendiente')}</div></div>
+          </div>
+
+          <div class="banner"></div>
+        </section>
+
+        <section class="section">
+          <div class="label">Comprador</div>
+          <div class="detail-grid">
+            <div class="card">
+              <div class="value">${escapeHtml(purchase.cliente.nombre)}</div>
+              <div style="margin-top:10px; color:#475569; line-height:1.7;">
+                <div>Documento: ${escapeHtml(purchase.cliente.documento || 'No registrado')}</div>
+                <div>Telefono: ${escapeHtml(purchase.cliente.telefono || 'No registrado')}</div>
+                <div>Email: ${escapeHtml(purchase.cliente.email || 'No registrado')}</div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="label">Descripcion del pago</div>
+              <div class="value">${escapeHtml(purchase.descripcionPago || 'Pago web confirmado')}</div>
+              <div style="margin-top:10px; color:#475569;">Canal responsable: ${escapeHtml(purchase.vendedorNombre || 'PAGINA WEB')}</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="label">Boletas compradas</div>
+          <div class="boletas-grid">${boletasHtml}</div>
+        </section>
+
+        <section class="section">
+          <div class="label">Soporte</div>
+          <div class="detail-grid">
+            <div class="card"><div class="value" style="font-size:15px;">${escapeHtml(supportText || 'Si tienes dudas o no ves tu compra, comunicate con la casa rifera.')}</div></div>
+            <div class="card">
+              <div>Telefono: ${escapeHtml(supportPhone || 'No disponible')}</div>
+              <div style="margin-top:8px;">WhatsApp: ${escapeHtml(supportWhatsapp || 'No disponible')}</div>
+              <div style="margin-top:8px;">Email: ${escapeHtml(supportEmail || 'No disponible')}</div>
+            </div>
+          </div>
+        </section>
       </section>
     `
   );

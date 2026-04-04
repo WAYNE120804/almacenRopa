@@ -61,13 +61,11 @@ const PublicHomePage = () => {
   useEffect(() => {
     const load = async () => {
       try {
-        const { data } = await client.get(endpoints.rifas());
+        const { data } = await client.get(endpoints.rifasPublicas());
         const nextRifas = data as RifaItem[];
         setRifas(nextRifas);
 
-        const activeIds = nextRifas
-          .filter((item) => item.estado === 'ACTIVA')
-          .map((item) => item.id);
+        const activeIds = nextRifas.map((item) => item.id);
 
         if (activeIds.length) {
           const detailResponses = await Promise.all(

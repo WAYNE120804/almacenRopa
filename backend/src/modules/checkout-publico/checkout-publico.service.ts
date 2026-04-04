@@ -31,6 +31,66 @@ function buildReservaReferencia() {
   return `RES-${Date.now()}-${random}`;
 }
 
+function buildBoletaPublicToken() {
+  return crypto.randomBytes(24).toString('hex');
+}
+
+async function ensurePublicTokenForBoleta(
+  tx: Prisma.TransactionClient,
+  boletaId: string,
+  currentToken?: string | null
+) {
+  if (currentToken) {
+    return currentToken;
+  }
+
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    const candidate = buildBoletaPublicToken();
+
+    try {
+      const updated = await tx.boleta.update({
+        where: {
+          id: boletaId,
+        },
+        data: {
+          publicToken: candidate,
+        },
+        select: {
+          publicToken: true,
+        },
+      });
+
+      return updated.publicToken || candidate;
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002'
+      ) {
+        continue;
+      }
+
+      throw error;
+    }
+  }
+
+  throw new AppError('No se pudo generar el token publico de una boleta web.', 500);
+}
+
+async function ensurePublicTokensForBoletas(
+  tx: Prisma.TransactionClient,
+  boletas: Array<{
+    id: string;
+    publicToken?: string | null;
+  }>
+) {
+  return Promise.all(
+    boletas.map(async (boleta) => ({
+      id: boleta.id,
+      token: await ensurePublicTokenForBoleta(tx, boleta.id, boleta.publicToken),
+    }))
+  );
+}
+
 function decimalToAmountInCents(value: Prisma.Decimal) {
   return Number(value.mul(100).toFixed(0));
 }
@@ -261,6 +321,7 @@ export async function releaseExpiredPublicReservations() {
         reservadaHasta: null,
         clienteId: null,
         ventaId: null,
+        juega: false,
       },
     });
 
@@ -353,6 +414,7 @@ export async function createReservaCheckout(payload: ReservaCheckoutPayload) {
       data: {
         clienteId: cliente.id,
         rifaId: payload.rifaId,
+        rifaVendedorId: relation.id,
         estado: EstadoVenta.PENDIENTE,
         total,
         saldoPendiente: total,
@@ -377,6 +439,7 @@ export async function createReservaCheckout(payload: ReservaCheckoutPayload) {
         reservadaHasta,
         clienteId: cliente.id,
         ventaId: venta.id,
+        juega: false,
       },
     });
 
@@ -531,70 +594,121 @@ export async function getReservaCheckoutStatus(reservaId: string) {
   const prisma = prismaClient();
   const now = new Date();
 
-  const venta = await prisma.venta.findUnique({
-    where: {
-      id: reservaId,
-    },
-    select: {
-      id: true,
-      estado: true,
-      total: true,
-      referenciaPago: true,
-      pasarelaPago: true,
-      pasarelaEstado: true,
-      pasarelaTransaccionId: true,
-      cliente: {
-        select: {
-          nombre: true,
-          email: true,
-          telefono: true,
+  return prisma.$transaction(async (tx) => {
+    const venta = await tx.venta.findUnique({
+      where: {
+        id: reservaId,
+      },
+      select: {
+        id: true,
+        estado: true,
+        total: true,
+        referenciaPago: true,
+        pasarelaPago: true,
+        pasarelaEstado: true,
+        pasarelaTransaccionId: true,
+        cliente: {
+          select: {
+            nombre: true,
+            email: true,
+            telefono: true,
+            documento: true,
+          },
+        },
+        rifaVendedor: {
+          select: {
+            vendedor: {
+              select: {
+                nombre: true,
+              },
+            },
+          },
+        },
+        pagos: {
+          where: {
+            estado: EstadoPago.CONFIRMADO,
+          },
+          select: {
+            id: true,
+            monto: true,
+            fecha: true,
+            metodoPago: true,
+            descripcion: true,
+          },
+          orderBy: {
+            fecha: 'desc',
+          },
+        },
+        boletas: {
+          select: {
+            id: true,
+            numero: true,
+            estado: true,
+            reservadaHasta: true,
+            publicToken: true,
+          },
+          orderBy: {
+            numero: 'asc',
+          },
         },
       },
-      boletas: {
-        select: {
-          id: true,
-          numero: true,
-          estado: true,
-          reservadaHasta: true,
-        },
-        orderBy: {
-          numero: 'asc',
-        },
-      },
-    },
-  });
+    });
 
-  if (!venta) {
-    throw new AppError('La reserva no existe.', 404);
-  }
+    if (!venta) {
+      throw new AppError('La reserva no existe.', 404);
+    }
 
-  const expirationTime = venta.boletas.reduce<Date | null>((latest, boleta) => {
-    if (!boleta.reservadaHasta) {
+    const expirationTime = venta.boletas.reduce<Date | null>((latest, boleta) => {
+      if (!boleta.reservadaHasta) {
+        return latest;
+      }
+
+      if (!latest || boleta.reservadaHasta < latest) {
+        return boleta.reservadaHasta;
+      }
+
       return latest;
-    }
+    }, null);
 
-    if (!latest || boleta.reservadaHasta < latest) {
-      return boleta.reservadaHasta;
-    }
+    const isExpired = Boolean(expirationTime && expirationTime <= now);
+    const paymentState = venta.pasarelaEstado || 'RESERVA_TEMPORAL';
+    const tokenMap =
+      venta.estado === EstadoVenta.PAGADA
+        ? new Map(
+            (
+              await ensurePublicTokensForBoletas(
+                tx,
+                venta.boletas.map((boleta) => ({
+                  id: boleta.id,
+                  publicToken: boleta.publicToken,
+                }))
+              )
+            ).map((item) => [item.id, item.token])
+          )
+        : new Map<string, string>();
 
-    return latest;
-  }, null);
-
-  const isExpired = Boolean(expirationTime && expirationTime <= now);
-  const paymentState = venta.pasarelaEstado || 'RESERVA_TEMPORAL';
-
-  return {
-    id: venta.id,
-    reference: venta.referenciaPago,
-    estadoVenta: venta.estado,
-    paymentState,
-    paymentTransactionId: venta.pasarelaTransaccionId,
-    expiresAt: expirationTime?.toISOString() || null,
-    isExpired,
-    total: venta.total,
-    cliente: venta.cliente,
-    boletas: venta.boletas,
-  };
+    return {
+      id: venta.id,
+      reference: venta.referenciaPago,
+      estadoVenta: venta.estado,
+      paymentState,
+      paymentTransactionId: venta.pasarelaTransaccionId,
+      paymentMethod: venta.pagos[0]?.metodoPago || venta.pasarelaPago || null,
+      paymentDate: venta.pagos[0]?.fecha || null,
+      paymentDescription: venta.pagos[0]?.descripcion || null,
+      expiresAt: expirationTime?.toISOString() || null,
+      isExpired,
+      total: venta.total,
+      cliente: venta.cliente,
+      vendedor: venta.rifaVendedor?.vendedor?.nombre || 'PAGINA WEB',
+      boletas: venta.boletas.map((boleta) => ({
+        ...boleta,
+        publicPath: tokenMap.has(boleta.id)
+          ? `/publico/boletas/${tokenMap.get(boleta.id)}`
+          : null,
+      })),
+    };
+  });
 }
 
 export async function processWompiWebhookEvent(body: Record<string, unknown>) {
@@ -713,6 +827,7 @@ export async function processWompiWebhookEvent(body: Record<string, unknown>) {
             reservadaHasta: null,
             clienteId: venta.clienteId,
             ventaId: venta.id,
+            juega: true,
           },
         });
       } else {
@@ -887,6 +1002,7 @@ export async function processWompiWebhookEvent(body: Record<string, unknown>) {
             reservadaHasta: null,
             clienteId: null,
             ventaId: null,
+            juega: false,
           },
         });
       } else {

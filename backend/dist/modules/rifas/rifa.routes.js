@@ -6,6 +6,7 @@ const prisma_client_1 = require("../../lib/prisma-client");
 const auth_1 = require("../../middlewares/auth");
 const rifa_controller_1 = require("./rifa.controller");
 exports.rifaRouter = (0, express_1.Router)();
+exports.rifaRouter.get('/publicas', rifa_controller_1.getAllPublicRifas);
 exports.rifaRouter.get('/', rifa_controller_1.getAllRifas);
 exports.rifaRouter.get('/:id', rifa_controller_1.getRifa);
 exports.rifaRouter.post('/', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN), rifa_controller_1.postRifa);

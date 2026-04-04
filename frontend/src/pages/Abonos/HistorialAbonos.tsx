@@ -10,12 +10,14 @@ import Loading from '../../components/common/Loading';
 import SearchableSelect from '../../components/common/SearchableSelect';
 import Topbar from '../../components/Layout/Topbar';
 import { useAppConfig } from '../../context/AppConfigContext';
+import { useAuth } from '../../context/AuthContext';
 import { formatDateTime } from '../../utils/dates';
 import { formatCOP } from '../../utils/money';
 import { printAbonosSummaryTicket } from '../../utils/print';
 
 const HistorialAbonos = () => {
   const { config } = useAppConfig();
+  const { user } = useAuth();
   const [rifaVendedores, setRifaVendedores] = useState<any[]>([]);
   const [usuarios, setUsuarios] = useState<any[]>([]);
   const [selected, setSelected] = useState('');
@@ -29,12 +31,13 @@ const HistorialAbonos = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const [relationsRes, usuariosRes] = await Promise.all([
-          client.get(endpoints.rifaVendedores()),
-          client.get(endpoints.usuarios()),
-        ]);
+        const requests = [client.get(endpoints.rifaVendedores())];
+        if (user?.rol !== 'VENDEDOR') {
+          requests.push(client.get(endpoints.usuarios()));
+        }
+        const [relationsRes, usuariosRes] = await Promise.all(requests);
         setRifaVendedores(relationsRes.data);
-        setUsuarios(usuariosRes.data);
+        setUsuarios((usuariosRes as any)?.data || []);
       } catch (requestError) {
         setError((requestError as Error).message);
       } finally {
@@ -43,7 +46,7 @@ const HistorialAbonos = () => {
     };
 
     void loadData();
-  }, []);
+  }, [user?.rol]);
 
   useEffect(() => {
     const loadHistory = async () => {
@@ -209,7 +212,8 @@ const HistorialAbonos = () => {
 
   return (
     <div>
-      <Topbar title="Abonos" />
+      <Topbar title={user?.rol === 'VENDEDOR' ? 'Mi cuenta' : 'Abonos'} />
+
       <div className="space-y-6 px-6 py-6">
         <ErrorBanner message={error} />
         <section className="theme-section-card rounded-2xl p-6 shadow-sm">
@@ -241,12 +245,14 @@ const HistorialAbonos = () => {
                 clearLabel="Quitar filtro de trabajador"
               />
             </div>
-            <Link
-              to={selected ? `/abonos/crear?rifaVendedor=${selected}` : '/abonos/crear'}
-              className="rounded-md border border-slate-300 px-4 py-3 text-center text-sm font-medium text-slate-700"
-            >
-              REGISTRAR ABONO
-            </Link>
+            {user?.rol !== 'VENDEDOR' ? (
+              <Link
+                to={selected ? `/abonos/crear?rifaVendedor=${selected}` : '/abonos/crear'}
+                className="rounded-md border border-slate-300 px-4 py-3 text-center text-sm font-medium text-slate-700"
+              >
+                REGISTRAR ABONO
+              </Link>
+            ) : null}
           </div>
         </section>
 
@@ -301,6 +307,7 @@ const HistorialAbonos = () => {
                   />
                 </label>
                 </div>
+                {user?.rol !== 'VENDEDOR' ? (
                 <div className="w-full max-w-sm">
                   <label className="block text-sm">
                     <span className="text-slate-600">Trabajador</span>
@@ -316,6 +323,7 @@ const HistorialAbonos = () => {
                     </div>
                   </label>
                 </div>
+                ) : null}
               <button
                 type="button"
                 disabled={!activeFilteredAbonos.length}

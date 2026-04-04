@@ -8,7 +8,7 @@ function getStringParam(value) {
 }
 async function getRecibo(req, res, next) {
     try {
-        const data = await (0, abono_service_1.getReciboById)(getStringParam(req.params.id));
+        const data = await (0, abono_service_1.getReciboById)(getStringParam(req.params.id), req.authUser);
         res.json(data);
     }
     catch (error) {

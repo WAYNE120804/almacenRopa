@@ -4,6 +4,7 @@ import {
   createRifa,
   deleteRifa,
   getRifaById,
+  listPublicRifas,
   listRifas,
   updateRifa,
 } from './rifa.service';
@@ -14,12 +15,24 @@ function getIdParam(value: string | string[] | undefined) {
 }
 
 export async function getAllRifas(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    res.json(await listRifas(req.authUser));
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getAllPublicRifas(
   _req: Request,
   res: Response,
   next: NextFunction
 ) {
   try {
-    res.json(await listRifas());
+    res.json(await listPublicRifas());
   } catch (error) {
     next(error);
   }
@@ -31,7 +44,7 @@ export async function getRifa(
   next: NextFunction
 ) {
   try {
-    res.json(await getRifaById(getIdParam(req.params.id)));
+    res.json(await getRifaById(getIdParam(req.params.id), req.authUser));
   } catch (error) {
     next(error);
   }

@@ -11,6 +11,7 @@ import {
   createRifaVendedor,
   deleteRifaVendedor,
   getRifaVendedorById,
+  getRifaVendedorByIdScoped,
   listAsignacionesByRifaVendedor,
   listDevolucionesByRifaVendedor,
   listRifaVendedores,
@@ -38,7 +39,7 @@ export async function getAllRifaVendedores(
       vendedorId: getStringParam(
         req.query.vendedorId as string | string[] | undefined
       ),
-    });
+    }, req.authUser);
 
     res.json(data);
   } catch (error) {
@@ -52,7 +53,7 @@ export async function getRifaVendedor(
   next: NextFunction
 ) {
   try {
-    res.json(await getRifaVendedorById(getStringParam(req.params.id)));
+    res.json(await getRifaVendedorByIdScoped(getStringParam(req.params.id), req.authUser));
   } catch (error) {
     next(error);
   }
@@ -107,7 +108,7 @@ export async function getAsignacionesRifaVendedor(
   try {
     const data = await listAsignacionesByRifaVendedor(getStringParam(req.params.id), {
       usuarioId: getStringParam(req.query.usuarioId as string | string[] | undefined),
-    });
+    }, req.authUser);
     res.json(data);
   } catch (error) {
     next(error);
@@ -140,7 +141,7 @@ export async function getDevolucionesRifaVendedor(
   try {
     const data = await listDevolucionesByRifaVendedor(getStringParam(req.params.id), {
       usuarioId: getStringParam(req.query.usuarioId as string | string[] | undefined),
-    });
+    }, req.authUser);
     res.json(data);
   } catch (error) {
     next(error);

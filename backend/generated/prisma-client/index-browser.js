@@ -186,6 +186,7 @@ exports.Prisma.BoletaScalarFieldEnum = {
   rifaId: 'rifaId',
   numero: 'numero',
   codigoBarras: 'codigoBarras',
+  publicToken: 'publicToken',
   estado: 'estado',
   juega: 'juega',
   precio: 'precio',
@@ -216,6 +217,15 @@ exports.Prisma.RifaVendedorScalarFieldEnum = {
   comisionPct: 'comisionPct',
   precioCasa: 'precioCasa',
   saldoActual: 'saldoActual'
+};
+
+exports.Prisma.UsuarioVendedorScopeScalarFieldEnum = {
+  id: 'id',
+  usuarioId: 'usuarioId',
+  vendedorId: 'vendedorId',
+  rifaVendedorId: 'rifaVendedorId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.AsignacionBoletasScalarFieldEnum = {
@@ -251,13 +261,25 @@ exports.Prisma.ClienteScalarFieldEnum = {
   nombre: 'nombre',
   email: 'email',
   telefono: 'telefono',
-  documento: 'documento'
+  documento: 'documento',
+  createdByUsuarioId: 'createdByUsuarioId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.VentaScalarFieldEnum = {
   id: 'id',
   clienteId: 'clienteId',
   rifaId: 'rifaId',
+  rifaVendedorId: 'rifaVendedorId',
+  canalOrigen: 'canalOrigen',
+  referenciaExterna: 'referenciaExterna',
+  sesionExternaId: 'sesionExternaId',
+  linkPagoUrl: 'linkPagoUrl',
+  linkPagoEnviadoAt: 'linkPagoEnviadoAt',
+  linkPagoAbiertoAt: 'linkPagoAbiertoAt',
+  requiereSeguimientoHumano: 'requiereSeguimientoHumano',
+  seguimientoMotivo: 'seguimientoMotivo',
   estado: 'estado',
   total: 'total',
   saldoPendiente: 'saldoPendiente',
@@ -275,7 +297,18 @@ exports.Prisma.PagoClienteScalarFieldEnum = {
   monto: 'monto',
   fecha: 'fecha',
   metodoPago: 'metodoPago',
-  estado: 'estado'
+  estado: 'estado',
+  descripcion: 'descripcion',
+  subCajaId: 'subCajaId',
+  usuarioId: 'usuarioId'
+};
+
+exports.Prisma.PagoClienteReciboScalarFieldEnum = {
+  id: 'id',
+  pagoClienteId: 'pagoClienteId',
+  consecutivo: 'consecutivo',
+  codigoUnico: 'codigoUnico',
+  fecha: 'fecha'
 };
 
 exports.Prisma.AbonoVendedorScalarFieldEnum = {
@@ -472,6 +505,7 @@ exports.Prisma.ModelName = {
   Boleta: 'Boleta',
   Vendedor: 'Vendedor',
   RifaVendedor: 'RifaVendedor',
+  UsuarioVendedorScope: 'UsuarioVendedorScope',
   AsignacionBoletas: 'AsignacionBoletas',
   AsignacionDetalle: 'AsignacionDetalle',
   DevolucionBoletas: 'DevolucionBoletas',
@@ -479,6 +513,7 @@ exports.Prisma.ModelName = {
   Cliente: 'Cliente',
   Venta: 'Venta',
   PagoCliente: 'PagoCliente',
+  PagoClienteRecibo: 'PagoClienteRecibo',
   AbonoVendedor: 'AbonoVendedor',
   Recibo: 'Recibo',
   Caja: 'Caja',

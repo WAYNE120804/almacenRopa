@@ -7,11 +7,23 @@ type VendedorInput = {
   direccion?: unknown;
 };
 
+type VendedorAccessInput = {
+  nombre?: unknown;
+  email?: unknown;
+  password?: unknown;
+};
+
 export type VendedorPayload = {
   nombre: string;
   telefono: string | null;
   documento: string | null;
   direccion: string | null;
+};
+
+export type VendedorAccessPayload = {
+  nombre: string;
+  email: string;
+  password: string;
 };
 
 function parseRequiredString(value: unknown, fieldName: string) {
@@ -41,5 +53,21 @@ export function parseVendedorPayload(input: VendedorInput): VendedorPayload {
     telefono: parseOptionalString(input.telefono),
     documento: parseOptionalString(input.documento),
     direccion: parseOptionalString(input.direccion),
+  };
+}
+
+export function parseVendedorAccessPayload(
+  input: VendedorAccessInput
+): VendedorAccessPayload {
+  const password = parseRequiredString(input.password, 'password');
+
+  if (password.length < 8) {
+    throw new AppError('La contrasena debe tener minimo 8 caracteres.');
+  }
+
+  return {
+    nombre: parseRequiredString(input.nombre, 'nombre'),
+    email: parseRequiredString(input.email, 'email'),
+    password,
   };
 }

@@ -1,6 +1,7 @@
 import { Prisma } from '../../lib/prisma-client';
 import { AppError } from '../../lib/app-error';
 import { getPrisma } from '../../lib/prisma';
+import { assertVendorCanAccessRifaVendedor } from '../auth/auth.scope';
 
 import type { AnularAbonoPayload, CreateAbonoPayload } from './abono.schemas';
 
@@ -156,8 +157,10 @@ async function getRifaVendedorOrFail(rifaVendedorId: string) {
 
 export async function listAbonosByRifaVendedor(
   rifaVendedorId: string,
-  filters?: { usuarioId?: string }
+  filters?: { usuarioId?: string },
+  authUser?: Express.Request['authUser']
 ) {
+  await assertVendorCanAccessRifaVendedor(authUser, rifaVendedorId);
   await getRifaVendedorOrFail(rifaVendedorId);
 
   return prismaClient().abonoVendedor.findMany({
@@ -310,7 +313,7 @@ export async function createAbono(
   });
 }
 
-export async function getReciboById(id: string) {
+export async function getReciboById(id: string, authUser?: Express.Request['authUser']) {
   const recibo = await prismaClient().recibo.findUnique({
     where: { id },
     include: reciboInclude,
@@ -319,6 +322,8 @@ export async function getReciboById(id: string) {
   if (!recibo) {
     throw new AppError('El recibo no existe.', 404);
   }
+
+  await assertVendorCanAccessRifaVendedor(authUser, recibo.abono.rifaVendedorId);
 
   return recibo;
 }

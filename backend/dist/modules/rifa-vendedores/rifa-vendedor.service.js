@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.listRifaVendedores = listRifaVendedores;
 exports.getRifaVendedorById = getRifaVendedorById;
+exports.getRifaVendedorByIdScoped = getRifaVendedorByIdScoped;
 exports.createRifaVendedor = createRifaVendedor;
 exports.deleteRifaVendedor = deleteRifaVendedor;
 exports.updateRifaVendedor = updateRifaVendedor;
@@ -11,6 +12,7 @@ exports.listDevolucionesByRifaVendedor = listDevolucionesByRifaVendedor;
 exports.createDevolucion = createDevolucion;
 const app_error_1 = require("../../lib/app-error");
 const prisma_1 = require("../../lib/prisma");
+const auth_scope_1 = require("../auth/auth.scope");
 const rifaVendedorInclude = {
     rifa: {
         select: {
@@ -225,9 +227,11 @@ function buildPartialReturnError(message, unavailable, availableNumbers) {
         },
     });
 }
-async function listRifaVendedores(filters) {
+async function listRifaVendedores(filters, authUser) {
+    const scope = await (0, auth_scope_1.resolveVendorAccessScope)(authUser);
     const rows = await prismaClient().rifaVendedor.findMany({
         where: {
+            ...(scope.restricted ? { id: { in: scope.rifaVendedorIds } } : {}),
             ...(filters?.rifaId ? { rifaId: filters.rifaId } : {}),
             ...(filters?.vendedorId ? { vendedorId: filters.vendedorId } : {}),
         },
@@ -248,6 +252,18 @@ async function listRifaVendedores(filters) {
     return rows.map(withTotalAbonado);
 }
 async function getRifaVendedorById(id) {
+    await (0, auth_scope_1.assertVendorCanAccessRifaVendedor)(undefined, id);
+    const relation = await prismaClient().rifaVendedor.findUnique({
+        where: { id },
+        include: rifaVendedorInclude,
+    });
+    if (!relation) {
+        throw new app_error_1.AppError('La relacion rifa-vendedor no existe.', 404);
+    }
+    return withTotalAbonado(relation);
+}
+async function getRifaVendedorByIdScoped(id, authUser) {
+    await (0, auth_scope_1.assertVendorCanAccessRifaVendedor)(authUser, id);
     const relation = await prismaClient().rifaVendedor.findUnique({
         where: { id },
         include: rifaVendedorInclude,
@@ -281,12 +297,36 @@ async function createRifaVendedor(payload) {
         throw new app_error_1.AppError('Ese vendedor ya esta vinculado a la rifa seleccionada.', 409);
     }
     const precioCasa = calculatePrecioCasa(rifa.precioBoleta, payload.comisionPct);
-    return prisma.rifaVendedor.create({
-        data: {
-            ...payload,
-            precioCasa,
-        },
-        include: rifaVendedorInclude,
+    return prisma.$transaction(async (tx) => {
+        const relation = await tx.rifaVendedor.create({
+            data: {
+                ...payload,
+                precioCasa,
+            },
+        });
+        const vendorUsers = await tx.usuarioVendedorScope.findMany({
+            where: {
+                vendedorId: payload.vendedorId,
+            },
+            select: {
+                usuarioId: true,
+            },
+            distinct: ['usuarioId'],
+        });
+        if (vendorUsers.length > 0) {
+            await tx.usuarioVendedorScope.createMany({
+                data: vendorUsers.map((scope) => ({
+                    usuarioId: scope.usuarioId,
+                    vendedorId: payload.vendedorId,
+                    rifaVendedorId: relation.id,
+                })),
+                skipDuplicates: true,
+            });
+        }
+        return tx.rifaVendedor.findUniqueOrThrow({
+            where: { id: relation.id },
+            include: rifaVendedorInclude,
+        });
     });
 }
 async function deleteRifaVendedor(id) {
@@ -298,8 +338,13 @@ async function deleteRifaVendedor(id) {
         relation._count.abonos > 0) {
         throw new app_error_1.AppError('La relacion no se puede eliminar porque ya tiene boletas, asignaciones, devoluciones o abonos asociados.', 409);
     }
-    await prisma.rifaVendedor.delete({
-        where: { id },
+    await prisma.$transaction(async (tx) => {
+        await tx.usuarioVendedorScope.deleteMany({
+            where: { rifaVendedorId: id },
+        });
+        await tx.rifaVendedor.delete({
+            where: { id },
+        });
     });
 }
 async function updateRifaVendedor(id, payload) {
@@ -314,8 +359,8 @@ async function updateRifaVendedor(id, payload) {
         include: rifaVendedorInclude,
     });
 }
-async function listAsignacionesByRifaVendedor(id, filters) {
-    await getRifaVendedorById(id);
+async function listAsignacionesByRifaVendedor(id, filters, authUser) {
+    await (0, auth_scope_1.assertVendorCanAccessRifaVendedor)(authUser, id);
     const rows = await prismaClient().asignacionBoletas.findMany({
         where: {
             rifaVendedorId: id,
@@ -518,8 +563,8 @@ async function createAsignacion(rifaVendedorId, payload, usuarioId) {
         return asignacion;
     });
 }
-async function listDevolucionesByRifaVendedor(id, filters) {
-    await getRifaVendedorById(id);
+async function listDevolucionesByRifaVendedor(id, filters, authUser) {
+    await (0, auth_scope_1.assertVendorCanAccessRifaVendedor)(authUser, id);
     const rows = await prismaClient().devolucionBoletas.findMany({
         where: {
             rifaVendedorId: id,

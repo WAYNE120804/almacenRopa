@@ -8,5 +8,8 @@ const boleta_controller_1 = require("./boleta.controller");
 exports.boletaRouter = (0, express_1.Router)();
 exports.boletaRouter.get('/', boleta_controller_1.getAllBoletas);
 exports.boletaRouter.get('/publicas', boleta_controller_1.getPublicBoletas);
+exports.boletaRouter.get('/publicas/ficha/:token', boleta_controller_1.getPublicBoletaFicha);
 exports.boletaRouter.get('/:id', boleta_controller_1.getBoleta);
+exports.boletaRouter.post('/:id/public-link', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN, prisma_client_1.RolUsuario.CAJERO, prisma_client_1.RolUsuario.VENDEDOR), boleta_controller_1.postBoletaPublicLink);
+exports.boletaRouter.post('/:id/liberar-cliente', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN, prisma_client_1.RolUsuario.CAJERO, prisma_client_1.RolUsuario.VENDEDOR), boleta_controller_1.postReleaseBoletaCliente);
 exports.boletaRouter.put('/:id', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN, prisma_client_1.RolUsuario.CAJERO), boleta_controller_1.putBoleta);

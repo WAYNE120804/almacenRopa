@@ -4,6 +4,7 @@ import { requireRole } from '../../middlewares/auth';
 
 import {
   getAllRifas,
+  getAllPublicRifas,
   getRifa,
   postRifa,
   putRifa,
@@ -12,6 +13,7 @@ import {
 
 export const rifaRouter = Router();
 
+rifaRouter.get('/publicas', getAllPublicRifas);
 rifaRouter.get('/', getAllRifas);
 rifaRouter.get('/:id', getRifa);
 rifaRouter.post('/', requireRole(RolUsuario.ADMIN), postRifa);

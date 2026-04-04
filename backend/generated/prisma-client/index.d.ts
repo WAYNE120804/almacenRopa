@@ -54,6 +54,11 @@ export type Vendedor = $Result.DefaultSelection<Prisma.$VendedorPayload>
  */
 export type RifaVendedor = $Result.DefaultSelection<Prisma.$RifaVendedorPayload>
 /**
+ * Model UsuarioVendedorScope
+ * 
+ */
+export type UsuarioVendedorScope = $Result.DefaultSelection<Prisma.$UsuarioVendedorScopePayload>
+/**
  * Model AsignacionBoletas
  * 
  */
@@ -88,6 +93,11 @@ export type Venta = $Result.DefaultSelection<Prisma.$VentaPayload>
  * 
  */
 export type PagoCliente = $Result.DefaultSelection<Prisma.$PagoClientePayload>
+/**
+ * Model PagoClienteRecibo
+ * 
+ */
+export type PagoClienteRecibo = $Result.DefaultSelection<Prisma.$PagoClienteReciboPayload>
 /**
  * Model AbonoVendedor
  * 
@@ -483,6 +493,16 @@ export class PrismaClient<
   get rifaVendedor(): Prisma.RifaVendedorDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.usuarioVendedorScope`: Exposes CRUD operations for the **UsuarioVendedorScope** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UsuarioVendedorScopes
+    * const usuarioVendedorScopes = await prisma.usuarioVendedorScope.findMany()
+    * ```
+    */
+  get usuarioVendedorScope(): Prisma.UsuarioVendedorScopeDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.asignacionBoletas`: Exposes CRUD operations for the **AsignacionBoletas** model.
     * Example usage:
     * ```ts
@@ -551,6 +571,16 @@ export class PrismaClient<
     * ```
     */
   get pagoCliente(): Prisma.PagoClienteDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.pagoClienteRecibo`: Exposes CRUD operations for the **PagoClienteRecibo** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PagoClienteRecibos
+    * const pagoClienteRecibos = await prisma.pagoClienteRecibo.findMany()
+    * ```
+    */
+  get pagoClienteRecibo(): Prisma.PagoClienteReciboDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.abonoVendedor`: Exposes CRUD operations for the **AbonoVendedor** model.
@@ -1079,6 +1109,7 @@ export namespace Prisma {
     Boleta: 'Boleta',
     Vendedor: 'Vendedor',
     RifaVendedor: 'RifaVendedor',
+    UsuarioVendedorScope: 'UsuarioVendedorScope',
     AsignacionBoletas: 'AsignacionBoletas',
     AsignacionDetalle: 'AsignacionDetalle',
     DevolucionBoletas: 'DevolucionBoletas',
@@ -1086,6 +1117,7 @@ export namespace Prisma {
     Cliente: 'Cliente',
     Venta: 'Venta',
     PagoCliente: 'PagoCliente',
+    PagoClienteRecibo: 'PagoClienteRecibo',
     AbonoVendedor: 'AbonoVendedor',
     Recibo: 'Recibo',
     Caja: 'Caja',
@@ -1112,7 +1144,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "configuracionSistema" | "usuario" | "rifa" | "premio" | "boletaPremio" | "boleta" | "vendedor" | "rifaVendedor" | "asignacionBoletas" | "asignacionDetalle" | "devolucionBoletas" | "devolucionDetalle" | "cliente" | "venta" | "pagoCliente" | "abonoVendedor" | "recibo" | "caja" | "subCaja" | "movimientoCaja" | "gasto" | "juegoRegistro" | "gastoRecibo"
+      modelProps: "configuracionSistema" | "usuario" | "rifa" | "premio" | "boletaPremio" | "boleta" | "vendedor" | "rifaVendedor" | "usuarioVendedorScope" | "asignacionBoletas" | "asignacionDetalle" | "devolucionBoletas" | "devolucionDetalle" | "cliente" | "venta" | "pagoCliente" | "pagoClienteRecibo" | "abonoVendedor" | "recibo" | "caja" | "subCaja" | "movimientoCaja" | "gasto" | "juegoRegistro" | "gastoRecibo"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1708,6 +1740,80 @@ export namespace Prisma {
           }
         }
       }
+      UsuarioVendedorScope: {
+        payload: Prisma.$UsuarioVendedorScopePayload<ExtArgs>
+        fields: Prisma.UsuarioVendedorScopeFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UsuarioVendedorScopeFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsuarioVendedorScopePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UsuarioVendedorScopeFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsuarioVendedorScopePayload>
+          }
+          findFirst: {
+            args: Prisma.UsuarioVendedorScopeFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsuarioVendedorScopePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UsuarioVendedorScopeFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsuarioVendedorScopePayload>
+          }
+          findMany: {
+            args: Prisma.UsuarioVendedorScopeFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsuarioVendedorScopePayload>[]
+          }
+          create: {
+            args: Prisma.UsuarioVendedorScopeCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsuarioVendedorScopePayload>
+          }
+          createMany: {
+            args: Prisma.UsuarioVendedorScopeCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UsuarioVendedorScopeCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsuarioVendedorScopePayload>[]
+          }
+          delete: {
+            args: Prisma.UsuarioVendedorScopeDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsuarioVendedorScopePayload>
+          }
+          update: {
+            args: Prisma.UsuarioVendedorScopeUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsuarioVendedorScopePayload>
+          }
+          deleteMany: {
+            args: Prisma.UsuarioVendedorScopeDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UsuarioVendedorScopeUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UsuarioVendedorScopeUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsuarioVendedorScopePayload>[]
+          }
+          upsert: {
+            args: Prisma.UsuarioVendedorScopeUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UsuarioVendedorScopePayload>
+          }
+          aggregate: {
+            args: Prisma.UsuarioVendedorScopeAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUsuarioVendedorScope>
+          }
+          groupBy: {
+            args: Prisma.UsuarioVendedorScopeGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UsuarioVendedorScopeGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UsuarioVendedorScopeCountArgs<ExtArgs>
+            result: $Utils.Optional<UsuarioVendedorScopeCountAggregateOutputType> | number
+          }
+        }
+      }
       AsignacionBoletas: {
         payload: Prisma.$AsignacionBoletasPayload<ExtArgs>
         fields: Prisma.AsignacionBoletasFieldRefs
@@ -2223,6 +2329,80 @@ export namespace Prisma {
           count: {
             args: Prisma.PagoClienteCountArgs<ExtArgs>
             result: $Utils.Optional<PagoClienteCountAggregateOutputType> | number
+          }
+        }
+      }
+      PagoClienteRecibo: {
+        payload: Prisma.$PagoClienteReciboPayload<ExtArgs>
+        fields: Prisma.PagoClienteReciboFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PagoClienteReciboFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagoClienteReciboPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PagoClienteReciboFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagoClienteReciboPayload>
+          }
+          findFirst: {
+            args: Prisma.PagoClienteReciboFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagoClienteReciboPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PagoClienteReciboFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagoClienteReciboPayload>
+          }
+          findMany: {
+            args: Prisma.PagoClienteReciboFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagoClienteReciboPayload>[]
+          }
+          create: {
+            args: Prisma.PagoClienteReciboCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagoClienteReciboPayload>
+          }
+          createMany: {
+            args: Prisma.PagoClienteReciboCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PagoClienteReciboCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagoClienteReciboPayload>[]
+          }
+          delete: {
+            args: Prisma.PagoClienteReciboDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagoClienteReciboPayload>
+          }
+          update: {
+            args: Prisma.PagoClienteReciboUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagoClienteReciboPayload>
+          }
+          deleteMany: {
+            args: Prisma.PagoClienteReciboDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PagoClienteReciboUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PagoClienteReciboUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagoClienteReciboPayload>[]
+          }
+          upsert: {
+            args: Prisma.PagoClienteReciboUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PagoClienteReciboPayload>
+          }
+          aggregate: {
+            args: Prisma.PagoClienteReciboAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePagoClienteRecibo>
+          }
+          groupBy: {
+            args: Prisma.PagoClienteReciboGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PagoClienteReciboGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PagoClienteReciboCountArgs<ExtArgs>
+            result: $Utils.Optional<PagoClienteReciboCountAggregateOutputType> | number
           }
         }
       }
@@ -2910,6 +3090,7 @@ export namespace Prisma {
     boleta?: BoletaOmit
     vendedor?: VendedorOmit
     rifaVendedor?: RifaVendedorOmit
+    usuarioVendedorScope?: UsuarioVendedorScopeOmit
     asignacionBoletas?: AsignacionBoletasOmit
     asignacionDetalle?: AsignacionDetalleOmit
     devolucionBoletas?: DevolucionBoletasOmit
@@ -2917,6 +3098,7 @@ export namespace Prisma {
     cliente?: ClienteOmit
     venta?: VentaOmit
     pagoCliente?: PagoClienteOmit
+    pagoClienteRecibo?: PagoClienteReciboOmit
     abonoVendedor?: AbonoVendedorOmit
     recibo?: ReciboOmit
     caja?: CajaOmit
@@ -3024,9 +3206,12 @@ export namespace Prisma {
     asignaciones: number
     devoluciones: number
     abonosRegistrados: number
+    pagosClienteRegistrados: number
     gastosRegistrados: number
     juegosRegistrados: number
     movimientos: number
+    vendedorScopes: number
+    clientesCreados: number
   }
 
   export type UsuarioCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3035,9 +3220,12 @@ export namespace Prisma {
     asignaciones?: boolean | UsuarioCountOutputTypeCountAsignacionesArgs
     devoluciones?: boolean | UsuarioCountOutputTypeCountDevolucionesArgs
     abonosRegistrados?: boolean | UsuarioCountOutputTypeCountAbonosRegistradosArgs
+    pagosClienteRegistrados?: boolean | UsuarioCountOutputTypeCountPagosClienteRegistradosArgs
     gastosRegistrados?: boolean | UsuarioCountOutputTypeCountGastosRegistradosArgs
     juegosRegistrados?: boolean | UsuarioCountOutputTypeCountJuegosRegistradosArgs
     movimientos?: boolean | UsuarioCountOutputTypeCountMovimientosArgs
+    vendedorScopes?: boolean | UsuarioCountOutputTypeCountVendedorScopesArgs
+    clientesCreados?: boolean | UsuarioCountOutputTypeCountClientesCreadosArgs
   }
 
   // Custom InputTypes
@@ -3089,6 +3277,13 @@ export namespace Prisma {
   /**
    * UsuarioCountOutputType without action
    */
+  export type UsuarioCountOutputTypeCountPagosClienteRegistradosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PagoClienteWhereInput
+  }
+
+  /**
+   * UsuarioCountOutputType without action
+   */
   export type UsuarioCountOutputTypeCountGastosRegistradosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GastoWhereInput
   }
@@ -3105,6 +3300,20 @@ export namespace Prisma {
    */
   export type UsuarioCountOutputTypeCountMovimientosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: MovimientoCajaWhereInput
+  }
+
+  /**
+   * UsuarioCountOutputType without action
+   */
+  export type UsuarioCountOutputTypeCountVendedorScopesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UsuarioVendedorScopeWhereInput
+  }
+
+  /**
+   * UsuarioCountOutputType without action
+   */
+  export type UsuarioCountOutputTypeCountClientesCreadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ClienteWhereInput
   }
 
 
@@ -3289,11 +3498,13 @@ export namespace Prisma {
   export type VendedorCountOutputType = {
     rifas: number
     movimientos: number
+    usuarioScopes: number
   }
 
   export type VendedorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     rifas?: boolean | VendedorCountOutputTypeCountRifasArgs
     movimientos?: boolean | VendedorCountOutputTypeCountMovimientosArgs
+    usuarioScopes?: boolean | VendedorCountOutputTypeCountUsuarioScopesArgs
   }
 
   // Custom InputTypes
@@ -3321,6 +3532,13 @@ export namespace Prisma {
     where?: MovimientoCajaWhereInput
   }
 
+  /**
+   * VendedorCountOutputType without action
+   */
+  export type VendedorCountOutputTypeCountUsuarioScopesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UsuarioVendedorScopeWhereInput
+  }
+
 
   /**
    * Count Type RifaVendedorCountOutputType
@@ -3332,6 +3550,8 @@ export namespace Prisma {
     abonos: number
     boletas: number
     juegos: number
+    usuarioScopes: number
+    ventas: number
   }
 
   export type RifaVendedorCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3340,6 +3560,8 @@ export namespace Prisma {
     abonos?: boolean | RifaVendedorCountOutputTypeCountAbonosArgs
     boletas?: boolean | RifaVendedorCountOutputTypeCountBoletasArgs
     juegos?: boolean | RifaVendedorCountOutputTypeCountJuegosArgs
+    usuarioScopes?: boolean | RifaVendedorCountOutputTypeCountUsuarioScopesArgs
+    ventas?: boolean | RifaVendedorCountOutputTypeCountVentasArgs
   }
 
   // Custom InputTypes
@@ -3386,6 +3608,20 @@ export namespace Prisma {
    */
   export type RifaVendedorCountOutputTypeCountJuegosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: JuegoRegistroWhereInput
+  }
+
+  /**
+   * RifaVendedorCountOutputType without action
+   */
+  export type RifaVendedorCountOutputTypeCountUsuarioScopesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UsuarioVendedorScopeWhereInput
+  }
+
+  /**
+   * RifaVendedorCountOutputType without action
+   */
+  export type RifaVendedorCountOutputTypeCountVentasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: VentaWhereInput
   }
 
 
@@ -3658,12 +3894,14 @@ export namespace Prisma {
   export type SubCajaCountOutputType = {
     movimientos: number
     abonos: number
+    pagosCliente: number
     gastos: number
   }
 
   export type SubCajaCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     movimientos?: boolean | SubCajaCountOutputTypeCountMovimientosArgs
     abonos?: boolean | SubCajaCountOutputTypeCountAbonosArgs
+    pagosCliente?: boolean | SubCajaCountOutputTypeCountPagosClienteArgs
     gastos?: boolean | SubCajaCountOutputTypeCountGastosArgs
   }
 
@@ -3690,6 +3928,13 @@ export namespace Prisma {
    */
   export type SubCajaCountOutputTypeCountAbonosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AbonoVendedorWhereInput
+  }
+
+  /**
+   * SubCajaCountOutputType without action
+   */
+  export type SubCajaCountOutputTypeCountPagosClienteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PagoClienteWhereInput
   }
 
   /**
@@ -5027,9 +5272,12 @@ export namespace Prisma {
     asignaciones?: boolean | Usuario$asignacionesArgs<ExtArgs>
     devoluciones?: boolean | Usuario$devolucionesArgs<ExtArgs>
     abonosRegistrados?: boolean | Usuario$abonosRegistradosArgs<ExtArgs>
+    pagosClienteRegistrados?: boolean | Usuario$pagosClienteRegistradosArgs<ExtArgs>
     gastosRegistrados?: boolean | Usuario$gastosRegistradosArgs<ExtArgs>
     juegosRegistrados?: boolean | Usuario$juegosRegistradosArgs<ExtArgs>
     movimientos?: boolean | Usuario$movimientosArgs<ExtArgs>
+    vendedorScopes?: boolean | Usuario$vendedorScopesArgs<ExtArgs>
+    clientesCreados?: boolean | Usuario$clientesCreadosArgs<ExtArgs>
     _count?: boolean | UsuarioCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["usuario"]>
 
@@ -5073,9 +5321,12 @@ export namespace Prisma {
     asignaciones?: boolean | Usuario$asignacionesArgs<ExtArgs>
     devoluciones?: boolean | Usuario$devolucionesArgs<ExtArgs>
     abonosRegistrados?: boolean | Usuario$abonosRegistradosArgs<ExtArgs>
+    pagosClienteRegistrados?: boolean | Usuario$pagosClienteRegistradosArgs<ExtArgs>
     gastosRegistrados?: boolean | Usuario$gastosRegistradosArgs<ExtArgs>
     juegosRegistrados?: boolean | Usuario$juegosRegistradosArgs<ExtArgs>
     movimientos?: boolean | Usuario$movimientosArgs<ExtArgs>
+    vendedorScopes?: boolean | Usuario$vendedorScopesArgs<ExtArgs>
+    clientesCreados?: boolean | Usuario$clientesCreadosArgs<ExtArgs>
     _count?: boolean | UsuarioCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UsuarioIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -5089,9 +5340,12 @@ export namespace Prisma {
       asignaciones: Prisma.$AsignacionBoletasPayload<ExtArgs>[]
       devoluciones: Prisma.$DevolucionBoletasPayload<ExtArgs>[]
       abonosRegistrados: Prisma.$AbonoVendedorPayload<ExtArgs>[]
+      pagosClienteRegistrados: Prisma.$PagoClientePayload<ExtArgs>[]
       gastosRegistrados: Prisma.$GastoPayload<ExtArgs>[]
       juegosRegistrados: Prisma.$JuegoRegistroPayload<ExtArgs>[]
       movimientos: Prisma.$MovimientoCajaPayload<ExtArgs>[]
+      vendedorScopes: Prisma.$UsuarioVendedorScopePayload<ExtArgs>[]
+      clientesCreados: Prisma.$ClientePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5501,9 +5755,12 @@ export namespace Prisma {
     asignaciones<T extends Usuario$asignacionesArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$asignacionesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AsignacionBoletasPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     devoluciones<T extends Usuario$devolucionesArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$devolucionesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevolucionBoletasPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     abonosRegistrados<T extends Usuario$abonosRegistradosArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$abonosRegistradosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AbonoVendedorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    pagosClienteRegistrados<T extends Usuario$pagosClienteRegistradosArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$pagosClienteRegistradosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PagoClientePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     gastosRegistrados<T extends Usuario$gastosRegistradosArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$gastosRegistradosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GastoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     juegosRegistrados<T extends Usuario$juegosRegistradosArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$juegosRegistradosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JuegoRegistroPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     movimientos<T extends Usuario$movimientosArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$movimientosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MovimientoCajaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    vendedorScopes<T extends Usuario$vendedorScopesArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$vendedorScopesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UsuarioVendedorScopePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    clientesCreados<T extends Usuario$clientesCreadosArgs<ExtArgs> = {}>(args?: Subset<T, Usuario$clientesCreadosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ClientePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6049,6 +6306,30 @@ export namespace Prisma {
   }
 
   /**
+   * Usuario.pagosClienteRegistrados
+   */
+  export type Usuario$pagosClienteRegistradosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PagoCliente
+     */
+    select?: PagoClienteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PagoCliente
+     */
+    omit?: PagoClienteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagoClienteInclude<ExtArgs> | null
+    where?: PagoClienteWhereInput
+    orderBy?: PagoClienteOrderByWithRelationInput | PagoClienteOrderByWithRelationInput[]
+    cursor?: PagoClienteWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PagoClienteScalarFieldEnum | PagoClienteScalarFieldEnum[]
+  }
+
+  /**
    * Usuario.gastosRegistrados
    */
   export type Usuario$gastosRegistradosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6118,6 +6399,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MovimientoCajaScalarFieldEnum | MovimientoCajaScalarFieldEnum[]
+  }
+
+  /**
+   * Usuario.vendedorScopes
+   */
+  export type Usuario$vendedorScopesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsuarioVendedorScope
+     */
+    select?: UsuarioVendedorScopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsuarioVendedorScope
+     */
+    omit?: UsuarioVendedorScopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsuarioVendedorScopeInclude<ExtArgs> | null
+    where?: UsuarioVendedorScopeWhereInput
+    orderBy?: UsuarioVendedorScopeOrderByWithRelationInput | UsuarioVendedorScopeOrderByWithRelationInput[]
+    cursor?: UsuarioVendedorScopeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UsuarioVendedorScopeScalarFieldEnum | UsuarioVendedorScopeScalarFieldEnum[]
+  }
+
+  /**
+   * Usuario.clientesCreados
+   */
+  export type Usuario$clientesCreadosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Cliente
+     */
+    select?: ClienteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Cliente
+     */
+    omit?: ClienteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClienteInclude<ExtArgs> | null
+    where?: ClienteWhereInput
+    orderBy?: ClienteOrderByWithRelationInput | ClienteOrderByWithRelationInput[]
+    cursor?: ClienteWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ClienteScalarFieldEnum | ClienteScalarFieldEnum[]
   }
 
   /**
@@ -9846,6 +10175,7 @@ export namespace Prisma {
     rifaId: string | null
     numero: string | null
     codigoBarras: string | null
+    publicToken: string | null
     estado: $Enums.EstadoBoleta | null
     juega: boolean | null
     precio: Decimal | null
@@ -9864,6 +10194,7 @@ export namespace Prisma {
     rifaId: string | null
     numero: string | null
     codigoBarras: string | null
+    publicToken: string | null
     estado: $Enums.EstadoBoleta | null
     juega: boolean | null
     precio: Decimal | null
@@ -9882,6 +10213,7 @@ export namespace Prisma {
     rifaId: number
     numero: number
     codigoBarras: number
+    publicToken: number
     estado: number
     juega: number
     precio: number
@@ -9910,6 +10242,7 @@ export namespace Prisma {
     rifaId?: true
     numero?: true
     codigoBarras?: true
+    publicToken?: true
     estado?: true
     juega?: true
     precio?: true
@@ -9928,6 +10261,7 @@ export namespace Prisma {
     rifaId?: true
     numero?: true
     codigoBarras?: true
+    publicToken?: true
     estado?: true
     juega?: true
     precio?: true
@@ -9946,6 +10280,7 @@ export namespace Prisma {
     rifaId?: true
     numero?: true
     codigoBarras?: true
+    publicToken?: true
     estado?: true
     juega?: true
     precio?: true
@@ -10051,6 +10386,7 @@ export namespace Prisma {
     rifaId: string
     numero: string
     codigoBarras: string | null
+    publicToken: string | null
     estado: $Enums.EstadoBoleta
     juega: boolean
     precio: Decimal
@@ -10088,6 +10424,7 @@ export namespace Prisma {
     rifaId?: boolean
     numero?: boolean
     codigoBarras?: boolean
+    publicToken?: boolean
     estado?: boolean
     juega?: boolean
     precio?: boolean
@@ -10114,6 +10451,7 @@ export namespace Prisma {
     rifaId?: boolean
     numero?: boolean
     codigoBarras?: boolean
+    publicToken?: boolean
     estado?: boolean
     juega?: boolean
     precio?: boolean
@@ -10136,6 +10474,7 @@ export namespace Prisma {
     rifaId?: boolean
     numero?: boolean
     codigoBarras?: boolean
+    publicToken?: boolean
     estado?: boolean
     juega?: boolean
     precio?: boolean
@@ -10158,6 +10497,7 @@ export namespace Prisma {
     rifaId?: boolean
     numero?: boolean
     codigoBarras?: boolean
+    publicToken?: boolean
     estado?: boolean
     juega?: boolean
     precio?: boolean
@@ -10171,7 +10511,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BoletaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "rifaId" | "numero" | "codigoBarras" | "estado" | "juega" | "precio" | "rifaVendedorId" | "clienteId" | "ventaId" | "reservadaHasta" | "devueltaPorVendedorNombre" | "devueltaObservacion" | "createdAt" | "updatedAt", ExtArgs["result"]["boleta"]>
+  export type BoletaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "rifaId" | "numero" | "codigoBarras" | "publicToken" | "estado" | "juega" | "precio" | "rifaVendedorId" | "clienteId" | "ventaId" | "reservadaHasta" | "devueltaPorVendedorNombre" | "devueltaObservacion" | "createdAt" | "updatedAt", ExtArgs["result"]["boleta"]>
   export type BoletaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     rifa?: boolean | RifaDefaultArgs<ExtArgs>
     rifaVendedor?: boolean | Boleta$rifaVendedorArgs<ExtArgs>
@@ -10211,6 +10551,7 @@ export namespace Prisma {
       rifaId: string
       numero: string
       codigoBarras: string | null
+      publicToken: string | null
       estado: $Enums.EstadoBoleta
       juega: boolean
       precio: Prisma.Decimal
@@ -10656,6 +10997,7 @@ export namespace Prisma {
     readonly rifaId: FieldRef<"Boleta", 'String'>
     readonly numero: FieldRef<"Boleta", 'String'>
     readonly codigoBarras: FieldRef<"Boleta", 'String'>
+    readonly publicToken: FieldRef<"Boleta", 'String'>
     readonly estado: FieldRef<"Boleta", 'EstadoBoleta'>
     readonly juega: FieldRef<"Boleta", 'Boolean'>
     readonly precio: FieldRef<"Boleta", 'Decimal'>
@@ -11392,6 +11734,7 @@ export namespace Prisma {
     updatedAt?: boolean
     rifas?: boolean | Vendedor$rifasArgs<ExtArgs>
     movimientos?: boolean | Vendedor$movimientosArgs<ExtArgs>
+    usuarioScopes?: boolean | Vendedor$usuarioScopesArgs<ExtArgs>
     _count?: boolean | VendedorCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["vendedor"]>
 
@@ -11429,6 +11772,7 @@ export namespace Prisma {
   export type VendedorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     rifas?: boolean | Vendedor$rifasArgs<ExtArgs>
     movimientos?: boolean | Vendedor$movimientosArgs<ExtArgs>
+    usuarioScopes?: boolean | Vendedor$usuarioScopesArgs<ExtArgs>
     _count?: boolean | VendedorCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type VendedorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -11439,6 +11783,7 @@ export namespace Prisma {
     objects: {
       rifas: Prisma.$RifaVendedorPayload<ExtArgs>[]
       movimientos: Prisma.$MovimientoCajaPayload<ExtArgs>[]
+      usuarioScopes: Prisma.$UsuarioVendedorScopePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11844,6 +12189,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     rifas<T extends Vendedor$rifasArgs<ExtArgs> = {}>(args?: Subset<T, Vendedor$rifasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RifaVendedorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     movimientos<T extends Vendedor$movimientosArgs<ExtArgs> = {}>(args?: Subset<T, Vendedor$movimientosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MovimientoCajaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    usuarioScopes<T extends Vendedor$usuarioScopesArgs<ExtArgs> = {}>(args?: Subset<T, Vendedor$usuarioScopesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UsuarioVendedorScopePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12316,6 +12662,30 @@ export namespace Prisma {
   }
 
   /**
+   * Vendedor.usuarioScopes
+   */
+  export type Vendedor$usuarioScopesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsuarioVendedorScope
+     */
+    select?: UsuarioVendedorScopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsuarioVendedorScope
+     */
+    omit?: UsuarioVendedorScopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsuarioVendedorScopeInclude<ExtArgs> | null
+    where?: UsuarioVendedorScopeWhereInput
+    orderBy?: UsuarioVendedorScopeOrderByWithRelationInput | UsuarioVendedorScopeOrderByWithRelationInput[]
+    cursor?: UsuarioVendedorScopeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UsuarioVendedorScopeScalarFieldEnum | UsuarioVendedorScopeScalarFieldEnum[]
+  }
+
+  /**
    * Vendedor without action
    */
   export type VendedorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12555,6 +12925,8 @@ export namespace Prisma {
     abonos?: boolean | RifaVendedor$abonosArgs<ExtArgs>
     boletas?: boolean | RifaVendedor$boletasArgs<ExtArgs>
     juegos?: boolean | RifaVendedor$juegosArgs<ExtArgs>
+    usuarioScopes?: boolean | RifaVendedor$usuarioScopesArgs<ExtArgs>
+    ventas?: boolean | RifaVendedor$ventasArgs<ExtArgs>
     _count?: boolean | RifaVendedorCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["rifaVendedor"]>
 
@@ -12598,6 +12970,8 @@ export namespace Prisma {
     abonos?: boolean | RifaVendedor$abonosArgs<ExtArgs>
     boletas?: boolean | RifaVendedor$boletasArgs<ExtArgs>
     juegos?: boolean | RifaVendedor$juegosArgs<ExtArgs>
+    usuarioScopes?: boolean | RifaVendedor$usuarioScopesArgs<ExtArgs>
+    ventas?: boolean | RifaVendedor$ventasArgs<ExtArgs>
     _count?: boolean | RifaVendedorCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type RifaVendedorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -12619,6 +12993,8 @@ export namespace Prisma {
       abonos: Prisma.$AbonoVendedorPayload<ExtArgs>[]
       boletas: Prisma.$BoletaPayload<ExtArgs>[]
       juegos: Prisma.$JuegoRegistroPayload<ExtArgs>[]
+      usuarioScopes: Prisma.$UsuarioVendedorScopePayload<ExtArgs>[]
+      ventas: Prisma.$VentaPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -13028,6 +13404,8 @@ export namespace Prisma {
     abonos<T extends RifaVendedor$abonosArgs<ExtArgs> = {}>(args?: Subset<T, RifaVendedor$abonosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AbonoVendedorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     boletas<T extends RifaVendedor$boletasArgs<ExtArgs> = {}>(args?: Subset<T, RifaVendedor$boletasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoletaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     juegos<T extends RifaVendedor$juegosArgs<ExtArgs> = {}>(args?: Subset<T, RifaVendedor$juegosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$JuegoRegistroPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    usuarioScopes<T extends RifaVendedor$usuarioScopesArgs<ExtArgs> = {}>(args?: Subset<T, RifaVendedor$usuarioScopesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UsuarioVendedorScopePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    ventas<T extends RifaVendedor$ventasArgs<ExtArgs> = {}>(args?: Subset<T, RifaVendedor$ventasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VentaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13579,6 +13957,54 @@ export namespace Prisma {
   }
 
   /**
+   * RifaVendedor.usuarioScopes
+   */
+  export type RifaVendedor$usuarioScopesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsuarioVendedorScope
+     */
+    select?: UsuarioVendedorScopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsuarioVendedorScope
+     */
+    omit?: UsuarioVendedorScopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsuarioVendedorScopeInclude<ExtArgs> | null
+    where?: UsuarioVendedorScopeWhereInput
+    orderBy?: UsuarioVendedorScopeOrderByWithRelationInput | UsuarioVendedorScopeOrderByWithRelationInput[]
+    cursor?: UsuarioVendedorScopeWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UsuarioVendedorScopeScalarFieldEnum | UsuarioVendedorScopeScalarFieldEnum[]
+  }
+
+  /**
+   * RifaVendedor.ventas
+   */
+  export type RifaVendedor$ventasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Venta
+     */
+    select?: VentaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Venta
+     */
+    omit?: VentaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VentaInclude<ExtArgs> | null
+    where?: VentaWhereInput
+    orderBy?: VentaOrderByWithRelationInput | VentaOrderByWithRelationInput[]
+    cursor?: VentaWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: VentaScalarFieldEnum | VentaScalarFieldEnum[]
+  }
+
+  /**
    * RifaVendedor without action
    */
   export type RifaVendedorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -13594,6 +14020,1131 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: RifaVendedorInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model UsuarioVendedorScope
+   */
+
+  export type AggregateUsuarioVendedorScope = {
+    _count: UsuarioVendedorScopeCountAggregateOutputType | null
+    _min: UsuarioVendedorScopeMinAggregateOutputType | null
+    _max: UsuarioVendedorScopeMaxAggregateOutputType | null
+  }
+
+  export type UsuarioVendedorScopeMinAggregateOutputType = {
+    id: string | null
+    usuarioId: string | null
+    vendedorId: string | null
+    rifaVendedorId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type UsuarioVendedorScopeMaxAggregateOutputType = {
+    id: string | null
+    usuarioId: string | null
+    vendedorId: string | null
+    rifaVendedorId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type UsuarioVendedorScopeCountAggregateOutputType = {
+    id: number
+    usuarioId: number
+    vendedorId: number
+    rifaVendedorId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type UsuarioVendedorScopeMinAggregateInputType = {
+    id?: true
+    usuarioId?: true
+    vendedorId?: true
+    rifaVendedorId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type UsuarioVendedorScopeMaxAggregateInputType = {
+    id?: true
+    usuarioId?: true
+    vendedorId?: true
+    rifaVendedorId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type UsuarioVendedorScopeCountAggregateInputType = {
+    id?: true
+    usuarioId?: true
+    vendedorId?: true
+    rifaVendedorId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type UsuarioVendedorScopeAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UsuarioVendedorScope to aggregate.
+     */
+    where?: UsuarioVendedorScopeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UsuarioVendedorScopes to fetch.
+     */
+    orderBy?: UsuarioVendedorScopeOrderByWithRelationInput | UsuarioVendedorScopeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UsuarioVendedorScopeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UsuarioVendedorScopes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UsuarioVendedorScopes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UsuarioVendedorScopes
+    **/
+    _count?: true | UsuarioVendedorScopeCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UsuarioVendedorScopeMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UsuarioVendedorScopeMaxAggregateInputType
+  }
+
+  export type GetUsuarioVendedorScopeAggregateType<T extends UsuarioVendedorScopeAggregateArgs> = {
+        [P in keyof T & keyof AggregateUsuarioVendedorScope]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUsuarioVendedorScope[P]>
+      : GetScalarType<T[P], AggregateUsuarioVendedorScope[P]>
+  }
+
+
+
+
+  export type UsuarioVendedorScopeGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UsuarioVendedorScopeWhereInput
+    orderBy?: UsuarioVendedorScopeOrderByWithAggregationInput | UsuarioVendedorScopeOrderByWithAggregationInput[]
+    by: UsuarioVendedorScopeScalarFieldEnum[] | UsuarioVendedorScopeScalarFieldEnum
+    having?: UsuarioVendedorScopeScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UsuarioVendedorScopeCountAggregateInputType | true
+    _min?: UsuarioVendedorScopeMinAggregateInputType
+    _max?: UsuarioVendedorScopeMaxAggregateInputType
+  }
+
+  export type UsuarioVendedorScopeGroupByOutputType = {
+    id: string
+    usuarioId: string
+    vendedorId: string | null
+    rifaVendedorId: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: UsuarioVendedorScopeCountAggregateOutputType | null
+    _min: UsuarioVendedorScopeMinAggregateOutputType | null
+    _max: UsuarioVendedorScopeMaxAggregateOutputType | null
+  }
+
+  type GetUsuarioVendedorScopeGroupByPayload<T extends UsuarioVendedorScopeGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UsuarioVendedorScopeGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UsuarioVendedorScopeGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UsuarioVendedorScopeGroupByOutputType[P]>
+            : GetScalarType<T[P], UsuarioVendedorScopeGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UsuarioVendedorScopeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    usuarioId?: boolean
+    vendedorId?: boolean
+    rifaVendedorId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    usuario?: boolean | UsuarioDefaultArgs<ExtArgs>
+    vendedor?: boolean | UsuarioVendedorScope$vendedorArgs<ExtArgs>
+    rifaVendedor?: boolean | UsuarioVendedorScope$rifaVendedorArgs<ExtArgs>
+  }, ExtArgs["result"]["usuarioVendedorScope"]>
+
+  export type UsuarioVendedorScopeSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    usuarioId?: boolean
+    vendedorId?: boolean
+    rifaVendedorId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    usuario?: boolean | UsuarioDefaultArgs<ExtArgs>
+    vendedor?: boolean | UsuarioVendedorScope$vendedorArgs<ExtArgs>
+    rifaVendedor?: boolean | UsuarioVendedorScope$rifaVendedorArgs<ExtArgs>
+  }, ExtArgs["result"]["usuarioVendedorScope"]>
+
+  export type UsuarioVendedorScopeSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    usuarioId?: boolean
+    vendedorId?: boolean
+    rifaVendedorId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    usuario?: boolean | UsuarioDefaultArgs<ExtArgs>
+    vendedor?: boolean | UsuarioVendedorScope$vendedorArgs<ExtArgs>
+    rifaVendedor?: boolean | UsuarioVendedorScope$rifaVendedorArgs<ExtArgs>
+  }, ExtArgs["result"]["usuarioVendedorScope"]>
+
+  export type UsuarioVendedorScopeSelectScalar = {
+    id?: boolean
+    usuarioId?: boolean
+    vendedorId?: boolean
+    rifaVendedorId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type UsuarioVendedorScopeOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "usuarioId" | "vendedorId" | "rifaVendedorId" | "createdAt" | "updatedAt", ExtArgs["result"]["usuarioVendedorScope"]>
+  export type UsuarioVendedorScopeInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    usuario?: boolean | UsuarioDefaultArgs<ExtArgs>
+    vendedor?: boolean | UsuarioVendedorScope$vendedorArgs<ExtArgs>
+    rifaVendedor?: boolean | UsuarioVendedorScope$rifaVendedorArgs<ExtArgs>
+  }
+  export type UsuarioVendedorScopeIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    usuario?: boolean | UsuarioDefaultArgs<ExtArgs>
+    vendedor?: boolean | UsuarioVendedorScope$vendedorArgs<ExtArgs>
+    rifaVendedor?: boolean | UsuarioVendedorScope$rifaVendedorArgs<ExtArgs>
+  }
+  export type UsuarioVendedorScopeIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    usuario?: boolean | UsuarioDefaultArgs<ExtArgs>
+    vendedor?: boolean | UsuarioVendedorScope$vendedorArgs<ExtArgs>
+    rifaVendedor?: boolean | UsuarioVendedorScope$rifaVendedorArgs<ExtArgs>
+  }
+
+  export type $UsuarioVendedorScopePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UsuarioVendedorScope"
+    objects: {
+      usuario: Prisma.$UsuarioPayload<ExtArgs>
+      vendedor: Prisma.$VendedorPayload<ExtArgs> | null
+      rifaVendedor: Prisma.$RifaVendedorPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      usuarioId: string
+      vendedorId: string | null
+      rifaVendedorId: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["usuarioVendedorScope"]>
+    composites: {}
+  }
+
+  type UsuarioVendedorScopeGetPayload<S extends boolean | null | undefined | UsuarioVendedorScopeDefaultArgs> = $Result.GetResult<Prisma.$UsuarioVendedorScopePayload, S>
+
+  type UsuarioVendedorScopeCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UsuarioVendedorScopeFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UsuarioVendedorScopeCountAggregateInputType | true
+    }
+
+  export interface UsuarioVendedorScopeDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UsuarioVendedorScope'], meta: { name: 'UsuarioVendedorScope' } }
+    /**
+     * Find zero or one UsuarioVendedorScope that matches the filter.
+     * @param {UsuarioVendedorScopeFindUniqueArgs} args - Arguments to find a UsuarioVendedorScope
+     * @example
+     * // Get one UsuarioVendedorScope
+     * const usuarioVendedorScope = await prisma.usuarioVendedorScope.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UsuarioVendedorScopeFindUniqueArgs>(args: SelectSubset<T, UsuarioVendedorScopeFindUniqueArgs<ExtArgs>>): Prisma__UsuarioVendedorScopeClient<$Result.GetResult<Prisma.$UsuarioVendedorScopePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UsuarioVendedorScope that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UsuarioVendedorScopeFindUniqueOrThrowArgs} args - Arguments to find a UsuarioVendedorScope
+     * @example
+     * // Get one UsuarioVendedorScope
+     * const usuarioVendedorScope = await prisma.usuarioVendedorScope.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UsuarioVendedorScopeFindUniqueOrThrowArgs>(args: SelectSubset<T, UsuarioVendedorScopeFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UsuarioVendedorScopeClient<$Result.GetResult<Prisma.$UsuarioVendedorScopePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UsuarioVendedorScope that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UsuarioVendedorScopeFindFirstArgs} args - Arguments to find a UsuarioVendedorScope
+     * @example
+     * // Get one UsuarioVendedorScope
+     * const usuarioVendedorScope = await prisma.usuarioVendedorScope.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UsuarioVendedorScopeFindFirstArgs>(args?: SelectSubset<T, UsuarioVendedorScopeFindFirstArgs<ExtArgs>>): Prisma__UsuarioVendedorScopeClient<$Result.GetResult<Prisma.$UsuarioVendedorScopePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UsuarioVendedorScope that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UsuarioVendedorScopeFindFirstOrThrowArgs} args - Arguments to find a UsuarioVendedorScope
+     * @example
+     * // Get one UsuarioVendedorScope
+     * const usuarioVendedorScope = await prisma.usuarioVendedorScope.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UsuarioVendedorScopeFindFirstOrThrowArgs>(args?: SelectSubset<T, UsuarioVendedorScopeFindFirstOrThrowArgs<ExtArgs>>): Prisma__UsuarioVendedorScopeClient<$Result.GetResult<Prisma.$UsuarioVendedorScopePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UsuarioVendedorScopes that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UsuarioVendedorScopeFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UsuarioVendedorScopes
+     * const usuarioVendedorScopes = await prisma.usuarioVendedorScope.findMany()
+     * 
+     * // Get first 10 UsuarioVendedorScopes
+     * const usuarioVendedorScopes = await prisma.usuarioVendedorScope.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const usuarioVendedorScopeWithIdOnly = await prisma.usuarioVendedorScope.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UsuarioVendedorScopeFindManyArgs>(args?: SelectSubset<T, UsuarioVendedorScopeFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UsuarioVendedorScopePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UsuarioVendedorScope.
+     * @param {UsuarioVendedorScopeCreateArgs} args - Arguments to create a UsuarioVendedorScope.
+     * @example
+     * // Create one UsuarioVendedorScope
+     * const UsuarioVendedorScope = await prisma.usuarioVendedorScope.create({
+     *   data: {
+     *     // ... data to create a UsuarioVendedorScope
+     *   }
+     * })
+     * 
+     */
+    create<T extends UsuarioVendedorScopeCreateArgs>(args: SelectSubset<T, UsuarioVendedorScopeCreateArgs<ExtArgs>>): Prisma__UsuarioVendedorScopeClient<$Result.GetResult<Prisma.$UsuarioVendedorScopePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UsuarioVendedorScopes.
+     * @param {UsuarioVendedorScopeCreateManyArgs} args - Arguments to create many UsuarioVendedorScopes.
+     * @example
+     * // Create many UsuarioVendedorScopes
+     * const usuarioVendedorScope = await prisma.usuarioVendedorScope.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UsuarioVendedorScopeCreateManyArgs>(args?: SelectSubset<T, UsuarioVendedorScopeCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UsuarioVendedorScopes and returns the data saved in the database.
+     * @param {UsuarioVendedorScopeCreateManyAndReturnArgs} args - Arguments to create many UsuarioVendedorScopes.
+     * @example
+     * // Create many UsuarioVendedorScopes
+     * const usuarioVendedorScope = await prisma.usuarioVendedorScope.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UsuarioVendedorScopes and only return the `id`
+     * const usuarioVendedorScopeWithIdOnly = await prisma.usuarioVendedorScope.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UsuarioVendedorScopeCreateManyAndReturnArgs>(args?: SelectSubset<T, UsuarioVendedorScopeCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UsuarioVendedorScopePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UsuarioVendedorScope.
+     * @param {UsuarioVendedorScopeDeleteArgs} args - Arguments to delete one UsuarioVendedorScope.
+     * @example
+     * // Delete one UsuarioVendedorScope
+     * const UsuarioVendedorScope = await prisma.usuarioVendedorScope.delete({
+     *   where: {
+     *     // ... filter to delete one UsuarioVendedorScope
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UsuarioVendedorScopeDeleteArgs>(args: SelectSubset<T, UsuarioVendedorScopeDeleteArgs<ExtArgs>>): Prisma__UsuarioVendedorScopeClient<$Result.GetResult<Prisma.$UsuarioVendedorScopePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UsuarioVendedorScope.
+     * @param {UsuarioVendedorScopeUpdateArgs} args - Arguments to update one UsuarioVendedorScope.
+     * @example
+     * // Update one UsuarioVendedorScope
+     * const usuarioVendedorScope = await prisma.usuarioVendedorScope.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UsuarioVendedorScopeUpdateArgs>(args: SelectSubset<T, UsuarioVendedorScopeUpdateArgs<ExtArgs>>): Prisma__UsuarioVendedorScopeClient<$Result.GetResult<Prisma.$UsuarioVendedorScopePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UsuarioVendedorScopes.
+     * @param {UsuarioVendedorScopeDeleteManyArgs} args - Arguments to filter UsuarioVendedorScopes to delete.
+     * @example
+     * // Delete a few UsuarioVendedorScopes
+     * const { count } = await prisma.usuarioVendedorScope.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UsuarioVendedorScopeDeleteManyArgs>(args?: SelectSubset<T, UsuarioVendedorScopeDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UsuarioVendedorScopes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UsuarioVendedorScopeUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UsuarioVendedorScopes
+     * const usuarioVendedorScope = await prisma.usuarioVendedorScope.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UsuarioVendedorScopeUpdateManyArgs>(args: SelectSubset<T, UsuarioVendedorScopeUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UsuarioVendedorScopes and returns the data updated in the database.
+     * @param {UsuarioVendedorScopeUpdateManyAndReturnArgs} args - Arguments to update many UsuarioVendedorScopes.
+     * @example
+     * // Update many UsuarioVendedorScopes
+     * const usuarioVendedorScope = await prisma.usuarioVendedorScope.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UsuarioVendedorScopes and only return the `id`
+     * const usuarioVendedorScopeWithIdOnly = await prisma.usuarioVendedorScope.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UsuarioVendedorScopeUpdateManyAndReturnArgs>(args: SelectSubset<T, UsuarioVendedorScopeUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UsuarioVendedorScopePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UsuarioVendedorScope.
+     * @param {UsuarioVendedorScopeUpsertArgs} args - Arguments to update or create a UsuarioVendedorScope.
+     * @example
+     * // Update or create a UsuarioVendedorScope
+     * const usuarioVendedorScope = await prisma.usuarioVendedorScope.upsert({
+     *   create: {
+     *     // ... data to create a UsuarioVendedorScope
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UsuarioVendedorScope we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UsuarioVendedorScopeUpsertArgs>(args: SelectSubset<T, UsuarioVendedorScopeUpsertArgs<ExtArgs>>): Prisma__UsuarioVendedorScopeClient<$Result.GetResult<Prisma.$UsuarioVendedorScopePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UsuarioVendedorScopes.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UsuarioVendedorScopeCountArgs} args - Arguments to filter UsuarioVendedorScopes to count.
+     * @example
+     * // Count the number of UsuarioVendedorScopes
+     * const count = await prisma.usuarioVendedorScope.count({
+     *   where: {
+     *     // ... the filter for the UsuarioVendedorScopes we want to count
+     *   }
+     * })
+    **/
+    count<T extends UsuarioVendedorScopeCountArgs>(
+      args?: Subset<T, UsuarioVendedorScopeCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UsuarioVendedorScopeCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UsuarioVendedorScope.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UsuarioVendedorScopeAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UsuarioVendedorScopeAggregateArgs>(args: Subset<T, UsuarioVendedorScopeAggregateArgs>): Prisma.PrismaPromise<GetUsuarioVendedorScopeAggregateType<T>>
+
+    /**
+     * Group by UsuarioVendedorScope.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UsuarioVendedorScopeGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UsuarioVendedorScopeGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UsuarioVendedorScopeGroupByArgs['orderBy'] }
+        : { orderBy?: UsuarioVendedorScopeGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UsuarioVendedorScopeGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUsuarioVendedorScopeGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UsuarioVendedorScope model
+   */
+  readonly fields: UsuarioVendedorScopeFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UsuarioVendedorScope.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UsuarioVendedorScopeClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    usuario<T extends UsuarioDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UsuarioDefaultArgs<ExtArgs>>): Prisma__UsuarioClient<$Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    vendedor<T extends UsuarioVendedorScope$vendedorArgs<ExtArgs> = {}>(args?: Subset<T, UsuarioVendedorScope$vendedorArgs<ExtArgs>>): Prisma__VendedorClient<$Result.GetResult<Prisma.$VendedorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    rifaVendedor<T extends UsuarioVendedorScope$rifaVendedorArgs<ExtArgs> = {}>(args?: Subset<T, UsuarioVendedorScope$rifaVendedorArgs<ExtArgs>>): Prisma__RifaVendedorClient<$Result.GetResult<Prisma.$RifaVendedorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UsuarioVendedorScope model
+   */
+  interface UsuarioVendedorScopeFieldRefs {
+    readonly id: FieldRef<"UsuarioVendedorScope", 'String'>
+    readonly usuarioId: FieldRef<"UsuarioVendedorScope", 'String'>
+    readonly vendedorId: FieldRef<"UsuarioVendedorScope", 'String'>
+    readonly rifaVendedorId: FieldRef<"UsuarioVendedorScope", 'String'>
+    readonly createdAt: FieldRef<"UsuarioVendedorScope", 'DateTime'>
+    readonly updatedAt: FieldRef<"UsuarioVendedorScope", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UsuarioVendedorScope findUnique
+   */
+  export type UsuarioVendedorScopeFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsuarioVendedorScope
+     */
+    select?: UsuarioVendedorScopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsuarioVendedorScope
+     */
+    omit?: UsuarioVendedorScopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsuarioVendedorScopeInclude<ExtArgs> | null
+    /**
+     * Filter, which UsuarioVendedorScope to fetch.
+     */
+    where: UsuarioVendedorScopeWhereUniqueInput
+  }
+
+  /**
+   * UsuarioVendedorScope findUniqueOrThrow
+   */
+  export type UsuarioVendedorScopeFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsuarioVendedorScope
+     */
+    select?: UsuarioVendedorScopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsuarioVendedorScope
+     */
+    omit?: UsuarioVendedorScopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsuarioVendedorScopeInclude<ExtArgs> | null
+    /**
+     * Filter, which UsuarioVendedorScope to fetch.
+     */
+    where: UsuarioVendedorScopeWhereUniqueInput
+  }
+
+  /**
+   * UsuarioVendedorScope findFirst
+   */
+  export type UsuarioVendedorScopeFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsuarioVendedorScope
+     */
+    select?: UsuarioVendedorScopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsuarioVendedorScope
+     */
+    omit?: UsuarioVendedorScopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsuarioVendedorScopeInclude<ExtArgs> | null
+    /**
+     * Filter, which UsuarioVendedorScope to fetch.
+     */
+    where?: UsuarioVendedorScopeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UsuarioVendedorScopes to fetch.
+     */
+    orderBy?: UsuarioVendedorScopeOrderByWithRelationInput | UsuarioVendedorScopeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UsuarioVendedorScopes.
+     */
+    cursor?: UsuarioVendedorScopeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UsuarioVendedorScopes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UsuarioVendedorScopes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UsuarioVendedorScopes.
+     */
+    distinct?: UsuarioVendedorScopeScalarFieldEnum | UsuarioVendedorScopeScalarFieldEnum[]
+  }
+
+  /**
+   * UsuarioVendedorScope findFirstOrThrow
+   */
+  export type UsuarioVendedorScopeFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsuarioVendedorScope
+     */
+    select?: UsuarioVendedorScopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsuarioVendedorScope
+     */
+    omit?: UsuarioVendedorScopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsuarioVendedorScopeInclude<ExtArgs> | null
+    /**
+     * Filter, which UsuarioVendedorScope to fetch.
+     */
+    where?: UsuarioVendedorScopeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UsuarioVendedorScopes to fetch.
+     */
+    orderBy?: UsuarioVendedorScopeOrderByWithRelationInput | UsuarioVendedorScopeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UsuarioVendedorScopes.
+     */
+    cursor?: UsuarioVendedorScopeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UsuarioVendedorScopes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UsuarioVendedorScopes.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UsuarioVendedorScopes.
+     */
+    distinct?: UsuarioVendedorScopeScalarFieldEnum | UsuarioVendedorScopeScalarFieldEnum[]
+  }
+
+  /**
+   * UsuarioVendedorScope findMany
+   */
+  export type UsuarioVendedorScopeFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsuarioVendedorScope
+     */
+    select?: UsuarioVendedorScopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsuarioVendedorScope
+     */
+    omit?: UsuarioVendedorScopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsuarioVendedorScopeInclude<ExtArgs> | null
+    /**
+     * Filter, which UsuarioVendedorScopes to fetch.
+     */
+    where?: UsuarioVendedorScopeWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UsuarioVendedorScopes to fetch.
+     */
+    orderBy?: UsuarioVendedorScopeOrderByWithRelationInput | UsuarioVendedorScopeOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UsuarioVendedorScopes.
+     */
+    cursor?: UsuarioVendedorScopeWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UsuarioVendedorScopes from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UsuarioVendedorScopes.
+     */
+    skip?: number
+    distinct?: UsuarioVendedorScopeScalarFieldEnum | UsuarioVendedorScopeScalarFieldEnum[]
+  }
+
+  /**
+   * UsuarioVendedorScope create
+   */
+  export type UsuarioVendedorScopeCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsuarioVendedorScope
+     */
+    select?: UsuarioVendedorScopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsuarioVendedorScope
+     */
+    omit?: UsuarioVendedorScopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsuarioVendedorScopeInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UsuarioVendedorScope.
+     */
+    data: XOR<UsuarioVendedorScopeCreateInput, UsuarioVendedorScopeUncheckedCreateInput>
+  }
+
+  /**
+   * UsuarioVendedorScope createMany
+   */
+  export type UsuarioVendedorScopeCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UsuarioVendedorScopes.
+     */
+    data: UsuarioVendedorScopeCreateManyInput | UsuarioVendedorScopeCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UsuarioVendedorScope createManyAndReturn
+   */
+  export type UsuarioVendedorScopeCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsuarioVendedorScope
+     */
+    select?: UsuarioVendedorScopeSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsuarioVendedorScope
+     */
+    omit?: UsuarioVendedorScopeOmit<ExtArgs> | null
+    /**
+     * The data used to create many UsuarioVendedorScopes.
+     */
+    data: UsuarioVendedorScopeCreateManyInput | UsuarioVendedorScopeCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsuarioVendedorScopeIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UsuarioVendedorScope update
+   */
+  export type UsuarioVendedorScopeUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsuarioVendedorScope
+     */
+    select?: UsuarioVendedorScopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsuarioVendedorScope
+     */
+    omit?: UsuarioVendedorScopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsuarioVendedorScopeInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UsuarioVendedorScope.
+     */
+    data: XOR<UsuarioVendedorScopeUpdateInput, UsuarioVendedorScopeUncheckedUpdateInput>
+    /**
+     * Choose, which UsuarioVendedorScope to update.
+     */
+    where: UsuarioVendedorScopeWhereUniqueInput
+  }
+
+  /**
+   * UsuarioVendedorScope updateMany
+   */
+  export type UsuarioVendedorScopeUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UsuarioVendedorScopes.
+     */
+    data: XOR<UsuarioVendedorScopeUpdateManyMutationInput, UsuarioVendedorScopeUncheckedUpdateManyInput>
+    /**
+     * Filter which UsuarioVendedorScopes to update
+     */
+    where?: UsuarioVendedorScopeWhereInput
+    /**
+     * Limit how many UsuarioVendedorScopes to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UsuarioVendedorScope updateManyAndReturn
+   */
+  export type UsuarioVendedorScopeUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsuarioVendedorScope
+     */
+    select?: UsuarioVendedorScopeSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsuarioVendedorScope
+     */
+    omit?: UsuarioVendedorScopeOmit<ExtArgs> | null
+    /**
+     * The data used to update UsuarioVendedorScopes.
+     */
+    data: XOR<UsuarioVendedorScopeUpdateManyMutationInput, UsuarioVendedorScopeUncheckedUpdateManyInput>
+    /**
+     * Filter which UsuarioVendedorScopes to update
+     */
+    where?: UsuarioVendedorScopeWhereInput
+    /**
+     * Limit how many UsuarioVendedorScopes to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsuarioVendedorScopeIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UsuarioVendedorScope upsert
+   */
+  export type UsuarioVendedorScopeUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsuarioVendedorScope
+     */
+    select?: UsuarioVendedorScopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsuarioVendedorScope
+     */
+    omit?: UsuarioVendedorScopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsuarioVendedorScopeInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UsuarioVendedorScope to update in case it exists.
+     */
+    where: UsuarioVendedorScopeWhereUniqueInput
+    /**
+     * In case the UsuarioVendedorScope found by the `where` argument doesn't exist, create a new UsuarioVendedorScope with this data.
+     */
+    create: XOR<UsuarioVendedorScopeCreateInput, UsuarioVendedorScopeUncheckedCreateInput>
+    /**
+     * In case the UsuarioVendedorScope was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UsuarioVendedorScopeUpdateInput, UsuarioVendedorScopeUncheckedUpdateInput>
+  }
+
+  /**
+   * UsuarioVendedorScope delete
+   */
+  export type UsuarioVendedorScopeDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsuarioVendedorScope
+     */
+    select?: UsuarioVendedorScopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsuarioVendedorScope
+     */
+    omit?: UsuarioVendedorScopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsuarioVendedorScopeInclude<ExtArgs> | null
+    /**
+     * Filter which UsuarioVendedorScope to delete.
+     */
+    where: UsuarioVendedorScopeWhereUniqueInput
+  }
+
+  /**
+   * UsuarioVendedorScope deleteMany
+   */
+  export type UsuarioVendedorScopeDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UsuarioVendedorScopes to delete
+     */
+    where?: UsuarioVendedorScopeWhereInput
+    /**
+     * Limit how many UsuarioVendedorScopes to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UsuarioVendedorScope.vendedor
+   */
+  export type UsuarioVendedorScope$vendedorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Vendedor
+     */
+    select?: VendedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Vendedor
+     */
+    omit?: VendedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: VendedorInclude<ExtArgs> | null
+    where?: VendedorWhereInput
+  }
+
+  /**
+   * UsuarioVendedorScope.rifaVendedor
+   */
+  export type UsuarioVendedorScope$rifaVendedorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RifaVendedor
+     */
+    select?: RifaVendedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RifaVendedor
+     */
+    omit?: RifaVendedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RifaVendedorInclude<ExtArgs> | null
+    where?: RifaVendedorWhereInput
+  }
+
+  /**
+   * UsuarioVendedorScope without action
+   */
+  export type UsuarioVendedorScopeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UsuarioVendedorScope
+     */
+    select?: UsuarioVendedorScopeSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UsuarioVendedorScope
+     */
+    omit?: UsuarioVendedorScopeOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsuarioVendedorScopeInclude<ExtArgs> | null
   }
 
 
@@ -17957,6 +19508,9 @@ export namespace Prisma {
     email: string | null
     telefono: string | null
     documento: string | null
+    createdByUsuarioId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type ClienteMaxAggregateOutputType = {
@@ -17965,6 +19519,9 @@ export namespace Prisma {
     email: string | null
     telefono: string | null
     documento: string | null
+    createdByUsuarioId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
   }
 
   export type ClienteCountAggregateOutputType = {
@@ -17973,6 +19530,9 @@ export namespace Prisma {
     email: number
     telefono: number
     documento: number
+    createdByUsuarioId: number
+    createdAt: number
+    updatedAt: number
     _all: number
   }
 
@@ -17983,6 +19543,9 @@ export namespace Prisma {
     email?: true
     telefono?: true
     documento?: true
+    createdByUsuarioId?: true
+    createdAt?: true
+    updatedAt?: true
   }
 
   export type ClienteMaxAggregateInputType = {
@@ -17991,6 +19554,9 @@ export namespace Prisma {
     email?: true
     telefono?: true
     documento?: true
+    createdByUsuarioId?: true
+    createdAt?: true
+    updatedAt?: true
   }
 
   export type ClienteCountAggregateInputType = {
@@ -17999,6 +19565,9 @@ export namespace Prisma {
     email?: true
     telefono?: true
     documento?: true
+    createdByUsuarioId?: true
+    createdAt?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -18080,6 +19649,9 @@ export namespace Prisma {
     email: string | null
     telefono: string | null
     documento: string | null
+    createdByUsuarioId: string | null
+    createdAt: Date
+    updatedAt: Date
     _count: ClienteCountAggregateOutputType | null
     _min: ClienteMinAggregateOutputType | null
     _max: ClienteMaxAggregateOutputType | null
@@ -18105,9 +19677,13 @@ export namespace Prisma {
     email?: boolean
     telefono?: boolean
     documento?: boolean
+    createdByUsuarioId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
     ventas?: boolean | Cliente$ventasArgs<ExtArgs>
     boletas?: boolean | Cliente$boletasArgs<ExtArgs>
     movimientos?: boolean | Cliente$movimientosArgs<ExtArgs>
+    createdByUsuario?: boolean | Cliente$createdByUsuarioArgs<ExtArgs>
     _count?: boolean | ClienteCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["cliente"]>
 
@@ -18117,6 +19693,10 @@ export namespace Prisma {
     email?: boolean
     telefono?: boolean
     documento?: boolean
+    createdByUsuarioId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdByUsuario?: boolean | Cliente$createdByUsuarioArgs<ExtArgs>
   }, ExtArgs["result"]["cliente"]>
 
   export type ClienteSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -18125,6 +19705,10 @@ export namespace Prisma {
     email?: boolean
     telefono?: boolean
     documento?: boolean
+    createdByUsuarioId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdByUsuario?: boolean | Cliente$createdByUsuarioArgs<ExtArgs>
   }, ExtArgs["result"]["cliente"]>
 
   export type ClienteSelectScalar = {
@@ -18133,17 +19717,25 @@ export namespace Prisma {
     email?: boolean
     telefono?: boolean
     documento?: boolean
+    createdByUsuarioId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
   }
 
-  export type ClienteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nombre" | "email" | "telefono" | "documento", ExtArgs["result"]["cliente"]>
+  export type ClienteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nombre" | "email" | "telefono" | "documento" | "createdByUsuarioId" | "createdAt" | "updatedAt", ExtArgs["result"]["cliente"]>
   export type ClienteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     ventas?: boolean | Cliente$ventasArgs<ExtArgs>
     boletas?: boolean | Cliente$boletasArgs<ExtArgs>
     movimientos?: boolean | Cliente$movimientosArgs<ExtArgs>
+    createdByUsuario?: boolean | Cliente$createdByUsuarioArgs<ExtArgs>
     _count?: boolean | ClienteCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type ClienteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
-  export type ClienteIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ClienteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdByUsuario?: boolean | Cliente$createdByUsuarioArgs<ExtArgs>
+  }
+  export type ClienteIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdByUsuario?: boolean | Cliente$createdByUsuarioArgs<ExtArgs>
+  }
 
   export type $ClientePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Cliente"
@@ -18151,6 +19743,7 @@ export namespace Prisma {
       ventas: Prisma.$VentaPayload<ExtArgs>[]
       boletas: Prisma.$BoletaPayload<ExtArgs>[]
       movimientos: Prisma.$MovimientoCajaPayload<ExtArgs>[]
+      createdByUsuario: Prisma.$UsuarioPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -18158,6 +19751,9 @@ export namespace Prisma {
       email: string | null
       telefono: string | null
       documento: string | null
+      createdByUsuarioId: string | null
+      createdAt: Date
+      updatedAt: Date
     }, ExtArgs["result"]["cliente"]>
     composites: {}
   }
@@ -18555,6 +20151,7 @@ export namespace Prisma {
     ventas<T extends Cliente$ventasArgs<ExtArgs> = {}>(args?: Subset<T, Cliente$ventasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$VentaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     boletas<T extends Cliente$boletasArgs<ExtArgs> = {}>(args?: Subset<T, Cliente$boletasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoletaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     movimientos<T extends Cliente$movimientosArgs<ExtArgs> = {}>(args?: Subset<T, Cliente$movimientosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MovimientoCajaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    createdByUsuario<T extends Cliente$createdByUsuarioArgs<ExtArgs> = {}>(args?: Subset<T, Cliente$createdByUsuarioArgs<ExtArgs>>): Prisma__UsuarioClient<$Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18589,6 +20186,9 @@ export namespace Prisma {
     readonly email: FieldRef<"Cliente", 'String'>
     readonly telefono: FieldRef<"Cliente", 'String'>
     readonly documento: FieldRef<"Cliente", 'String'>
+    readonly createdByUsuarioId: FieldRef<"Cliente", 'String'>
+    readonly createdAt: FieldRef<"Cliente", 'DateTime'>
+    readonly updatedAt: FieldRef<"Cliente", 'DateTime'>
   }
     
 
@@ -18838,6 +20438,10 @@ export namespace Prisma {
      */
     data: ClienteCreateManyInput | ClienteCreateManyInput[]
     skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClienteIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -18908,6 +20512,10 @@ export namespace Prisma {
      * Limit how many Clientes to update.
      */
     limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClienteIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -19049,6 +20657,25 @@ export namespace Prisma {
   }
 
   /**
+   * Cliente.createdByUsuario
+   */
+  export type Cliente$createdByUsuarioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Usuario
+     */
+    select?: UsuarioSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Usuario
+     */
+    omit?: UsuarioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsuarioInclude<ExtArgs> | null
+    where?: UsuarioWhereInput
+  }
+
+  /**
    * Cliente without action
    */
   export type ClienteDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19093,6 +20720,15 @@ export namespace Prisma {
     id: string | null
     clienteId: string | null
     rifaId: string | null
+    rifaVendedorId: string | null
+    canalOrigen: string | null
+    referenciaExterna: string | null
+    sesionExternaId: string | null
+    linkPagoUrl: string | null
+    linkPagoEnviadoAt: Date | null
+    linkPagoAbiertoAt: Date | null
+    requiereSeguimientoHumano: boolean | null
+    seguimientoMotivo: string | null
     estado: $Enums.EstadoVenta | null
     total: Decimal | null
     saldoPendiente: Decimal | null
@@ -19108,6 +20744,15 @@ export namespace Prisma {
     id: string | null
     clienteId: string | null
     rifaId: string | null
+    rifaVendedorId: string | null
+    canalOrigen: string | null
+    referenciaExterna: string | null
+    sesionExternaId: string | null
+    linkPagoUrl: string | null
+    linkPagoEnviadoAt: Date | null
+    linkPagoAbiertoAt: Date | null
+    requiereSeguimientoHumano: boolean | null
+    seguimientoMotivo: string | null
     estado: $Enums.EstadoVenta | null
     total: Decimal | null
     saldoPendiente: Decimal | null
@@ -19123,6 +20768,15 @@ export namespace Prisma {
     id: number
     clienteId: number
     rifaId: number
+    rifaVendedorId: number
+    canalOrigen: number
+    referenciaExterna: number
+    sesionExternaId: number
+    linkPagoUrl: number
+    linkPagoEnviadoAt: number
+    linkPagoAbiertoAt: number
+    requiereSeguimientoHumano: number
+    seguimientoMotivo: number
     estado: number
     total: number
     saldoPendiente: number
@@ -19150,6 +20804,15 @@ export namespace Prisma {
     id?: true
     clienteId?: true
     rifaId?: true
+    rifaVendedorId?: true
+    canalOrigen?: true
+    referenciaExterna?: true
+    sesionExternaId?: true
+    linkPagoUrl?: true
+    linkPagoEnviadoAt?: true
+    linkPagoAbiertoAt?: true
+    requiereSeguimientoHumano?: true
+    seguimientoMotivo?: true
     estado?: true
     total?: true
     saldoPendiente?: true
@@ -19165,6 +20828,15 @@ export namespace Prisma {
     id?: true
     clienteId?: true
     rifaId?: true
+    rifaVendedorId?: true
+    canalOrigen?: true
+    referenciaExterna?: true
+    sesionExternaId?: true
+    linkPagoUrl?: true
+    linkPagoEnviadoAt?: true
+    linkPagoAbiertoAt?: true
+    requiereSeguimientoHumano?: true
+    seguimientoMotivo?: true
     estado?: true
     total?: true
     saldoPendiente?: true
@@ -19180,6 +20852,15 @@ export namespace Prisma {
     id?: true
     clienteId?: true
     rifaId?: true
+    rifaVendedorId?: true
+    canalOrigen?: true
+    referenciaExterna?: true
+    sesionExternaId?: true
+    linkPagoUrl?: true
+    linkPagoEnviadoAt?: true
+    linkPagoAbiertoAt?: true
+    requiereSeguimientoHumano?: true
+    seguimientoMotivo?: true
     estado?: true
     total?: true
     saldoPendiente?: true
@@ -19282,6 +20963,15 @@ export namespace Prisma {
     id: string
     clienteId: string
     rifaId: string
+    rifaVendedorId: string | null
+    canalOrigen: string | null
+    referenciaExterna: string | null
+    sesionExternaId: string | null
+    linkPagoUrl: string | null
+    linkPagoEnviadoAt: Date | null
+    linkPagoAbiertoAt: Date | null
+    requiereSeguimientoHumano: boolean
+    seguimientoMotivo: string | null
     estado: $Enums.EstadoVenta
     total: Decimal
     saldoPendiente: Decimal
@@ -19316,6 +21006,15 @@ export namespace Prisma {
     id?: boolean
     clienteId?: boolean
     rifaId?: boolean
+    rifaVendedorId?: boolean
+    canalOrigen?: boolean
+    referenciaExterna?: boolean
+    sesionExternaId?: boolean
+    linkPagoUrl?: boolean
+    linkPagoEnviadoAt?: boolean
+    linkPagoAbiertoAt?: boolean
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: boolean
     estado?: boolean
     total?: boolean
     saldoPendiente?: boolean
@@ -19327,6 +21026,7 @@ export namespace Prisma {
     updatedAt?: boolean
     cliente?: boolean | ClienteDefaultArgs<ExtArgs>
     rifa?: boolean | RifaDefaultArgs<ExtArgs>
+    rifaVendedor?: boolean | Venta$rifaVendedorArgs<ExtArgs>
     boletas?: boolean | Venta$boletasArgs<ExtArgs>
     pagos?: boolean | Venta$pagosArgs<ExtArgs>
     movimientos?: boolean | Venta$movimientosArgs<ExtArgs>
@@ -19337,6 +21037,15 @@ export namespace Prisma {
     id?: boolean
     clienteId?: boolean
     rifaId?: boolean
+    rifaVendedorId?: boolean
+    canalOrigen?: boolean
+    referenciaExterna?: boolean
+    sesionExternaId?: boolean
+    linkPagoUrl?: boolean
+    linkPagoEnviadoAt?: boolean
+    linkPagoAbiertoAt?: boolean
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: boolean
     estado?: boolean
     total?: boolean
     saldoPendiente?: boolean
@@ -19348,12 +21057,22 @@ export namespace Prisma {
     updatedAt?: boolean
     cliente?: boolean | ClienteDefaultArgs<ExtArgs>
     rifa?: boolean | RifaDefaultArgs<ExtArgs>
+    rifaVendedor?: boolean | Venta$rifaVendedorArgs<ExtArgs>
   }, ExtArgs["result"]["venta"]>
 
   export type VentaSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     clienteId?: boolean
     rifaId?: boolean
+    rifaVendedorId?: boolean
+    canalOrigen?: boolean
+    referenciaExterna?: boolean
+    sesionExternaId?: boolean
+    linkPagoUrl?: boolean
+    linkPagoEnviadoAt?: boolean
+    linkPagoAbiertoAt?: boolean
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: boolean
     estado?: boolean
     total?: boolean
     saldoPendiente?: boolean
@@ -19365,12 +21084,22 @@ export namespace Prisma {
     updatedAt?: boolean
     cliente?: boolean | ClienteDefaultArgs<ExtArgs>
     rifa?: boolean | RifaDefaultArgs<ExtArgs>
+    rifaVendedor?: boolean | Venta$rifaVendedorArgs<ExtArgs>
   }, ExtArgs["result"]["venta"]>
 
   export type VentaSelectScalar = {
     id?: boolean
     clienteId?: boolean
     rifaId?: boolean
+    rifaVendedorId?: boolean
+    canalOrigen?: boolean
+    referenciaExterna?: boolean
+    sesionExternaId?: boolean
+    linkPagoUrl?: boolean
+    linkPagoEnviadoAt?: boolean
+    linkPagoAbiertoAt?: boolean
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: boolean
     estado?: boolean
     total?: boolean
     saldoPendiente?: boolean
@@ -19382,10 +21111,11 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type VentaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clienteId" | "rifaId" | "estado" | "total" | "saldoPendiente" | "referenciaPago" | "pasarelaPago" | "pasarelaEstado" | "pasarelaTransaccionId" | "createdAt" | "updatedAt", ExtArgs["result"]["venta"]>
+  export type VentaOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "clienteId" | "rifaId" | "rifaVendedorId" | "canalOrigen" | "referenciaExterna" | "sesionExternaId" | "linkPagoUrl" | "linkPagoEnviadoAt" | "linkPagoAbiertoAt" | "requiereSeguimientoHumano" | "seguimientoMotivo" | "estado" | "total" | "saldoPendiente" | "referenciaPago" | "pasarelaPago" | "pasarelaEstado" | "pasarelaTransaccionId" | "createdAt" | "updatedAt", ExtArgs["result"]["venta"]>
   export type VentaInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     cliente?: boolean | ClienteDefaultArgs<ExtArgs>
     rifa?: boolean | RifaDefaultArgs<ExtArgs>
+    rifaVendedor?: boolean | Venta$rifaVendedorArgs<ExtArgs>
     boletas?: boolean | Venta$boletasArgs<ExtArgs>
     pagos?: boolean | Venta$pagosArgs<ExtArgs>
     movimientos?: boolean | Venta$movimientosArgs<ExtArgs>
@@ -19394,10 +21124,12 @@ export namespace Prisma {
   export type VentaIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     cliente?: boolean | ClienteDefaultArgs<ExtArgs>
     rifa?: boolean | RifaDefaultArgs<ExtArgs>
+    rifaVendedor?: boolean | Venta$rifaVendedorArgs<ExtArgs>
   }
   export type VentaIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     cliente?: boolean | ClienteDefaultArgs<ExtArgs>
     rifa?: boolean | RifaDefaultArgs<ExtArgs>
+    rifaVendedor?: boolean | Venta$rifaVendedorArgs<ExtArgs>
   }
 
   export type $VentaPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19405,6 +21137,7 @@ export namespace Prisma {
     objects: {
       cliente: Prisma.$ClientePayload<ExtArgs>
       rifa: Prisma.$RifaPayload<ExtArgs>
+      rifaVendedor: Prisma.$RifaVendedorPayload<ExtArgs> | null
       boletas: Prisma.$BoletaPayload<ExtArgs>[]
       pagos: Prisma.$PagoClientePayload<ExtArgs>[]
       movimientos: Prisma.$MovimientoCajaPayload<ExtArgs>[]
@@ -19413,6 +21146,15 @@ export namespace Prisma {
       id: string
       clienteId: string
       rifaId: string
+      rifaVendedorId: string | null
+      canalOrigen: string | null
+      referenciaExterna: string | null
+      sesionExternaId: string | null
+      linkPagoUrl: string | null
+      linkPagoEnviadoAt: Date | null
+      linkPagoAbiertoAt: Date | null
+      requiereSeguimientoHumano: boolean
+      seguimientoMotivo: string | null
       estado: $Enums.EstadoVenta
       total: Prisma.Decimal
       saldoPendiente: Prisma.Decimal
@@ -19818,6 +21560,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     cliente<T extends ClienteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ClienteDefaultArgs<ExtArgs>>): Prisma__ClienteClient<$Result.GetResult<Prisma.$ClientePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     rifa<T extends RifaDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RifaDefaultArgs<ExtArgs>>): Prisma__RifaClient<$Result.GetResult<Prisma.$RifaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    rifaVendedor<T extends Venta$rifaVendedorArgs<ExtArgs> = {}>(args?: Subset<T, Venta$rifaVendedorArgs<ExtArgs>>): Prisma__RifaVendedorClient<$Result.GetResult<Prisma.$RifaVendedorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     boletas<T extends Venta$boletasArgs<ExtArgs> = {}>(args?: Subset<T, Venta$boletasArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BoletaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     pagos<T extends Venta$pagosArgs<ExtArgs> = {}>(args?: Subset<T, Venta$pagosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PagoClientePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     movimientos<T extends Venta$movimientosArgs<ExtArgs> = {}>(args?: Subset<T, Venta$movimientosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MovimientoCajaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -19853,6 +21596,15 @@ export namespace Prisma {
     readonly id: FieldRef<"Venta", 'String'>
     readonly clienteId: FieldRef<"Venta", 'String'>
     readonly rifaId: FieldRef<"Venta", 'String'>
+    readonly rifaVendedorId: FieldRef<"Venta", 'String'>
+    readonly canalOrigen: FieldRef<"Venta", 'String'>
+    readonly referenciaExterna: FieldRef<"Venta", 'String'>
+    readonly sesionExternaId: FieldRef<"Venta", 'String'>
+    readonly linkPagoUrl: FieldRef<"Venta", 'String'>
+    readonly linkPagoEnviadoAt: FieldRef<"Venta", 'DateTime'>
+    readonly linkPagoAbiertoAt: FieldRef<"Venta", 'DateTime'>
+    readonly requiereSeguimientoHumano: FieldRef<"Venta", 'Boolean'>
+    readonly seguimientoMotivo: FieldRef<"Venta", 'String'>
     readonly estado: FieldRef<"Venta", 'EstadoVenta'>
     readonly total: FieldRef<"Venta", 'Decimal'>
     readonly saldoPendiente: FieldRef<"Venta", 'Decimal'>
@@ -20258,6 +22010,25 @@ export namespace Prisma {
   }
 
   /**
+   * Venta.rifaVendedor
+   */
+  export type Venta$rifaVendedorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the RifaVendedor
+     */
+    select?: RifaVendedorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the RifaVendedor
+     */
+    omit?: RifaVendedorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RifaVendedorInclude<ExtArgs> | null
+    where?: RifaVendedorWhereInput
+  }
+
+  /**
    * Venta.boletas
    */
   export type Venta$boletasArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -20375,6 +22146,9 @@ export namespace Prisma {
     fecha: Date | null
     metodoPago: $Enums.MetodoPago | null
     estado: $Enums.EstadoPago | null
+    descripcion: string | null
+    subCajaId: string | null
+    usuarioId: string | null
   }
 
   export type PagoClienteMaxAggregateOutputType = {
@@ -20384,6 +22158,9 @@ export namespace Prisma {
     fecha: Date | null
     metodoPago: $Enums.MetodoPago | null
     estado: $Enums.EstadoPago | null
+    descripcion: string | null
+    subCajaId: string | null
+    usuarioId: string | null
   }
 
   export type PagoClienteCountAggregateOutputType = {
@@ -20393,6 +22170,9 @@ export namespace Prisma {
     fecha: number
     metodoPago: number
     estado: number
+    descripcion: number
+    subCajaId: number
+    usuarioId: number
     _all: number
   }
 
@@ -20412,6 +22192,9 @@ export namespace Prisma {
     fecha?: true
     metodoPago?: true
     estado?: true
+    descripcion?: true
+    subCajaId?: true
+    usuarioId?: true
   }
 
   export type PagoClienteMaxAggregateInputType = {
@@ -20421,6 +22204,9 @@ export namespace Prisma {
     fecha?: true
     metodoPago?: true
     estado?: true
+    descripcion?: true
+    subCajaId?: true
+    usuarioId?: true
   }
 
   export type PagoClienteCountAggregateInputType = {
@@ -20430,6 +22216,9 @@ export namespace Prisma {
     fecha?: true
     metodoPago?: true
     estado?: true
+    descripcion?: true
+    subCajaId?: true
+    usuarioId?: true
     _all?: true
   }
 
@@ -20526,6 +22315,9 @@ export namespace Prisma {
     fecha: Date
     metodoPago: $Enums.MetodoPago
     estado: $Enums.EstadoPago
+    descripcion: string | null
+    subCajaId: string | null
+    usuarioId: string | null
     _count: PagoClienteCountAggregateOutputType | null
     _avg: PagoClienteAvgAggregateOutputType | null
     _sum: PagoClienteSumAggregateOutputType | null
@@ -20554,7 +22346,13 @@ export namespace Prisma {
     fecha?: boolean
     metodoPago?: boolean
     estado?: boolean
+    descripcion?: boolean
+    subCajaId?: boolean
+    usuarioId?: boolean
     venta?: boolean | VentaDefaultArgs<ExtArgs>
+    subCaja?: boolean | PagoCliente$subCajaArgs<ExtArgs>
+    usuario?: boolean | PagoCliente$usuarioArgs<ExtArgs>
+    recibo?: boolean | PagoCliente$reciboArgs<ExtArgs>
     movimientos?: boolean | PagoCliente$movimientosArgs<ExtArgs>
     _count?: boolean | PagoClienteCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["pagoCliente"]>
@@ -20566,7 +22364,12 @@ export namespace Prisma {
     fecha?: boolean
     metodoPago?: boolean
     estado?: boolean
+    descripcion?: boolean
+    subCajaId?: boolean
+    usuarioId?: boolean
     venta?: boolean | VentaDefaultArgs<ExtArgs>
+    subCaja?: boolean | PagoCliente$subCajaArgs<ExtArgs>
+    usuario?: boolean | PagoCliente$usuarioArgs<ExtArgs>
   }, ExtArgs["result"]["pagoCliente"]>
 
   export type PagoClienteSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -20576,7 +22379,12 @@ export namespace Prisma {
     fecha?: boolean
     metodoPago?: boolean
     estado?: boolean
+    descripcion?: boolean
+    subCajaId?: boolean
+    usuarioId?: boolean
     venta?: boolean | VentaDefaultArgs<ExtArgs>
+    subCaja?: boolean | PagoCliente$subCajaArgs<ExtArgs>
+    usuario?: boolean | PagoCliente$usuarioArgs<ExtArgs>
   }, ExtArgs["result"]["pagoCliente"]>
 
   export type PagoClienteSelectScalar = {
@@ -20586,25 +22394,38 @@ export namespace Prisma {
     fecha?: boolean
     metodoPago?: boolean
     estado?: boolean
+    descripcion?: boolean
+    subCajaId?: boolean
+    usuarioId?: boolean
   }
 
-  export type PagoClienteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "ventaId" | "monto" | "fecha" | "metodoPago" | "estado", ExtArgs["result"]["pagoCliente"]>
+  export type PagoClienteOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "ventaId" | "monto" | "fecha" | "metodoPago" | "estado" | "descripcion" | "subCajaId" | "usuarioId", ExtArgs["result"]["pagoCliente"]>
   export type PagoClienteInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     venta?: boolean | VentaDefaultArgs<ExtArgs>
+    subCaja?: boolean | PagoCliente$subCajaArgs<ExtArgs>
+    usuario?: boolean | PagoCliente$usuarioArgs<ExtArgs>
+    recibo?: boolean | PagoCliente$reciboArgs<ExtArgs>
     movimientos?: boolean | PagoCliente$movimientosArgs<ExtArgs>
     _count?: boolean | PagoClienteCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PagoClienteIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     venta?: boolean | VentaDefaultArgs<ExtArgs>
+    subCaja?: boolean | PagoCliente$subCajaArgs<ExtArgs>
+    usuario?: boolean | PagoCliente$usuarioArgs<ExtArgs>
   }
   export type PagoClienteIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     venta?: boolean | VentaDefaultArgs<ExtArgs>
+    subCaja?: boolean | PagoCliente$subCajaArgs<ExtArgs>
+    usuario?: boolean | PagoCliente$usuarioArgs<ExtArgs>
   }
 
   export type $PagoClientePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "PagoCliente"
     objects: {
       venta: Prisma.$VentaPayload<ExtArgs>
+      subCaja: Prisma.$SubCajaPayload<ExtArgs> | null
+      usuario: Prisma.$UsuarioPayload<ExtArgs> | null
+      recibo: Prisma.$PagoClienteReciboPayload<ExtArgs> | null
       movimientos: Prisma.$MovimientoCajaPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -20614,6 +22435,9 @@ export namespace Prisma {
       fecha: Date
       metodoPago: $Enums.MetodoPago
       estado: $Enums.EstadoPago
+      descripcion: string | null
+      subCajaId: string | null
+      usuarioId: string | null
     }, ExtArgs["result"]["pagoCliente"]>
     composites: {}
   }
@@ -21009,6 +22833,9 @@ export namespace Prisma {
   export interface Prisma__PagoClienteClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     venta<T extends VentaDefaultArgs<ExtArgs> = {}>(args?: Subset<T, VentaDefaultArgs<ExtArgs>>): Prisma__VentaClient<$Result.GetResult<Prisma.$VentaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    subCaja<T extends PagoCliente$subCajaArgs<ExtArgs> = {}>(args?: Subset<T, PagoCliente$subCajaArgs<ExtArgs>>): Prisma__SubCajaClient<$Result.GetResult<Prisma.$SubCajaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    usuario<T extends PagoCliente$usuarioArgs<ExtArgs> = {}>(args?: Subset<T, PagoCliente$usuarioArgs<ExtArgs>>): Prisma__UsuarioClient<$Result.GetResult<Prisma.$UsuarioPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    recibo<T extends PagoCliente$reciboArgs<ExtArgs> = {}>(args?: Subset<T, PagoCliente$reciboArgs<ExtArgs>>): Prisma__PagoClienteReciboClient<$Result.GetResult<Prisma.$PagoClienteReciboPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     movimientos<T extends PagoCliente$movimientosArgs<ExtArgs> = {}>(args?: Subset<T, PagoCliente$movimientosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MovimientoCajaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -21045,6 +22872,9 @@ export namespace Prisma {
     readonly fecha: FieldRef<"PagoCliente", 'DateTime'>
     readonly metodoPago: FieldRef<"PagoCliente", 'MetodoPago'>
     readonly estado: FieldRef<"PagoCliente", 'EstadoPago'>
+    readonly descripcion: FieldRef<"PagoCliente", 'String'>
+    readonly subCajaId: FieldRef<"PagoCliente", 'String'>
+    readonly usuarioId: FieldRef<"PagoCliente", 'String'>
   }
     
 
@@ -21441,6 +23271,63 @@ export namespace Prisma {
   }
 
   /**
+   * PagoCliente.subCaja
+   */
+  export type PagoCliente$subCajaArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubCaja
+     */
+    select?: SubCajaSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SubCaja
+     */
+    omit?: SubCajaOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubCajaInclude<ExtArgs> | null
+    where?: SubCajaWhereInput
+  }
+
+  /**
+   * PagoCliente.usuario
+   */
+  export type PagoCliente$usuarioArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Usuario
+     */
+    select?: UsuarioSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Usuario
+     */
+    omit?: UsuarioOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UsuarioInclude<ExtArgs> | null
+    where?: UsuarioWhereInput
+  }
+
+  /**
+   * PagoCliente.recibo
+   */
+  export type PagoCliente$reciboArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PagoClienteRecibo
+     */
+    select?: PagoClienteReciboSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PagoClienteRecibo
+     */
+    omit?: PagoClienteReciboOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagoClienteReciboInclude<ExtArgs> | null
+    where?: PagoClienteReciboWhereInput
+  }
+
+  /**
    * PagoCliente.movimientos
    */
   export type PagoCliente$movimientosArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -21480,6 +23367,1098 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: PagoClienteInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PagoClienteRecibo
+   */
+
+  export type AggregatePagoClienteRecibo = {
+    _count: PagoClienteReciboCountAggregateOutputType | null
+    _avg: PagoClienteReciboAvgAggregateOutputType | null
+    _sum: PagoClienteReciboSumAggregateOutputType | null
+    _min: PagoClienteReciboMinAggregateOutputType | null
+    _max: PagoClienteReciboMaxAggregateOutputType | null
+  }
+
+  export type PagoClienteReciboAvgAggregateOutputType = {
+    consecutivo: number | null
+  }
+
+  export type PagoClienteReciboSumAggregateOutputType = {
+    consecutivo: number | null
+  }
+
+  export type PagoClienteReciboMinAggregateOutputType = {
+    id: string | null
+    pagoClienteId: string | null
+    consecutivo: number | null
+    codigoUnico: string | null
+    fecha: Date | null
+  }
+
+  export type PagoClienteReciboMaxAggregateOutputType = {
+    id: string | null
+    pagoClienteId: string | null
+    consecutivo: number | null
+    codigoUnico: string | null
+    fecha: Date | null
+  }
+
+  export type PagoClienteReciboCountAggregateOutputType = {
+    id: number
+    pagoClienteId: number
+    consecutivo: number
+    codigoUnico: number
+    fecha: number
+    _all: number
+  }
+
+
+  export type PagoClienteReciboAvgAggregateInputType = {
+    consecutivo?: true
+  }
+
+  export type PagoClienteReciboSumAggregateInputType = {
+    consecutivo?: true
+  }
+
+  export type PagoClienteReciboMinAggregateInputType = {
+    id?: true
+    pagoClienteId?: true
+    consecutivo?: true
+    codigoUnico?: true
+    fecha?: true
+  }
+
+  export type PagoClienteReciboMaxAggregateInputType = {
+    id?: true
+    pagoClienteId?: true
+    consecutivo?: true
+    codigoUnico?: true
+    fecha?: true
+  }
+
+  export type PagoClienteReciboCountAggregateInputType = {
+    id?: true
+    pagoClienteId?: true
+    consecutivo?: true
+    codigoUnico?: true
+    fecha?: true
+    _all?: true
+  }
+
+  export type PagoClienteReciboAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PagoClienteRecibo to aggregate.
+     */
+    where?: PagoClienteReciboWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PagoClienteRecibos to fetch.
+     */
+    orderBy?: PagoClienteReciboOrderByWithRelationInput | PagoClienteReciboOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PagoClienteReciboWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PagoClienteRecibos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PagoClienteRecibos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PagoClienteRecibos
+    **/
+    _count?: true | PagoClienteReciboCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PagoClienteReciboAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PagoClienteReciboSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PagoClienteReciboMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PagoClienteReciboMaxAggregateInputType
+  }
+
+  export type GetPagoClienteReciboAggregateType<T extends PagoClienteReciboAggregateArgs> = {
+        [P in keyof T & keyof AggregatePagoClienteRecibo]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePagoClienteRecibo[P]>
+      : GetScalarType<T[P], AggregatePagoClienteRecibo[P]>
+  }
+
+
+
+
+  export type PagoClienteReciboGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PagoClienteReciboWhereInput
+    orderBy?: PagoClienteReciboOrderByWithAggregationInput | PagoClienteReciboOrderByWithAggregationInput[]
+    by: PagoClienteReciboScalarFieldEnum[] | PagoClienteReciboScalarFieldEnum
+    having?: PagoClienteReciboScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PagoClienteReciboCountAggregateInputType | true
+    _avg?: PagoClienteReciboAvgAggregateInputType
+    _sum?: PagoClienteReciboSumAggregateInputType
+    _min?: PagoClienteReciboMinAggregateInputType
+    _max?: PagoClienteReciboMaxAggregateInputType
+  }
+
+  export type PagoClienteReciboGroupByOutputType = {
+    id: string
+    pagoClienteId: string
+    consecutivo: number
+    codigoUnico: string
+    fecha: Date
+    _count: PagoClienteReciboCountAggregateOutputType | null
+    _avg: PagoClienteReciboAvgAggregateOutputType | null
+    _sum: PagoClienteReciboSumAggregateOutputType | null
+    _min: PagoClienteReciboMinAggregateOutputType | null
+    _max: PagoClienteReciboMaxAggregateOutputType | null
+  }
+
+  type GetPagoClienteReciboGroupByPayload<T extends PagoClienteReciboGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PagoClienteReciboGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PagoClienteReciboGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PagoClienteReciboGroupByOutputType[P]>
+            : GetScalarType<T[P], PagoClienteReciboGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PagoClienteReciboSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    pagoClienteId?: boolean
+    consecutivo?: boolean
+    codigoUnico?: boolean
+    fecha?: boolean
+    pagoCliente?: boolean | PagoClienteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pagoClienteRecibo"]>
+
+  export type PagoClienteReciboSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    pagoClienteId?: boolean
+    consecutivo?: boolean
+    codigoUnico?: boolean
+    fecha?: boolean
+    pagoCliente?: boolean | PagoClienteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pagoClienteRecibo"]>
+
+  export type PagoClienteReciboSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    pagoClienteId?: boolean
+    consecutivo?: boolean
+    codigoUnico?: boolean
+    fecha?: boolean
+    pagoCliente?: boolean | PagoClienteDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["pagoClienteRecibo"]>
+
+  export type PagoClienteReciboSelectScalar = {
+    id?: boolean
+    pagoClienteId?: boolean
+    consecutivo?: boolean
+    codigoUnico?: boolean
+    fecha?: boolean
+  }
+
+  export type PagoClienteReciboOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "pagoClienteId" | "consecutivo" | "codigoUnico" | "fecha", ExtArgs["result"]["pagoClienteRecibo"]>
+  export type PagoClienteReciboInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    pagoCliente?: boolean | PagoClienteDefaultArgs<ExtArgs>
+  }
+  export type PagoClienteReciboIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    pagoCliente?: boolean | PagoClienteDefaultArgs<ExtArgs>
+  }
+  export type PagoClienteReciboIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    pagoCliente?: boolean | PagoClienteDefaultArgs<ExtArgs>
+  }
+
+  export type $PagoClienteReciboPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PagoClienteRecibo"
+    objects: {
+      pagoCliente: Prisma.$PagoClientePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      pagoClienteId: string
+      consecutivo: number
+      codigoUnico: string
+      fecha: Date
+    }, ExtArgs["result"]["pagoClienteRecibo"]>
+    composites: {}
+  }
+
+  type PagoClienteReciboGetPayload<S extends boolean | null | undefined | PagoClienteReciboDefaultArgs> = $Result.GetResult<Prisma.$PagoClienteReciboPayload, S>
+
+  type PagoClienteReciboCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PagoClienteReciboFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PagoClienteReciboCountAggregateInputType | true
+    }
+
+  export interface PagoClienteReciboDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PagoClienteRecibo'], meta: { name: 'PagoClienteRecibo' } }
+    /**
+     * Find zero or one PagoClienteRecibo that matches the filter.
+     * @param {PagoClienteReciboFindUniqueArgs} args - Arguments to find a PagoClienteRecibo
+     * @example
+     * // Get one PagoClienteRecibo
+     * const pagoClienteRecibo = await prisma.pagoClienteRecibo.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PagoClienteReciboFindUniqueArgs>(args: SelectSubset<T, PagoClienteReciboFindUniqueArgs<ExtArgs>>): Prisma__PagoClienteReciboClient<$Result.GetResult<Prisma.$PagoClienteReciboPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PagoClienteRecibo that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PagoClienteReciboFindUniqueOrThrowArgs} args - Arguments to find a PagoClienteRecibo
+     * @example
+     * // Get one PagoClienteRecibo
+     * const pagoClienteRecibo = await prisma.pagoClienteRecibo.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PagoClienteReciboFindUniqueOrThrowArgs>(args: SelectSubset<T, PagoClienteReciboFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PagoClienteReciboClient<$Result.GetResult<Prisma.$PagoClienteReciboPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PagoClienteRecibo that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PagoClienteReciboFindFirstArgs} args - Arguments to find a PagoClienteRecibo
+     * @example
+     * // Get one PagoClienteRecibo
+     * const pagoClienteRecibo = await prisma.pagoClienteRecibo.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PagoClienteReciboFindFirstArgs>(args?: SelectSubset<T, PagoClienteReciboFindFirstArgs<ExtArgs>>): Prisma__PagoClienteReciboClient<$Result.GetResult<Prisma.$PagoClienteReciboPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PagoClienteRecibo that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PagoClienteReciboFindFirstOrThrowArgs} args - Arguments to find a PagoClienteRecibo
+     * @example
+     * // Get one PagoClienteRecibo
+     * const pagoClienteRecibo = await prisma.pagoClienteRecibo.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PagoClienteReciboFindFirstOrThrowArgs>(args?: SelectSubset<T, PagoClienteReciboFindFirstOrThrowArgs<ExtArgs>>): Prisma__PagoClienteReciboClient<$Result.GetResult<Prisma.$PagoClienteReciboPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PagoClienteRecibos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PagoClienteReciboFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PagoClienteRecibos
+     * const pagoClienteRecibos = await prisma.pagoClienteRecibo.findMany()
+     * 
+     * // Get first 10 PagoClienteRecibos
+     * const pagoClienteRecibos = await prisma.pagoClienteRecibo.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const pagoClienteReciboWithIdOnly = await prisma.pagoClienteRecibo.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PagoClienteReciboFindManyArgs>(args?: SelectSubset<T, PagoClienteReciboFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PagoClienteReciboPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PagoClienteRecibo.
+     * @param {PagoClienteReciboCreateArgs} args - Arguments to create a PagoClienteRecibo.
+     * @example
+     * // Create one PagoClienteRecibo
+     * const PagoClienteRecibo = await prisma.pagoClienteRecibo.create({
+     *   data: {
+     *     // ... data to create a PagoClienteRecibo
+     *   }
+     * })
+     * 
+     */
+    create<T extends PagoClienteReciboCreateArgs>(args: SelectSubset<T, PagoClienteReciboCreateArgs<ExtArgs>>): Prisma__PagoClienteReciboClient<$Result.GetResult<Prisma.$PagoClienteReciboPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PagoClienteRecibos.
+     * @param {PagoClienteReciboCreateManyArgs} args - Arguments to create many PagoClienteRecibos.
+     * @example
+     * // Create many PagoClienteRecibos
+     * const pagoClienteRecibo = await prisma.pagoClienteRecibo.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PagoClienteReciboCreateManyArgs>(args?: SelectSubset<T, PagoClienteReciboCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PagoClienteRecibos and returns the data saved in the database.
+     * @param {PagoClienteReciboCreateManyAndReturnArgs} args - Arguments to create many PagoClienteRecibos.
+     * @example
+     * // Create many PagoClienteRecibos
+     * const pagoClienteRecibo = await prisma.pagoClienteRecibo.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PagoClienteRecibos and only return the `id`
+     * const pagoClienteReciboWithIdOnly = await prisma.pagoClienteRecibo.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PagoClienteReciboCreateManyAndReturnArgs>(args?: SelectSubset<T, PagoClienteReciboCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PagoClienteReciboPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PagoClienteRecibo.
+     * @param {PagoClienteReciboDeleteArgs} args - Arguments to delete one PagoClienteRecibo.
+     * @example
+     * // Delete one PagoClienteRecibo
+     * const PagoClienteRecibo = await prisma.pagoClienteRecibo.delete({
+     *   where: {
+     *     // ... filter to delete one PagoClienteRecibo
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PagoClienteReciboDeleteArgs>(args: SelectSubset<T, PagoClienteReciboDeleteArgs<ExtArgs>>): Prisma__PagoClienteReciboClient<$Result.GetResult<Prisma.$PagoClienteReciboPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PagoClienteRecibo.
+     * @param {PagoClienteReciboUpdateArgs} args - Arguments to update one PagoClienteRecibo.
+     * @example
+     * // Update one PagoClienteRecibo
+     * const pagoClienteRecibo = await prisma.pagoClienteRecibo.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PagoClienteReciboUpdateArgs>(args: SelectSubset<T, PagoClienteReciboUpdateArgs<ExtArgs>>): Prisma__PagoClienteReciboClient<$Result.GetResult<Prisma.$PagoClienteReciboPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PagoClienteRecibos.
+     * @param {PagoClienteReciboDeleteManyArgs} args - Arguments to filter PagoClienteRecibos to delete.
+     * @example
+     * // Delete a few PagoClienteRecibos
+     * const { count } = await prisma.pagoClienteRecibo.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PagoClienteReciboDeleteManyArgs>(args?: SelectSubset<T, PagoClienteReciboDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PagoClienteRecibos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PagoClienteReciboUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PagoClienteRecibos
+     * const pagoClienteRecibo = await prisma.pagoClienteRecibo.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PagoClienteReciboUpdateManyArgs>(args: SelectSubset<T, PagoClienteReciboUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PagoClienteRecibos and returns the data updated in the database.
+     * @param {PagoClienteReciboUpdateManyAndReturnArgs} args - Arguments to update many PagoClienteRecibos.
+     * @example
+     * // Update many PagoClienteRecibos
+     * const pagoClienteRecibo = await prisma.pagoClienteRecibo.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PagoClienteRecibos and only return the `id`
+     * const pagoClienteReciboWithIdOnly = await prisma.pagoClienteRecibo.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PagoClienteReciboUpdateManyAndReturnArgs>(args: SelectSubset<T, PagoClienteReciboUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PagoClienteReciboPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PagoClienteRecibo.
+     * @param {PagoClienteReciboUpsertArgs} args - Arguments to update or create a PagoClienteRecibo.
+     * @example
+     * // Update or create a PagoClienteRecibo
+     * const pagoClienteRecibo = await prisma.pagoClienteRecibo.upsert({
+     *   create: {
+     *     // ... data to create a PagoClienteRecibo
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PagoClienteRecibo we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PagoClienteReciboUpsertArgs>(args: SelectSubset<T, PagoClienteReciboUpsertArgs<ExtArgs>>): Prisma__PagoClienteReciboClient<$Result.GetResult<Prisma.$PagoClienteReciboPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PagoClienteRecibos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PagoClienteReciboCountArgs} args - Arguments to filter PagoClienteRecibos to count.
+     * @example
+     * // Count the number of PagoClienteRecibos
+     * const count = await prisma.pagoClienteRecibo.count({
+     *   where: {
+     *     // ... the filter for the PagoClienteRecibos we want to count
+     *   }
+     * })
+    **/
+    count<T extends PagoClienteReciboCountArgs>(
+      args?: Subset<T, PagoClienteReciboCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PagoClienteReciboCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PagoClienteRecibo.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PagoClienteReciboAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PagoClienteReciboAggregateArgs>(args: Subset<T, PagoClienteReciboAggregateArgs>): Prisma.PrismaPromise<GetPagoClienteReciboAggregateType<T>>
+
+    /**
+     * Group by PagoClienteRecibo.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PagoClienteReciboGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PagoClienteReciboGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PagoClienteReciboGroupByArgs['orderBy'] }
+        : { orderBy?: PagoClienteReciboGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PagoClienteReciboGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPagoClienteReciboGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PagoClienteRecibo model
+   */
+  readonly fields: PagoClienteReciboFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PagoClienteRecibo.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PagoClienteReciboClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    pagoCliente<T extends PagoClienteDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PagoClienteDefaultArgs<ExtArgs>>): Prisma__PagoClienteClient<$Result.GetResult<Prisma.$PagoClientePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PagoClienteRecibo model
+   */
+  interface PagoClienteReciboFieldRefs {
+    readonly id: FieldRef<"PagoClienteRecibo", 'String'>
+    readonly pagoClienteId: FieldRef<"PagoClienteRecibo", 'String'>
+    readonly consecutivo: FieldRef<"PagoClienteRecibo", 'Int'>
+    readonly codigoUnico: FieldRef<"PagoClienteRecibo", 'String'>
+    readonly fecha: FieldRef<"PagoClienteRecibo", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PagoClienteRecibo findUnique
+   */
+  export type PagoClienteReciboFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PagoClienteRecibo
+     */
+    select?: PagoClienteReciboSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PagoClienteRecibo
+     */
+    omit?: PagoClienteReciboOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagoClienteReciboInclude<ExtArgs> | null
+    /**
+     * Filter, which PagoClienteRecibo to fetch.
+     */
+    where: PagoClienteReciboWhereUniqueInput
+  }
+
+  /**
+   * PagoClienteRecibo findUniqueOrThrow
+   */
+  export type PagoClienteReciboFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PagoClienteRecibo
+     */
+    select?: PagoClienteReciboSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PagoClienteRecibo
+     */
+    omit?: PagoClienteReciboOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagoClienteReciboInclude<ExtArgs> | null
+    /**
+     * Filter, which PagoClienteRecibo to fetch.
+     */
+    where: PagoClienteReciboWhereUniqueInput
+  }
+
+  /**
+   * PagoClienteRecibo findFirst
+   */
+  export type PagoClienteReciboFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PagoClienteRecibo
+     */
+    select?: PagoClienteReciboSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PagoClienteRecibo
+     */
+    omit?: PagoClienteReciboOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagoClienteReciboInclude<ExtArgs> | null
+    /**
+     * Filter, which PagoClienteRecibo to fetch.
+     */
+    where?: PagoClienteReciboWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PagoClienteRecibos to fetch.
+     */
+    orderBy?: PagoClienteReciboOrderByWithRelationInput | PagoClienteReciboOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PagoClienteRecibos.
+     */
+    cursor?: PagoClienteReciboWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PagoClienteRecibos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PagoClienteRecibos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PagoClienteRecibos.
+     */
+    distinct?: PagoClienteReciboScalarFieldEnum | PagoClienteReciboScalarFieldEnum[]
+  }
+
+  /**
+   * PagoClienteRecibo findFirstOrThrow
+   */
+  export type PagoClienteReciboFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PagoClienteRecibo
+     */
+    select?: PagoClienteReciboSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PagoClienteRecibo
+     */
+    omit?: PagoClienteReciboOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagoClienteReciboInclude<ExtArgs> | null
+    /**
+     * Filter, which PagoClienteRecibo to fetch.
+     */
+    where?: PagoClienteReciboWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PagoClienteRecibos to fetch.
+     */
+    orderBy?: PagoClienteReciboOrderByWithRelationInput | PagoClienteReciboOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PagoClienteRecibos.
+     */
+    cursor?: PagoClienteReciboWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PagoClienteRecibos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PagoClienteRecibos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PagoClienteRecibos.
+     */
+    distinct?: PagoClienteReciboScalarFieldEnum | PagoClienteReciboScalarFieldEnum[]
+  }
+
+  /**
+   * PagoClienteRecibo findMany
+   */
+  export type PagoClienteReciboFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PagoClienteRecibo
+     */
+    select?: PagoClienteReciboSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PagoClienteRecibo
+     */
+    omit?: PagoClienteReciboOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagoClienteReciboInclude<ExtArgs> | null
+    /**
+     * Filter, which PagoClienteRecibos to fetch.
+     */
+    where?: PagoClienteReciboWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PagoClienteRecibos to fetch.
+     */
+    orderBy?: PagoClienteReciboOrderByWithRelationInput | PagoClienteReciboOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PagoClienteRecibos.
+     */
+    cursor?: PagoClienteReciboWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PagoClienteRecibos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PagoClienteRecibos.
+     */
+    skip?: number
+    distinct?: PagoClienteReciboScalarFieldEnum | PagoClienteReciboScalarFieldEnum[]
+  }
+
+  /**
+   * PagoClienteRecibo create
+   */
+  export type PagoClienteReciboCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PagoClienteRecibo
+     */
+    select?: PagoClienteReciboSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PagoClienteRecibo
+     */
+    omit?: PagoClienteReciboOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagoClienteReciboInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PagoClienteRecibo.
+     */
+    data: XOR<PagoClienteReciboCreateInput, PagoClienteReciboUncheckedCreateInput>
+  }
+
+  /**
+   * PagoClienteRecibo createMany
+   */
+  export type PagoClienteReciboCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PagoClienteRecibos.
+     */
+    data: PagoClienteReciboCreateManyInput | PagoClienteReciboCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PagoClienteRecibo createManyAndReturn
+   */
+  export type PagoClienteReciboCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PagoClienteRecibo
+     */
+    select?: PagoClienteReciboSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PagoClienteRecibo
+     */
+    omit?: PagoClienteReciboOmit<ExtArgs> | null
+    /**
+     * The data used to create many PagoClienteRecibos.
+     */
+    data: PagoClienteReciboCreateManyInput | PagoClienteReciboCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagoClienteReciboIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PagoClienteRecibo update
+   */
+  export type PagoClienteReciboUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PagoClienteRecibo
+     */
+    select?: PagoClienteReciboSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PagoClienteRecibo
+     */
+    omit?: PagoClienteReciboOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagoClienteReciboInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PagoClienteRecibo.
+     */
+    data: XOR<PagoClienteReciboUpdateInput, PagoClienteReciboUncheckedUpdateInput>
+    /**
+     * Choose, which PagoClienteRecibo to update.
+     */
+    where: PagoClienteReciboWhereUniqueInput
+  }
+
+  /**
+   * PagoClienteRecibo updateMany
+   */
+  export type PagoClienteReciboUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PagoClienteRecibos.
+     */
+    data: XOR<PagoClienteReciboUpdateManyMutationInput, PagoClienteReciboUncheckedUpdateManyInput>
+    /**
+     * Filter which PagoClienteRecibos to update
+     */
+    where?: PagoClienteReciboWhereInput
+    /**
+     * Limit how many PagoClienteRecibos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PagoClienteRecibo updateManyAndReturn
+   */
+  export type PagoClienteReciboUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PagoClienteRecibo
+     */
+    select?: PagoClienteReciboSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PagoClienteRecibo
+     */
+    omit?: PagoClienteReciboOmit<ExtArgs> | null
+    /**
+     * The data used to update PagoClienteRecibos.
+     */
+    data: XOR<PagoClienteReciboUpdateManyMutationInput, PagoClienteReciboUncheckedUpdateManyInput>
+    /**
+     * Filter which PagoClienteRecibos to update
+     */
+    where?: PagoClienteReciboWhereInput
+    /**
+     * Limit how many PagoClienteRecibos to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagoClienteReciboIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PagoClienteRecibo upsert
+   */
+  export type PagoClienteReciboUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PagoClienteRecibo
+     */
+    select?: PagoClienteReciboSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PagoClienteRecibo
+     */
+    omit?: PagoClienteReciboOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagoClienteReciboInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PagoClienteRecibo to update in case it exists.
+     */
+    where: PagoClienteReciboWhereUniqueInput
+    /**
+     * In case the PagoClienteRecibo found by the `where` argument doesn't exist, create a new PagoClienteRecibo with this data.
+     */
+    create: XOR<PagoClienteReciboCreateInput, PagoClienteReciboUncheckedCreateInput>
+    /**
+     * In case the PagoClienteRecibo was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PagoClienteReciboUpdateInput, PagoClienteReciboUncheckedUpdateInput>
+  }
+
+  /**
+   * PagoClienteRecibo delete
+   */
+  export type PagoClienteReciboDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PagoClienteRecibo
+     */
+    select?: PagoClienteReciboSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PagoClienteRecibo
+     */
+    omit?: PagoClienteReciboOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagoClienteReciboInclude<ExtArgs> | null
+    /**
+     * Filter which PagoClienteRecibo to delete.
+     */
+    where: PagoClienteReciboWhereUniqueInput
+  }
+
+  /**
+   * PagoClienteRecibo deleteMany
+   */
+  export type PagoClienteReciboDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PagoClienteRecibos to delete
+     */
+    where?: PagoClienteReciboWhereInput
+    /**
+     * Limit how many PagoClienteRecibos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PagoClienteRecibo without action
+   */
+  export type PagoClienteReciboDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PagoClienteRecibo
+     */
+    select?: PagoClienteReciboSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PagoClienteRecibo
+     */
+    omit?: PagoClienteReciboOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagoClienteReciboInclude<ExtArgs> | null
   }
 
 
@@ -25233,6 +28212,7 @@ export namespace Prisma {
     caja?: boolean | CajaDefaultArgs<ExtArgs>
     movimientos?: boolean | SubCaja$movimientosArgs<ExtArgs>
     abonos?: boolean | SubCaja$abonosArgs<ExtArgs>
+    pagosCliente?: boolean | SubCaja$pagosClienteArgs<ExtArgs>
     gastos?: boolean | SubCaja$gastosArgs<ExtArgs>
     _count?: boolean | SubCajaCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subCaja"]>
@@ -25265,6 +28245,7 @@ export namespace Prisma {
     caja?: boolean | CajaDefaultArgs<ExtArgs>
     movimientos?: boolean | SubCaja$movimientosArgs<ExtArgs>
     abonos?: boolean | SubCaja$abonosArgs<ExtArgs>
+    pagosCliente?: boolean | SubCaja$pagosClienteArgs<ExtArgs>
     gastos?: boolean | SubCaja$gastosArgs<ExtArgs>
     _count?: boolean | SubCajaCountOutputTypeDefaultArgs<ExtArgs>
   }
@@ -25281,6 +28262,7 @@ export namespace Prisma {
       caja: Prisma.$CajaPayload<ExtArgs>
       movimientos: Prisma.$MovimientoCajaPayload<ExtArgs>[]
       abonos: Prisma.$AbonoVendedorPayload<ExtArgs>[]
+      pagosCliente: Prisma.$PagoClientePayload<ExtArgs>[]
       gastos: Prisma.$GastoPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -25685,6 +28667,7 @@ export namespace Prisma {
     caja<T extends CajaDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CajaDefaultArgs<ExtArgs>>): Prisma__CajaClient<$Result.GetResult<Prisma.$CajaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     movimientos<T extends SubCaja$movimientosArgs<ExtArgs> = {}>(args?: Subset<T, SubCaja$movimientosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MovimientoCajaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     abonos<T extends SubCaja$abonosArgs<ExtArgs> = {}>(args?: Subset<T, SubCaja$abonosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AbonoVendedorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    pagosCliente<T extends SubCaja$pagosClienteArgs<ExtArgs> = {}>(args?: Subset<T, SubCaja$pagosClienteArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PagoClientePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     gastos<T extends SubCaja$gastosArgs<ExtArgs> = {}>(args?: Subset<T, SubCaja$gastosArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GastoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -26160,6 +29143,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AbonoVendedorScalarFieldEnum | AbonoVendedorScalarFieldEnum[]
+  }
+
+  /**
+   * SubCaja.pagosCliente
+   */
+  export type SubCaja$pagosClienteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PagoCliente
+     */
+    select?: PagoClienteSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PagoCliente
+     */
+    omit?: PagoClienteOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PagoClienteInclude<ExtArgs> | null
+    where?: PagoClienteWhereInput
+    orderBy?: PagoClienteOrderByWithRelationInput | PagoClienteOrderByWithRelationInput[]
+    cursor?: PagoClienteWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PagoClienteScalarFieldEnum | PagoClienteScalarFieldEnum[]
   }
 
   /**
@@ -31261,6 +34268,7 @@ export namespace Prisma {
     rifaId: 'rifaId',
     numero: 'numero',
     codigoBarras: 'codigoBarras',
+    publicToken: 'publicToken',
     estado: 'estado',
     juega: 'juega',
     precio: 'precio',
@@ -31300,6 +34308,18 @@ export namespace Prisma {
   };
 
   export type RifaVendedorScalarFieldEnum = (typeof RifaVendedorScalarFieldEnum)[keyof typeof RifaVendedorScalarFieldEnum]
+
+
+  export const UsuarioVendedorScopeScalarFieldEnum: {
+    id: 'id',
+    usuarioId: 'usuarioId',
+    vendedorId: 'vendedorId',
+    rifaVendedorId: 'rifaVendedorId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type UsuarioVendedorScopeScalarFieldEnum = (typeof UsuarioVendedorScopeScalarFieldEnum)[keyof typeof UsuarioVendedorScopeScalarFieldEnum]
 
 
   export const AsignacionBoletasScalarFieldEnum: {
@@ -31347,7 +34367,10 @@ export namespace Prisma {
     nombre: 'nombre',
     email: 'email',
     telefono: 'telefono',
-    documento: 'documento'
+    documento: 'documento',
+    createdByUsuarioId: 'createdByUsuarioId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
 
   export type ClienteScalarFieldEnum = (typeof ClienteScalarFieldEnum)[keyof typeof ClienteScalarFieldEnum]
@@ -31357,6 +34380,15 @@ export namespace Prisma {
     id: 'id',
     clienteId: 'clienteId',
     rifaId: 'rifaId',
+    rifaVendedorId: 'rifaVendedorId',
+    canalOrigen: 'canalOrigen',
+    referenciaExterna: 'referenciaExterna',
+    sesionExternaId: 'sesionExternaId',
+    linkPagoUrl: 'linkPagoUrl',
+    linkPagoEnviadoAt: 'linkPagoEnviadoAt',
+    linkPagoAbiertoAt: 'linkPagoAbiertoAt',
+    requiereSeguimientoHumano: 'requiereSeguimientoHumano',
+    seguimientoMotivo: 'seguimientoMotivo',
     estado: 'estado',
     total: 'total',
     saldoPendiente: 'saldoPendiente',
@@ -31377,10 +34409,24 @@ export namespace Prisma {
     monto: 'monto',
     fecha: 'fecha',
     metodoPago: 'metodoPago',
-    estado: 'estado'
+    estado: 'estado',
+    descripcion: 'descripcion',
+    subCajaId: 'subCajaId',
+    usuarioId: 'usuarioId'
   };
 
   export type PagoClienteScalarFieldEnum = (typeof PagoClienteScalarFieldEnum)[keyof typeof PagoClienteScalarFieldEnum]
+
+
+  export const PagoClienteReciboScalarFieldEnum: {
+    id: 'id',
+    pagoClienteId: 'pagoClienteId',
+    consecutivo: 'consecutivo',
+    codigoUnico: 'codigoUnico',
+    fecha: 'fecha'
+  };
+
+  export type PagoClienteReciboScalarFieldEnum = (typeof PagoClienteReciboScalarFieldEnum)[keyof typeof PagoClienteReciboScalarFieldEnum]
 
 
   export const AbonoVendedorScalarFieldEnum: {
@@ -31883,9 +34929,12 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasListRelationFilter
     devoluciones?: DevolucionBoletasListRelationFilter
     abonosRegistrados?: AbonoVendedorListRelationFilter
+    pagosClienteRegistrados?: PagoClienteListRelationFilter
     gastosRegistrados?: GastoListRelationFilter
     juegosRegistrados?: JuegoRegistroListRelationFilter
     movimientos?: MovimientoCajaListRelationFilter
+    vendedorScopes?: UsuarioVendedorScopeListRelationFilter
+    clientesCreados?: ClienteListRelationFilter
   }
 
   export type UsuarioOrderByWithRelationInput = {
@@ -31902,9 +34951,12 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasOrderByRelationAggregateInput
     devoluciones?: DevolucionBoletasOrderByRelationAggregateInput
     abonosRegistrados?: AbonoVendedorOrderByRelationAggregateInput
+    pagosClienteRegistrados?: PagoClienteOrderByRelationAggregateInput
     gastosRegistrados?: GastoOrderByRelationAggregateInput
     juegosRegistrados?: JuegoRegistroOrderByRelationAggregateInput
     movimientos?: MovimientoCajaOrderByRelationAggregateInput
+    vendedorScopes?: UsuarioVendedorScopeOrderByRelationAggregateInput
+    clientesCreados?: ClienteOrderByRelationAggregateInput
   }
 
   export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
@@ -31924,9 +34976,12 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasListRelationFilter
     devoluciones?: DevolucionBoletasListRelationFilter
     abonosRegistrados?: AbonoVendedorListRelationFilter
+    pagosClienteRegistrados?: PagoClienteListRelationFilter
     gastosRegistrados?: GastoListRelationFilter
     juegosRegistrados?: JuegoRegistroListRelationFilter
     movimientos?: MovimientoCajaListRelationFilter
+    vendedorScopes?: UsuarioVendedorScopeListRelationFilter
+    clientesCreados?: ClienteListRelationFilter
   }, "id" | "email">
 
   export type UsuarioOrderByWithAggregationInput = {
@@ -32218,6 +35273,7 @@ export namespace Prisma {
     rifaId?: StringFilter<"Boleta"> | string
     numero?: StringFilter<"Boleta"> | string
     codigoBarras?: StringNullableFilter<"Boleta"> | string | null
+    publicToken?: StringNullableFilter<"Boleta"> | string | null
     estado?: EnumEstadoBoletaFilter<"Boleta"> | $Enums.EstadoBoleta
     juega?: BoolFilter<"Boleta"> | boolean
     precio?: DecimalFilter<"Boleta"> | Decimal | DecimalJsLike | number | string
@@ -32243,6 +35299,7 @@ export namespace Prisma {
     rifaId?: SortOrder
     numero?: SortOrder
     codigoBarras?: SortOrderInput | SortOrder
+    publicToken?: SortOrderInput | SortOrder
     estado?: SortOrder
     juega?: SortOrder
     precio?: SortOrder
@@ -32266,6 +35323,7 @@ export namespace Prisma {
   export type BoletaWhereUniqueInput = Prisma.AtLeast<{
     id?: string
     codigoBarras?: string
+    publicToken?: string
     rifaId_numero?: BoletaRifaIdNumeroCompoundUniqueInput
     AND?: BoletaWhereInput | BoletaWhereInput[]
     OR?: BoletaWhereInput[]
@@ -32290,13 +35348,14 @@ export namespace Prisma {
     premios?: BoletaPremioListRelationFilter
     asignaciones?: AsignacionDetalleListRelationFilter
     devoluciones?: DevolucionDetalleListRelationFilter
-  }, "id" | "codigoBarras" | "rifaId_numero">
+  }, "id" | "codigoBarras" | "publicToken" | "rifaId_numero">
 
   export type BoletaOrderByWithAggregationInput = {
     id?: SortOrder
     rifaId?: SortOrder
     numero?: SortOrder
     codigoBarras?: SortOrderInput | SortOrder
+    publicToken?: SortOrderInput | SortOrder
     estado?: SortOrder
     juega?: SortOrder
     precio?: SortOrder
@@ -32323,6 +35382,7 @@ export namespace Prisma {
     rifaId?: StringWithAggregatesFilter<"Boleta"> | string
     numero?: StringWithAggregatesFilter<"Boleta"> | string
     codigoBarras?: StringNullableWithAggregatesFilter<"Boleta"> | string | null
+    publicToken?: StringNullableWithAggregatesFilter<"Boleta"> | string | null
     estado?: EnumEstadoBoletaWithAggregatesFilter<"Boleta"> | $Enums.EstadoBoleta
     juega?: BoolWithAggregatesFilter<"Boleta"> | boolean
     precio?: DecimalWithAggregatesFilter<"Boleta"> | Decimal | DecimalJsLike | number | string
@@ -32349,6 +35409,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Vendedor"> | Date | string
     rifas?: RifaVendedorListRelationFilter
     movimientos?: MovimientoCajaListRelationFilter
+    usuarioScopes?: UsuarioVendedorScopeListRelationFilter
   }
 
   export type VendedorOrderByWithRelationInput = {
@@ -32361,6 +35422,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     rifas?: RifaVendedorOrderByRelationAggregateInput
     movimientos?: MovimientoCajaOrderByRelationAggregateInput
+    usuarioScopes?: UsuarioVendedorScopeOrderByRelationAggregateInput
   }
 
   export type VendedorWhereUniqueInput = Prisma.AtLeast<{
@@ -32376,6 +35438,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Vendedor"> | Date | string
     rifas?: RifaVendedorListRelationFilter
     movimientos?: MovimientoCajaListRelationFilter
+    usuarioScopes?: UsuarioVendedorScopeListRelationFilter
   }, "id">
 
   export type VendedorOrderByWithAggregationInput = {
@@ -32421,6 +35484,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorListRelationFilter
     boletas?: BoletaListRelationFilter
     juegos?: JuegoRegistroListRelationFilter
+    usuarioScopes?: UsuarioVendedorScopeListRelationFilter
+    ventas?: VentaListRelationFilter
   }
 
   export type RifaVendedorOrderByWithRelationInput = {
@@ -32437,6 +35502,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorOrderByRelationAggregateInput
     boletas?: BoletaOrderByRelationAggregateInput
     juegos?: JuegoRegistroOrderByRelationAggregateInput
+    usuarioScopes?: UsuarioVendedorScopeOrderByRelationAggregateInput
+    ventas?: VentaOrderByRelationAggregateInput
   }
 
   export type RifaVendedorWhereUniqueInput = Prisma.AtLeast<{
@@ -32457,6 +35524,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorListRelationFilter
     boletas?: BoletaListRelationFilter
     juegos?: JuegoRegistroListRelationFilter
+    usuarioScopes?: UsuarioVendedorScopeListRelationFilter
+    ventas?: VentaListRelationFilter
   }, "id" | "rifaId_vendedorId">
 
   export type RifaVendedorOrderByWithAggregationInput = {
@@ -32483,6 +35552,74 @@ export namespace Prisma {
     comisionPct?: DecimalWithAggregatesFilter<"RifaVendedor"> | Decimal | DecimalJsLike | number | string
     precioCasa?: DecimalWithAggregatesFilter<"RifaVendedor"> | Decimal | DecimalJsLike | number | string
     saldoActual?: DecimalWithAggregatesFilter<"RifaVendedor"> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type UsuarioVendedorScopeWhereInput = {
+    AND?: UsuarioVendedorScopeWhereInput | UsuarioVendedorScopeWhereInput[]
+    OR?: UsuarioVendedorScopeWhereInput[]
+    NOT?: UsuarioVendedorScopeWhereInput | UsuarioVendedorScopeWhereInput[]
+    id?: StringFilter<"UsuarioVendedorScope"> | string
+    usuarioId?: StringFilter<"UsuarioVendedorScope"> | string
+    vendedorId?: StringNullableFilter<"UsuarioVendedorScope"> | string | null
+    rifaVendedorId?: StringNullableFilter<"UsuarioVendedorScope"> | string | null
+    createdAt?: DateTimeFilter<"UsuarioVendedorScope"> | Date | string
+    updatedAt?: DateTimeFilter<"UsuarioVendedorScope"> | Date | string
+    usuario?: XOR<UsuarioScalarRelationFilter, UsuarioWhereInput>
+    vendedor?: XOR<VendedorNullableScalarRelationFilter, VendedorWhereInput> | null
+    rifaVendedor?: XOR<RifaVendedorNullableScalarRelationFilter, RifaVendedorWhereInput> | null
+  }
+
+  export type UsuarioVendedorScopeOrderByWithRelationInput = {
+    id?: SortOrder
+    usuarioId?: SortOrder
+    vendedorId?: SortOrderInput | SortOrder
+    rifaVendedorId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    usuario?: UsuarioOrderByWithRelationInput
+    vendedor?: VendedorOrderByWithRelationInput
+    rifaVendedor?: RifaVendedorOrderByWithRelationInput
+  }
+
+  export type UsuarioVendedorScopeWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    usuarioId_vendedorId?: UsuarioVendedorScopeUsuarioIdVendedorIdCompoundUniqueInput
+    usuarioId_rifaVendedorId?: UsuarioVendedorScopeUsuarioIdRifaVendedorIdCompoundUniqueInput
+    AND?: UsuarioVendedorScopeWhereInput | UsuarioVendedorScopeWhereInput[]
+    OR?: UsuarioVendedorScopeWhereInput[]
+    NOT?: UsuarioVendedorScopeWhereInput | UsuarioVendedorScopeWhereInput[]
+    usuarioId?: StringFilter<"UsuarioVendedorScope"> | string
+    vendedorId?: StringNullableFilter<"UsuarioVendedorScope"> | string | null
+    rifaVendedorId?: StringNullableFilter<"UsuarioVendedorScope"> | string | null
+    createdAt?: DateTimeFilter<"UsuarioVendedorScope"> | Date | string
+    updatedAt?: DateTimeFilter<"UsuarioVendedorScope"> | Date | string
+    usuario?: XOR<UsuarioScalarRelationFilter, UsuarioWhereInput>
+    vendedor?: XOR<VendedorNullableScalarRelationFilter, VendedorWhereInput> | null
+    rifaVendedor?: XOR<RifaVendedorNullableScalarRelationFilter, RifaVendedorWhereInput> | null
+  }, "id" | "usuarioId_vendedorId" | "usuarioId_rifaVendedorId">
+
+  export type UsuarioVendedorScopeOrderByWithAggregationInput = {
+    id?: SortOrder
+    usuarioId?: SortOrder
+    vendedorId?: SortOrderInput | SortOrder
+    rifaVendedorId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: UsuarioVendedorScopeCountOrderByAggregateInput
+    _max?: UsuarioVendedorScopeMaxOrderByAggregateInput
+    _min?: UsuarioVendedorScopeMinOrderByAggregateInput
+  }
+
+  export type UsuarioVendedorScopeScalarWhereWithAggregatesInput = {
+    AND?: UsuarioVendedorScopeScalarWhereWithAggregatesInput | UsuarioVendedorScopeScalarWhereWithAggregatesInput[]
+    OR?: UsuarioVendedorScopeScalarWhereWithAggregatesInput[]
+    NOT?: UsuarioVendedorScopeScalarWhereWithAggregatesInput | UsuarioVendedorScopeScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"UsuarioVendedorScope"> | string
+    usuarioId?: StringWithAggregatesFilter<"UsuarioVendedorScope"> | string
+    vendedorId?: StringNullableWithAggregatesFilter<"UsuarioVendedorScope"> | string | null
+    rifaVendedorId?: StringNullableWithAggregatesFilter<"UsuarioVendedorScope"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"UsuarioVendedorScope"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"UsuarioVendedorScope"> | Date | string
   }
 
   export type AsignacionBoletasWhereInput = {
@@ -32714,9 +35851,13 @@ export namespace Prisma {
     email?: StringNullableFilter<"Cliente"> | string | null
     telefono?: StringNullableFilter<"Cliente"> | string | null
     documento?: StringNullableFilter<"Cliente"> | string | null
+    createdByUsuarioId?: StringNullableFilter<"Cliente"> | string | null
+    createdAt?: DateTimeFilter<"Cliente"> | Date | string
+    updatedAt?: DateTimeFilter<"Cliente"> | Date | string
     ventas?: VentaListRelationFilter
     boletas?: BoletaListRelationFilter
     movimientos?: MovimientoCajaListRelationFilter
+    createdByUsuario?: XOR<UsuarioNullableScalarRelationFilter, UsuarioWhereInput> | null
   }
 
   export type ClienteOrderByWithRelationInput = {
@@ -32725,9 +35866,13 @@ export namespace Prisma {
     email?: SortOrderInput | SortOrder
     telefono?: SortOrderInput | SortOrder
     documento?: SortOrderInput | SortOrder
+    createdByUsuarioId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     ventas?: VentaOrderByRelationAggregateInput
     boletas?: BoletaOrderByRelationAggregateInput
     movimientos?: MovimientoCajaOrderByRelationAggregateInput
+    createdByUsuario?: UsuarioOrderByWithRelationInput
   }
 
   export type ClienteWhereUniqueInput = Prisma.AtLeast<{
@@ -32739,9 +35884,13 @@ export namespace Prisma {
     email?: StringNullableFilter<"Cliente"> | string | null
     telefono?: StringNullableFilter<"Cliente"> | string | null
     documento?: StringNullableFilter<"Cliente"> | string | null
+    createdByUsuarioId?: StringNullableFilter<"Cliente"> | string | null
+    createdAt?: DateTimeFilter<"Cliente"> | Date | string
+    updatedAt?: DateTimeFilter<"Cliente"> | Date | string
     ventas?: VentaListRelationFilter
     boletas?: BoletaListRelationFilter
     movimientos?: MovimientoCajaListRelationFilter
+    createdByUsuario?: XOR<UsuarioNullableScalarRelationFilter, UsuarioWhereInput> | null
   }, "id">
 
   export type ClienteOrderByWithAggregationInput = {
@@ -32750,6 +35899,9 @@ export namespace Prisma {
     email?: SortOrderInput | SortOrder
     telefono?: SortOrderInput | SortOrder
     documento?: SortOrderInput | SortOrder
+    createdByUsuarioId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
     _count?: ClienteCountOrderByAggregateInput
     _max?: ClienteMaxOrderByAggregateInput
     _min?: ClienteMinOrderByAggregateInput
@@ -32764,6 +35916,9 @@ export namespace Prisma {
     email?: StringNullableWithAggregatesFilter<"Cliente"> | string | null
     telefono?: StringNullableWithAggregatesFilter<"Cliente"> | string | null
     documento?: StringNullableWithAggregatesFilter<"Cliente"> | string | null
+    createdByUsuarioId?: StringNullableWithAggregatesFilter<"Cliente"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Cliente"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Cliente"> | Date | string
   }
 
   export type VentaWhereInput = {
@@ -32773,6 +35928,15 @@ export namespace Prisma {
     id?: StringFilter<"Venta"> | string
     clienteId?: StringFilter<"Venta"> | string
     rifaId?: StringFilter<"Venta"> | string
+    rifaVendedorId?: StringNullableFilter<"Venta"> | string | null
+    canalOrigen?: StringNullableFilter<"Venta"> | string | null
+    referenciaExterna?: StringNullableFilter<"Venta"> | string | null
+    sesionExternaId?: StringNullableFilter<"Venta"> | string | null
+    linkPagoUrl?: StringNullableFilter<"Venta"> | string | null
+    linkPagoEnviadoAt?: DateTimeNullableFilter<"Venta"> | Date | string | null
+    linkPagoAbiertoAt?: DateTimeNullableFilter<"Venta"> | Date | string | null
+    requiereSeguimientoHumano?: BoolFilter<"Venta"> | boolean
+    seguimientoMotivo?: StringNullableFilter<"Venta"> | string | null
     estado?: EnumEstadoVentaFilter<"Venta"> | $Enums.EstadoVenta
     total?: DecimalFilter<"Venta"> | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFilter<"Venta"> | Decimal | DecimalJsLike | number | string
@@ -32784,6 +35948,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Venta"> | Date | string
     cliente?: XOR<ClienteScalarRelationFilter, ClienteWhereInput>
     rifa?: XOR<RifaScalarRelationFilter, RifaWhereInput>
+    rifaVendedor?: XOR<RifaVendedorNullableScalarRelationFilter, RifaVendedorWhereInput> | null
     boletas?: BoletaListRelationFilter
     pagos?: PagoClienteListRelationFilter
     movimientos?: MovimientoCajaListRelationFilter
@@ -32793,6 +35958,15 @@ export namespace Prisma {
     id?: SortOrder
     clienteId?: SortOrder
     rifaId?: SortOrder
+    rifaVendedorId?: SortOrderInput | SortOrder
+    canalOrigen?: SortOrderInput | SortOrder
+    referenciaExterna?: SortOrderInput | SortOrder
+    sesionExternaId?: SortOrderInput | SortOrder
+    linkPagoUrl?: SortOrderInput | SortOrder
+    linkPagoEnviadoAt?: SortOrderInput | SortOrder
+    linkPagoAbiertoAt?: SortOrderInput | SortOrder
+    requiereSeguimientoHumano?: SortOrder
+    seguimientoMotivo?: SortOrderInput | SortOrder
     estado?: SortOrder
     total?: SortOrder
     saldoPendiente?: SortOrder
@@ -32804,6 +35978,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     cliente?: ClienteOrderByWithRelationInput
     rifa?: RifaOrderByWithRelationInput
+    rifaVendedor?: RifaVendedorOrderByWithRelationInput
     boletas?: BoletaOrderByRelationAggregateInput
     pagos?: PagoClienteOrderByRelationAggregateInput
     movimientos?: MovimientoCajaOrderByRelationAggregateInput
@@ -32817,6 +35992,15 @@ export namespace Prisma {
     NOT?: VentaWhereInput | VentaWhereInput[]
     clienteId?: StringFilter<"Venta"> | string
     rifaId?: StringFilter<"Venta"> | string
+    rifaVendedorId?: StringNullableFilter<"Venta"> | string | null
+    canalOrigen?: StringNullableFilter<"Venta"> | string | null
+    referenciaExterna?: StringNullableFilter<"Venta"> | string | null
+    sesionExternaId?: StringNullableFilter<"Venta"> | string | null
+    linkPagoUrl?: StringNullableFilter<"Venta"> | string | null
+    linkPagoEnviadoAt?: DateTimeNullableFilter<"Venta"> | Date | string | null
+    linkPagoAbiertoAt?: DateTimeNullableFilter<"Venta"> | Date | string | null
+    requiereSeguimientoHumano?: BoolFilter<"Venta"> | boolean
+    seguimientoMotivo?: StringNullableFilter<"Venta"> | string | null
     estado?: EnumEstadoVentaFilter<"Venta"> | $Enums.EstadoVenta
     total?: DecimalFilter<"Venta"> | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFilter<"Venta"> | Decimal | DecimalJsLike | number | string
@@ -32827,6 +36011,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Venta"> | Date | string
     cliente?: XOR<ClienteScalarRelationFilter, ClienteWhereInput>
     rifa?: XOR<RifaScalarRelationFilter, RifaWhereInput>
+    rifaVendedor?: XOR<RifaVendedorNullableScalarRelationFilter, RifaVendedorWhereInput> | null
     boletas?: BoletaListRelationFilter
     pagos?: PagoClienteListRelationFilter
     movimientos?: MovimientoCajaListRelationFilter
@@ -32836,6 +36021,15 @@ export namespace Prisma {
     id?: SortOrder
     clienteId?: SortOrder
     rifaId?: SortOrder
+    rifaVendedorId?: SortOrderInput | SortOrder
+    canalOrigen?: SortOrderInput | SortOrder
+    referenciaExterna?: SortOrderInput | SortOrder
+    sesionExternaId?: SortOrderInput | SortOrder
+    linkPagoUrl?: SortOrderInput | SortOrder
+    linkPagoEnviadoAt?: SortOrderInput | SortOrder
+    linkPagoAbiertoAt?: SortOrderInput | SortOrder
+    requiereSeguimientoHumano?: SortOrder
+    seguimientoMotivo?: SortOrderInput | SortOrder
     estado?: SortOrder
     total?: SortOrder
     saldoPendiente?: SortOrder
@@ -32859,6 +36053,15 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Venta"> | string
     clienteId?: StringWithAggregatesFilter<"Venta"> | string
     rifaId?: StringWithAggregatesFilter<"Venta"> | string
+    rifaVendedorId?: StringNullableWithAggregatesFilter<"Venta"> | string | null
+    canalOrigen?: StringNullableWithAggregatesFilter<"Venta"> | string | null
+    referenciaExterna?: StringNullableWithAggregatesFilter<"Venta"> | string | null
+    sesionExternaId?: StringNullableWithAggregatesFilter<"Venta"> | string | null
+    linkPagoUrl?: StringNullableWithAggregatesFilter<"Venta"> | string | null
+    linkPagoEnviadoAt?: DateTimeNullableWithAggregatesFilter<"Venta"> | Date | string | null
+    linkPagoAbiertoAt?: DateTimeNullableWithAggregatesFilter<"Venta"> | Date | string | null
+    requiereSeguimientoHumano?: BoolWithAggregatesFilter<"Venta"> | boolean
+    seguimientoMotivo?: StringNullableWithAggregatesFilter<"Venta"> | string | null
     estado?: EnumEstadoVentaWithAggregatesFilter<"Venta"> | $Enums.EstadoVenta
     total?: DecimalWithAggregatesFilter<"Venta"> | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalWithAggregatesFilter<"Venta"> | Decimal | DecimalJsLike | number | string
@@ -32880,7 +36083,13 @@ export namespace Prisma {
     fecha?: DateTimeFilter<"PagoCliente"> | Date | string
     metodoPago?: EnumMetodoPagoFilter<"PagoCliente"> | $Enums.MetodoPago
     estado?: EnumEstadoPagoFilter<"PagoCliente"> | $Enums.EstadoPago
+    descripcion?: StringNullableFilter<"PagoCliente"> | string | null
+    subCajaId?: StringNullableFilter<"PagoCliente"> | string | null
+    usuarioId?: StringNullableFilter<"PagoCliente"> | string | null
     venta?: XOR<VentaScalarRelationFilter, VentaWhereInput>
+    subCaja?: XOR<SubCajaNullableScalarRelationFilter, SubCajaWhereInput> | null
+    usuario?: XOR<UsuarioNullableScalarRelationFilter, UsuarioWhereInput> | null
+    recibo?: XOR<PagoClienteReciboNullableScalarRelationFilter, PagoClienteReciboWhereInput> | null
     movimientos?: MovimientoCajaListRelationFilter
   }
 
@@ -32891,7 +36100,13 @@ export namespace Prisma {
     fecha?: SortOrder
     metodoPago?: SortOrder
     estado?: SortOrder
+    descripcion?: SortOrderInput | SortOrder
+    subCajaId?: SortOrderInput | SortOrder
+    usuarioId?: SortOrderInput | SortOrder
     venta?: VentaOrderByWithRelationInput
+    subCaja?: SubCajaOrderByWithRelationInput
+    usuario?: UsuarioOrderByWithRelationInput
+    recibo?: PagoClienteReciboOrderByWithRelationInput
     movimientos?: MovimientoCajaOrderByRelationAggregateInput
   }
 
@@ -32905,7 +36120,13 @@ export namespace Prisma {
     fecha?: DateTimeFilter<"PagoCliente"> | Date | string
     metodoPago?: EnumMetodoPagoFilter<"PagoCliente"> | $Enums.MetodoPago
     estado?: EnumEstadoPagoFilter<"PagoCliente"> | $Enums.EstadoPago
+    descripcion?: StringNullableFilter<"PagoCliente"> | string | null
+    subCajaId?: StringNullableFilter<"PagoCliente"> | string | null
+    usuarioId?: StringNullableFilter<"PagoCliente"> | string | null
     venta?: XOR<VentaScalarRelationFilter, VentaWhereInput>
+    subCaja?: XOR<SubCajaNullableScalarRelationFilter, SubCajaWhereInput> | null
+    usuario?: XOR<UsuarioNullableScalarRelationFilter, UsuarioWhereInput> | null
+    recibo?: XOR<PagoClienteReciboNullableScalarRelationFilter, PagoClienteReciboWhereInput> | null
     movimientos?: MovimientoCajaListRelationFilter
   }, "id">
 
@@ -32916,6 +36137,9 @@ export namespace Prisma {
     fecha?: SortOrder
     metodoPago?: SortOrder
     estado?: SortOrder
+    descripcion?: SortOrderInput | SortOrder
+    subCajaId?: SortOrderInput | SortOrder
+    usuarioId?: SortOrderInput | SortOrder
     _count?: PagoClienteCountOrderByAggregateInput
     _avg?: PagoClienteAvgOrderByAggregateInput
     _max?: PagoClienteMaxOrderByAggregateInput
@@ -32933,6 +36157,66 @@ export namespace Prisma {
     fecha?: DateTimeWithAggregatesFilter<"PagoCliente"> | Date | string
     metodoPago?: EnumMetodoPagoWithAggregatesFilter<"PagoCliente"> | $Enums.MetodoPago
     estado?: EnumEstadoPagoWithAggregatesFilter<"PagoCliente"> | $Enums.EstadoPago
+    descripcion?: StringNullableWithAggregatesFilter<"PagoCliente"> | string | null
+    subCajaId?: StringNullableWithAggregatesFilter<"PagoCliente"> | string | null
+    usuarioId?: StringNullableWithAggregatesFilter<"PagoCliente"> | string | null
+  }
+
+  export type PagoClienteReciboWhereInput = {
+    AND?: PagoClienteReciboWhereInput | PagoClienteReciboWhereInput[]
+    OR?: PagoClienteReciboWhereInput[]
+    NOT?: PagoClienteReciboWhereInput | PagoClienteReciboWhereInput[]
+    id?: StringFilter<"PagoClienteRecibo"> | string
+    pagoClienteId?: StringFilter<"PagoClienteRecibo"> | string
+    consecutivo?: IntFilter<"PagoClienteRecibo"> | number
+    codigoUnico?: StringFilter<"PagoClienteRecibo"> | string
+    fecha?: DateTimeFilter<"PagoClienteRecibo"> | Date | string
+    pagoCliente?: XOR<PagoClienteScalarRelationFilter, PagoClienteWhereInput>
+  }
+
+  export type PagoClienteReciboOrderByWithRelationInput = {
+    id?: SortOrder
+    pagoClienteId?: SortOrder
+    consecutivo?: SortOrder
+    codigoUnico?: SortOrder
+    fecha?: SortOrder
+    pagoCliente?: PagoClienteOrderByWithRelationInput
+  }
+
+  export type PagoClienteReciboWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    pagoClienteId?: string
+    codigoUnico?: string
+    AND?: PagoClienteReciboWhereInput | PagoClienteReciboWhereInput[]
+    OR?: PagoClienteReciboWhereInput[]
+    NOT?: PagoClienteReciboWhereInput | PagoClienteReciboWhereInput[]
+    consecutivo?: IntFilter<"PagoClienteRecibo"> | number
+    fecha?: DateTimeFilter<"PagoClienteRecibo"> | Date | string
+    pagoCliente?: XOR<PagoClienteScalarRelationFilter, PagoClienteWhereInput>
+  }, "id" | "pagoClienteId" | "codigoUnico">
+
+  export type PagoClienteReciboOrderByWithAggregationInput = {
+    id?: SortOrder
+    pagoClienteId?: SortOrder
+    consecutivo?: SortOrder
+    codigoUnico?: SortOrder
+    fecha?: SortOrder
+    _count?: PagoClienteReciboCountOrderByAggregateInput
+    _avg?: PagoClienteReciboAvgOrderByAggregateInput
+    _max?: PagoClienteReciboMaxOrderByAggregateInput
+    _min?: PagoClienteReciboMinOrderByAggregateInput
+    _sum?: PagoClienteReciboSumOrderByAggregateInput
+  }
+
+  export type PagoClienteReciboScalarWhereWithAggregatesInput = {
+    AND?: PagoClienteReciboScalarWhereWithAggregatesInput | PagoClienteReciboScalarWhereWithAggregatesInput[]
+    OR?: PagoClienteReciboScalarWhereWithAggregatesInput[]
+    NOT?: PagoClienteReciboScalarWhereWithAggregatesInput | PagoClienteReciboScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PagoClienteRecibo"> | string
+    pagoClienteId?: StringWithAggregatesFilter<"PagoClienteRecibo"> | string
+    consecutivo?: IntWithAggregatesFilter<"PagoClienteRecibo"> | number
+    codigoUnico?: StringWithAggregatesFilter<"PagoClienteRecibo"> | string
+    fecha?: DateTimeWithAggregatesFilter<"PagoClienteRecibo"> | Date | string
   }
 
   export type AbonoVendedorWhereInput = {
@@ -33176,6 +36460,7 @@ export namespace Prisma {
     caja?: XOR<CajaScalarRelationFilter, CajaWhereInput>
     movimientos?: MovimientoCajaListRelationFilter
     abonos?: AbonoVendedorListRelationFilter
+    pagosCliente?: PagoClienteListRelationFilter
     gastos?: GastoListRelationFilter
   }
 
@@ -33187,6 +36472,7 @@ export namespace Prisma {
     caja?: CajaOrderByWithRelationInput
     movimientos?: MovimientoCajaOrderByRelationAggregateInput
     abonos?: AbonoVendedorOrderByRelationAggregateInput
+    pagosCliente?: PagoClienteOrderByRelationAggregateInput
     gastos?: GastoOrderByRelationAggregateInput
   }
 
@@ -33202,6 +36488,7 @@ export namespace Prisma {
     caja?: XOR<CajaScalarRelationFilter, CajaWhereInput>
     movimientos?: MovimientoCajaListRelationFilter
     abonos?: AbonoVendedorListRelationFilter
+    pagosCliente?: PagoClienteListRelationFilter
     gastos?: GastoListRelationFilter
   }, "id" | "cajaId_nombre">
 
@@ -33707,9 +36994,12 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasCreateNestedManyWithoutUsuarioInput
     devoluciones?: DevolucionBoletasCreateNestedManyWithoutUsuarioInput
     abonosRegistrados?: AbonoVendedorCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteCreateNestedManyWithoutUsuarioInput
     gastosRegistrados?: GastoCreateNestedManyWithoutUsuarioInput
     juegosRegistrados?: JuegoRegistroCreateNestedManyWithoutUsuarioInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteCreateNestedManyWithoutCreatedByUsuarioInput
   }
 
   export type UsuarioUncheckedCreateInput = {
@@ -33726,9 +37016,12 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
     devoluciones?: DevolucionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
     abonosRegistrados?: AbonoVendedorUncheckedCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteUncheckedCreateNestedManyWithoutUsuarioInput
     gastosRegistrados?: GastoUncheckedCreateNestedManyWithoutUsuarioInput
     juegosRegistrados?: JuegoRegistroUncheckedCreateNestedManyWithoutUsuarioInput
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteUncheckedCreateNestedManyWithoutCreatedByUsuarioInput
   }
 
   export type UsuarioUpdateInput = {
@@ -33745,9 +37038,12 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasUpdateManyWithoutUsuarioNestedInput
     devoluciones?: DevolucionBoletasUpdateManyWithoutUsuarioNestedInput
     abonosRegistrados?: AbonoVendedorUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUpdateManyWithoutUsuarioNestedInput
     gastosRegistrados?: GastoUpdateManyWithoutUsuarioNestedInput
     juegosRegistrados?: JuegoRegistroUpdateManyWithoutUsuarioNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUpdateManyWithoutCreatedByUsuarioNestedInput
   }
 
   export type UsuarioUncheckedUpdateInput = {
@@ -33764,9 +37060,12 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
     devoluciones?: DevolucionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
     abonosRegistrados?: AbonoVendedorUncheckedUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUncheckedUpdateManyWithoutUsuarioNestedInput
     gastosRegistrados?: GastoUncheckedUpdateManyWithoutUsuarioNestedInput
     juegosRegistrados?: JuegoRegistroUncheckedUpdateManyWithoutUsuarioNestedInput
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUncheckedUpdateManyWithoutCreatedByUsuarioNestedInput
   }
 
   export type UsuarioCreateManyInput = {
@@ -34075,6 +37374,7 @@ export namespace Prisma {
     id?: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -34097,6 +37397,7 @@ export namespace Prisma {
     rifaId: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -34117,6 +37418,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -34139,6 +37441,7 @@ export namespace Prisma {
     rifaId?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -34160,6 +37463,7 @@ export namespace Prisma {
     rifaId: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -34177,6 +37481,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -34192,6 +37497,7 @@ export namespace Prisma {
     rifaId?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -34215,6 +37521,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     rifas?: RifaVendedorCreateNestedManyWithoutVendedorInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeCreateNestedManyWithoutVendedorInput
   }
 
   export type VendedorUncheckedCreateInput = {
@@ -34227,6 +37534,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     rifas?: RifaVendedorUncheckedCreateNestedManyWithoutVendedorInput
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutVendedorInput
   }
 
   export type VendedorUpdateInput = {
@@ -34239,6 +37547,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rifas?: RifaVendedorUpdateManyWithoutVendedorNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUpdateManyWithoutVendedorNestedInput
   }
 
   export type VendedorUncheckedUpdateInput = {
@@ -34251,6 +37560,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rifas?: RifaVendedorUncheckedUpdateManyWithoutVendedorNestedInput
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutVendedorNestedInput
   }
 
   export type VendedorCreateManyInput = {
@@ -34295,6 +37605,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorCreateNestedManyWithoutRifaVendedorInput
     boletas?: BoletaCreateNestedManyWithoutRifaVendedorInput
     juegos?: JuegoRegistroCreateNestedManyWithoutRifaVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeCreateNestedManyWithoutRifaVendedorInput
+    ventas?: VentaCreateNestedManyWithoutRifaVendedorInput
   }
 
   export type RifaVendedorUncheckedCreateInput = {
@@ -34309,6 +37621,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorUncheckedCreateNestedManyWithoutRifaVendedorInput
     boletas?: BoletaUncheckedCreateNestedManyWithoutRifaVendedorInput
     juegos?: JuegoRegistroUncheckedCreateNestedManyWithoutRifaVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutRifaVendedorInput
+    ventas?: VentaUncheckedCreateNestedManyWithoutRifaVendedorInput
   }
 
   export type RifaVendedorUpdateInput = {
@@ -34323,6 +37637,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorUpdateManyWithoutRifaVendedorNestedInput
     boletas?: BoletaUpdateManyWithoutRifaVendedorNestedInput
     juegos?: JuegoRegistroUpdateManyWithoutRifaVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUpdateManyWithoutRifaVendedorNestedInput
+    ventas?: VentaUpdateManyWithoutRifaVendedorNestedInput
   }
 
   export type RifaVendedorUncheckedUpdateInput = {
@@ -34337,6 +37653,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorUncheckedUpdateManyWithoutRifaVendedorNestedInput
     boletas?: BoletaUncheckedUpdateManyWithoutRifaVendedorNestedInput
     juegos?: JuegoRegistroUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    ventas?: VentaUncheckedUpdateManyWithoutRifaVendedorNestedInput
   }
 
   export type RifaVendedorCreateManyInput = {
@@ -34362,6 +37680,66 @@ export namespace Prisma {
     comisionPct?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     precioCasa?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     saldoActual?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+  }
+
+  export type UsuarioVendedorScopeCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    usuario: UsuarioCreateNestedOneWithoutVendedorScopesInput
+    vendedor?: VendedorCreateNestedOneWithoutUsuarioScopesInput
+    rifaVendedor?: RifaVendedorCreateNestedOneWithoutUsuarioScopesInput
+  }
+
+  export type UsuarioVendedorScopeUncheckedCreateInput = {
+    id?: string
+    usuarioId: string
+    vendedorId?: string | null
+    rifaVendedorId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UsuarioVendedorScopeUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usuario?: UsuarioUpdateOneRequiredWithoutVendedorScopesNestedInput
+    vendedor?: VendedorUpdateOneWithoutUsuarioScopesNestedInput
+    rifaVendedor?: RifaVendedorUpdateOneWithoutUsuarioScopesNestedInput
+  }
+
+  export type UsuarioVendedorScopeUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    usuarioId?: StringFieldUpdateOperationsInput | string
+    vendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    rifaVendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UsuarioVendedorScopeCreateManyInput = {
+    id?: string
+    usuarioId: string
+    vendedorId?: string | null
+    rifaVendedorId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UsuarioVendedorScopeUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UsuarioVendedorScopeUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    usuarioId?: StringFieldUpdateOperationsInput | string
+    vendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    rifaVendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AsignacionBoletasCreateInput = {
@@ -34566,9 +37944,12 @@ export namespace Prisma {
     email?: string | null
     telefono?: string | null
     documento?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
     ventas?: VentaCreateNestedManyWithoutClienteInput
     boletas?: BoletaCreateNestedManyWithoutClienteInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutClienteInput
+    createdByUsuario?: UsuarioCreateNestedOneWithoutClientesCreadosInput
   }
 
   export type ClienteUncheckedCreateInput = {
@@ -34577,6 +37958,9 @@ export namespace Prisma {
     email?: string | null
     telefono?: string | null
     documento?: string | null
+    createdByUsuarioId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
     ventas?: VentaUncheckedCreateNestedManyWithoutClienteInput
     boletas?: BoletaUncheckedCreateNestedManyWithoutClienteInput
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutClienteInput
@@ -34588,9 +37972,12 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     telefono?: NullableStringFieldUpdateOperationsInput | string | null
     documento?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ventas?: VentaUpdateManyWithoutClienteNestedInput
     boletas?: BoletaUpdateManyWithoutClienteNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutClienteNestedInput
+    createdByUsuario?: UsuarioUpdateOneWithoutClientesCreadosNestedInput
   }
 
   export type ClienteUncheckedUpdateInput = {
@@ -34599,6 +37986,9 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     telefono?: NullableStringFieldUpdateOperationsInput | string | null
     documento?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUsuarioId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ventas?: VentaUncheckedUpdateManyWithoutClienteNestedInput
     boletas?: BoletaUncheckedUpdateManyWithoutClienteNestedInput
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutClienteNestedInput
@@ -34610,6 +38000,9 @@ export namespace Prisma {
     email?: string | null
     telefono?: string | null
     documento?: string | null
+    createdByUsuarioId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ClienteUpdateManyMutationInput = {
@@ -34618,6 +38011,8 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     telefono?: NullableStringFieldUpdateOperationsInput | string | null
     documento?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ClienteUncheckedUpdateManyInput = {
@@ -34626,10 +38021,21 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     telefono?: NullableStringFieldUpdateOperationsInput | string | null
     documento?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUsuarioId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type VentaCreateInput = {
     id?: string
+    canalOrigen?: string | null
+    referenciaExterna?: string | null
+    sesionExternaId?: string | null
+    linkPagoUrl?: string | null
+    linkPagoEnviadoAt?: Date | string | null
+    linkPagoAbiertoAt?: Date | string | null
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: string | null
     estado?: $Enums.EstadoVenta
     total: Decimal | DecimalJsLike | number | string
     saldoPendiente: Decimal | DecimalJsLike | number | string
@@ -34641,6 +38047,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     cliente: ClienteCreateNestedOneWithoutVentasInput
     rifa: RifaCreateNestedOneWithoutVentasInput
+    rifaVendedor?: RifaVendedorCreateNestedOneWithoutVentasInput
     boletas?: BoletaCreateNestedManyWithoutVentaInput
     pagos?: PagoClienteCreateNestedManyWithoutVentaInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutVentaInput
@@ -34650,6 +38057,15 @@ export namespace Prisma {
     id?: string
     clienteId: string
     rifaId: string
+    rifaVendedorId?: string | null
+    canalOrigen?: string | null
+    referenciaExterna?: string | null
+    sesionExternaId?: string | null
+    linkPagoUrl?: string | null
+    linkPagoEnviadoAt?: Date | string | null
+    linkPagoAbiertoAt?: Date | string | null
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: string | null
     estado?: $Enums.EstadoVenta
     total: Decimal | DecimalJsLike | number | string
     saldoPendiente: Decimal | DecimalJsLike | number | string
@@ -34666,6 +38082,14 @@ export namespace Prisma {
 
   export type VentaUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -34677,6 +38101,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     cliente?: ClienteUpdateOneRequiredWithoutVentasNestedInput
     rifa?: RifaUpdateOneRequiredWithoutVentasNestedInput
+    rifaVendedor?: RifaVendedorUpdateOneWithoutVentasNestedInput
     boletas?: BoletaUpdateManyWithoutVentaNestedInput
     pagos?: PagoClienteUpdateManyWithoutVentaNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutVentaNestedInput
@@ -34686,6 +38111,15 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     clienteId?: StringFieldUpdateOperationsInput | string
     rifaId?: StringFieldUpdateOperationsInput | string
+    rifaVendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -34704,6 +38138,15 @@ export namespace Prisma {
     id?: string
     clienteId: string
     rifaId: string
+    rifaVendedorId?: string | null
+    canalOrigen?: string | null
+    referenciaExterna?: string | null
+    sesionExternaId?: string | null
+    linkPagoUrl?: string | null
+    linkPagoEnviadoAt?: Date | string | null
+    linkPagoAbiertoAt?: Date | string | null
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: string | null
     estado?: $Enums.EstadoVenta
     total: Decimal | DecimalJsLike | number | string
     saldoPendiente: Decimal | DecimalJsLike | number | string
@@ -34717,6 +38160,14 @@ export namespace Prisma {
 
   export type VentaUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -34732,6 +38183,15 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     clienteId?: StringFieldUpdateOperationsInput | string
     rifaId?: StringFieldUpdateOperationsInput | string
+    rifaVendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -34749,7 +38209,11 @@ export namespace Prisma {
     fecha?: Date | string
     metodoPago: $Enums.MetodoPago
     estado?: $Enums.EstadoPago
+    descripcion?: string | null
     venta: VentaCreateNestedOneWithoutPagosInput
+    subCaja?: SubCajaCreateNestedOneWithoutPagosClienteInput
+    usuario?: UsuarioCreateNestedOneWithoutPagosClienteRegistradosInput
+    recibo?: PagoClienteReciboCreateNestedOneWithoutPagoClienteInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutPagoClienteInput
   }
 
@@ -34760,6 +38224,10 @@ export namespace Prisma {
     fecha?: Date | string
     metodoPago: $Enums.MetodoPago
     estado?: $Enums.EstadoPago
+    descripcion?: string | null
+    subCajaId?: string | null
+    usuarioId?: string | null
+    recibo?: PagoClienteReciboUncheckedCreateNestedOneWithoutPagoClienteInput
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutPagoClienteInput
   }
 
@@ -34769,7 +38237,11 @@ export namespace Prisma {
     fecha?: DateTimeFieldUpdateOperationsInput | Date | string
     metodoPago?: EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
     estado?: EnumEstadoPagoFieldUpdateOperationsInput | $Enums.EstadoPago
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
     venta?: VentaUpdateOneRequiredWithoutPagosNestedInput
+    subCaja?: SubCajaUpdateOneWithoutPagosClienteNestedInput
+    usuario?: UsuarioUpdateOneWithoutPagosClienteRegistradosNestedInput
+    recibo?: PagoClienteReciboUpdateOneWithoutPagoClienteNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutPagoClienteNestedInput
   }
 
@@ -34780,6 +38252,10 @@ export namespace Prisma {
     fecha?: DateTimeFieldUpdateOperationsInput | Date | string
     metodoPago?: EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
     estado?: EnumEstadoPagoFieldUpdateOperationsInput | $Enums.EstadoPago
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    subCajaId?: NullableStringFieldUpdateOperationsInput | string | null
+    usuarioId?: NullableStringFieldUpdateOperationsInput | string | null
+    recibo?: PagoClienteReciboUncheckedUpdateOneWithoutPagoClienteNestedInput
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutPagoClienteNestedInput
   }
 
@@ -34790,6 +38266,9 @@ export namespace Prisma {
     fecha?: Date | string
     metodoPago: $Enums.MetodoPago
     estado?: $Enums.EstadoPago
+    descripcion?: string | null
+    subCajaId?: string | null
+    usuarioId?: string | null
   }
 
   export type PagoClienteUpdateManyMutationInput = {
@@ -34798,6 +38277,7 @@ export namespace Prisma {
     fecha?: DateTimeFieldUpdateOperationsInput | Date | string
     metodoPago?: EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
     estado?: EnumEstadoPagoFieldUpdateOperationsInput | $Enums.EstadoPago
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PagoClienteUncheckedUpdateManyInput = {
@@ -34807,6 +38287,64 @@ export namespace Prisma {
     fecha?: DateTimeFieldUpdateOperationsInput | Date | string
     metodoPago?: EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
     estado?: EnumEstadoPagoFieldUpdateOperationsInput | $Enums.EstadoPago
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    subCajaId?: NullableStringFieldUpdateOperationsInput | string | null
+    usuarioId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PagoClienteReciboCreateInput = {
+    id?: string
+    consecutivo: number
+    codigoUnico: string
+    fecha?: Date | string
+    pagoCliente: PagoClienteCreateNestedOneWithoutReciboInput
+  }
+
+  export type PagoClienteReciboUncheckedCreateInput = {
+    id?: string
+    pagoClienteId: string
+    consecutivo: number
+    codigoUnico: string
+    fecha?: Date | string
+  }
+
+  export type PagoClienteReciboUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    consecutivo?: IntFieldUpdateOperationsInput | number
+    codigoUnico?: StringFieldUpdateOperationsInput | string
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+    pagoCliente?: PagoClienteUpdateOneRequiredWithoutReciboNestedInput
+  }
+
+  export type PagoClienteReciboUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pagoClienteId?: StringFieldUpdateOperationsInput | string
+    consecutivo?: IntFieldUpdateOperationsInput | number
+    codigoUnico?: StringFieldUpdateOperationsInput | string
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PagoClienteReciboCreateManyInput = {
+    id?: string
+    pagoClienteId: string
+    consecutivo: number
+    codigoUnico: string
+    fecha?: Date | string
+  }
+
+  export type PagoClienteReciboUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    consecutivo?: IntFieldUpdateOperationsInput | number
+    codigoUnico?: StringFieldUpdateOperationsInput | string
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PagoClienteReciboUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    pagoClienteId?: StringFieldUpdateOperationsInput | string
+    consecutivo?: IntFieldUpdateOperationsInput | number
+    codigoUnico?: StringFieldUpdateOperationsInput | string
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AbonoVendedorCreateInput = {
@@ -35051,6 +38589,7 @@ export namespace Prisma {
     caja: CajaCreateNestedOneWithoutSubcajasInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutSubCajaInput
     abonos?: AbonoVendedorCreateNestedManyWithoutSubCajaInput
+    pagosCliente?: PagoClienteCreateNestedManyWithoutSubCajaInput
     gastos?: GastoCreateNestedManyWithoutSubCajaInput
   }
 
@@ -35061,6 +38600,7 @@ export namespace Prisma {
     cajaId: string
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutSubCajaInput
     abonos?: AbonoVendedorUncheckedCreateNestedManyWithoutSubCajaInput
+    pagosCliente?: PagoClienteUncheckedCreateNestedManyWithoutSubCajaInput
     gastos?: GastoUncheckedCreateNestedManyWithoutSubCajaInput
   }
 
@@ -35071,6 +38611,7 @@ export namespace Prisma {
     caja?: CajaUpdateOneRequiredWithoutSubcajasNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutSubCajaNestedInput
     abonos?: AbonoVendedorUpdateManyWithoutSubCajaNestedInput
+    pagosCliente?: PagoClienteUpdateManyWithoutSubCajaNestedInput
     gastos?: GastoUpdateManyWithoutSubCajaNestedInput
   }
 
@@ -35081,6 +38622,7 @@ export namespace Prisma {
     cajaId?: StringFieldUpdateOperationsInput | string
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutSubCajaNestedInput
     abonos?: AbonoVendedorUncheckedUpdateManyWithoutSubCajaNestedInput
+    pagosCliente?: PagoClienteUncheckedUpdateManyWithoutSubCajaNestedInput
     gastos?: GastoUncheckedUpdateManyWithoutSubCajaNestedInput
   }
 
@@ -35611,6 +39153,12 @@ export namespace Prisma {
     none?: AbonoVendedorWhereInput
   }
 
+  export type PagoClienteListRelationFilter = {
+    every?: PagoClienteWhereInput
+    some?: PagoClienteWhereInput
+    none?: PagoClienteWhereInput
+  }
+
   export type GastoListRelationFilter = {
     every?: GastoWhereInput
     some?: GastoWhereInput
@@ -35629,6 +39177,18 @@ export namespace Prisma {
     none?: MovimientoCajaWhereInput
   }
 
+  export type UsuarioVendedorScopeListRelationFilter = {
+    every?: UsuarioVendedorScopeWhereInput
+    some?: UsuarioVendedorScopeWhereInput
+    none?: UsuarioVendedorScopeWhereInput
+  }
+
+  export type ClienteListRelationFilter = {
+    every?: ClienteWhereInput
+    some?: ClienteWhereInput
+    none?: ClienteWhereInput
+  }
+
   export type RifaOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -35645,6 +39205,10 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type PagoClienteOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type GastoOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -35654,6 +39218,14 @@ export namespace Prisma {
   }
 
   export type MovimientoCajaOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UsuarioVendedorScopeOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ClienteOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -36138,6 +39710,7 @@ export namespace Prisma {
     rifaId?: SortOrder
     numero?: SortOrder
     codigoBarras?: SortOrder
+    publicToken?: SortOrder
     estado?: SortOrder
     juega?: SortOrder
     precio?: SortOrder
@@ -36160,6 +39733,7 @@ export namespace Prisma {
     rifaId?: SortOrder
     numero?: SortOrder
     codigoBarras?: SortOrder
+    publicToken?: SortOrder
     estado?: SortOrder
     juega?: SortOrder
     precio?: SortOrder
@@ -36178,6 +39752,7 @@ export namespace Prisma {
     rifaId?: SortOrder
     numero?: SortOrder
     codigoBarras?: SortOrder
+    publicToken?: SortOrder
     estado?: SortOrder
     juega?: SortOrder
     precio?: SortOrder
@@ -36296,6 +39871,53 @@ export namespace Prisma {
     comisionPct?: SortOrder
     precioCasa?: SortOrder
     saldoActual?: SortOrder
+  }
+
+  export type UsuarioScalarRelationFilter = {
+    is?: UsuarioWhereInput
+    isNot?: UsuarioWhereInput
+  }
+
+  export type VendedorNullableScalarRelationFilter = {
+    is?: VendedorWhereInput | null
+    isNot?: VendedorWhereInput | null
+  }
+
+  export type UsuarioVendedorScopeUsuarioIdVendedorIdCompoundUniqueInput = {
+    usuarioId: string
+    vendedorId: string
+  }
+
+  export type UsuarioVendedorScopeUsuarioIdRifaVendedorIdCompoundUniqueInput = {
+    usuarioId: string
+    rifaVendedorId: string
+  }
+
+  export type UsuarioVendedorScopeCountOrderByAggregateInput = {
+    id?: SortOrder
+    usuarioId?: SortOrder
+    vendedorId?: SortOrder
+    rifaVendedorId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UsuarioVendedorScopeMaxOrderByAggregateInput = {
+    id?: SortOrder
+    usuarioId?: SortOrder
+    vendedorId?: SortOrder
+    rifaVendedorId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UsuarioVendedorScopeMinOrderByAggregateInput = {
+    id?: SortOrder
+    usuarioId?: SortOrder
+    vendedorId?: SortOrder
+    rifaVendedorId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type RifaVendedorScalarRelationFilter = {
@@ -36428,6 +40050,9 @@ export namespace Prisma {
     email?: SortOrder
     telefono?: SortOrder
     documento?: SortOrder
+    createdByUsuarioId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type ClienteMaxOrderByAggregateInput = {
@@ -36436,6 +40061,9 @@ export namespace Prisma {
     email?: SortOrder
     telefono?: SortOrder
     documento?: SortOrder
+    createdByUsuarioId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type ClienteMinOrderByAggregateInput = {
@@ -36444,6 +40072,9 @@ export namespace Prisma {
     email?: SortOrder
     telefono?: SortOrder
     documento?: SortOrder
+    createdByUsuarioId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type EnumEstadoVentaFilter<$PrismaModel = never> = {
@@ -36458,20 +40089,19 @@ export namespace Prisma {
     isNot?: ClienteWhereInput
   }
 
-  export type PagoClienteListRelationFilter = {
-    every?: PagoClienteWhereInput
-    some?: PagoClienteWhereInput
-    none?: PagoClienteWhereInput
-  }
-
-  export type PagoClienteOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type VentaCountOrderByAggregateInput = {
     id?: SortOrder
     clienteId?: SortOrder
     rifaId?: SortOrder
+    rifaVendedorId?: SortOrder
+    canalOrigen?: SortOrder
+    referenciaExterna?: SortOrder
+    sesionExternaId?: SortOrder
+    linkPagoUrl?: SortOrder
+    linkPagoEnviadoAt?: SortOrder
+    linkPagoAbiertoAt?: SortOrder
+    requiereSeguimientoHumano?: SortOrder
+    seguimientoMotivo?: SortOrder
     estado?: SortOrder
     total?: SortOrder
     saldoPendiente?: SortOrder
@@ -36492,6 +40122,15 @@ export namespace Prisma {
     id?: SortOrder
     clienteId?: SortOrder
     rifaId?: SortOrder
+    rifaVendedorId?: SortOrder
+    canalOrigen?: SortOrder
+    referenciaExterna?: SortOrder
+    sesionExternaId?: SortOrder
+    linkPagoUrl?: SortOrder
+    linkPagoEnviadoAt?: SortOrder
+    linkPagoAbiertoAt?: SortOrder
+    requiereSeguimientoHumano?: SortOrder
+    seguimientoMotivo?: SortOrder
     estado?: SortOrder
     total?: SortOrder
     saldoPendiente?: SortOrder
@@ -36507,6 +40146,15 @@ export namespace Prisma {
     id?: SortOrder
     clienteId?: SortOrder
     rifaId?: SortOrder
+    rifaVendedorId?: SortOrder
+    canalOrigen?: SortOrder
+    referenciaExterna?: SortOrder
+    sesionExternaId?: SortOrder
+    linkPagoUrl?: SortOrder
+    linkPagoEnviadoAt?: SortOrder
+    linkPagoAbiertoAt?: SortOrder
+    requiereSeguimientoHumano?: SortOrder
+    seguimientoMotivo?: SortOrder
     estado?: SortOrder
     total?: SortOrder
     saldoPendiente?: SortOrder
@@ -36552,6 +40200,16 @@ export namespace Prisma {
     isNot?: VentaWhereInput
   }
 
+  export type SubCajaNullableScalarRelationFilter = {
+    is?: SubCajaWhereInput | null
+    isNot?: SubCajaWhereInput | null
+  }
+
+  export type PagoClienteReciboNullableScalarRelationFilter = {
+    is?: PagoClienteReciboWhereInput | null
+    isNot?: PagoClienteReciboWhereInput | null
+  }
+
   export type PagoClienteCountOrderByAggregateInput = {
     id?: SortOrder
     ventaId?: SortOrder
@@ -36559,6 +40217,9 @@ export namespace Prisma {
     fecha?: SortOrder
     metodoPago?: SortOrder
     estado?: SortOrder
+    descripcion?: SortOrder
+    subCajaId?: SortOrder
+    usuarioId?: SortOrder
   }
 
   export type PagoClienteAvgOrderByAggregateInput = {
@@ -36572,6 +40233,9 @@ export namespace Prisma {
     fecha?: SortOrder
     metodoPago?: SortOrder
     estado?: SortOrder
+    descripcion?: SortOrder
+    subCajaId?: SortOrder
+    usuarioId?: SortOrder
   }
 
   export type PagoClienteMinOrderByAggregateInput = {
@@ -36581,6 +40245,9 @@ export namespace Prisma {
     fecha?: SortOrder
     metodoPago?: SortOrder
     estado?: SortOrder
+    descripcion?: SortOrder
+    subCajaId?: SortOrder
+    usuarioId?: SortOrder
   }
 
   export type PagoClienteSumOrderByAggregateInput = {
@@ -36607,9 +40274,41 @@ export namespace Prisma {
     _max?: NestedEnumEstadoPagoFilter<$PrismaModel>
   }
 
-  export type SubCajaNullableScalarRelationFilter = {
-    is?: SubCajaWhereInput | null
-    isNot?: SubCajaWhereInput | null
+  export type PagoClienteScalarRelationFilter = {
+    is?: PagoClienteWhereInput
+    isNot?: PagoClienteWhereInput
+  }
+
+  export type PagoClienteReciboCountOrderByAggregateInput = {
+    id?: SortOrder
+    pagoClienteId?: SortOrder
+    consecutivo?: SortOrder
+    codigoUnico?: SortOrder
+    fecha?: SortOrder
+  }
+
+  export type PagoClienteReciboAvgOrderByAggregateInput = {
+    consecutivo?: SortOrder
+  }
+
+  export type PagoClienteReciboMaxOrderByAggregateInput = {
+    id?: SortOrder
+    pagoClienteId?: SortOrder
+    consecutivo?: SortOrder
+    codigoUnico?: SortOrder
+    fecha?: SortOrder
+  }
+
+  export type PagoClienteReciboMinOrderByAggregateInput = {
+    id?: SortOrder
+    pagoClienteId?: SortOrder
+    consecutivo?: SortOrder
+    codigoUnico?: SortOrder
+    fecha?: SortOrder
+  }
+
+  export type PagoClienteReciboSumOrderByAggregateInput = {
+    consecutivo?: SortOrder
   }
 
   export type ReciboNullableScalarRelationFilter = {
@@ -36812,11 +40511,6 @@ export namespace Prisma {
   export type RifaNullableScalarRelationFilter = {
     is?: RifaWhereInput | null
     isNot?: RifaWhereInput | null
-  }
-
-  export type VendedorNullableScalarRelationFilter = {
-    is?: VendedorWhereInput | null
-    isNot?: VendedorWhereInput | null
   }
 
   export type GastoNullableScalarRelationFilter = {
@@ -37099,6 +40793,13 @@ export namespace Prisma {
     connect?: AbonoVendedorWhereUniqueInput | AbonoVendedorWhereUniqueInput[]
   }
 
+  export type PagoClienteCreateNestedManyWithoutUsuarioInput = {
+    create?: XOR<PagoClienteCreateWithoutUsuarioInput, PagoClienteUncheckedCreateWithoutUsuarioInput> | PagoClienteCreateWithoutUsuarioInput[] | PagoClienteUncheckedCreateWithoutUsuarioInput[]
+    connectOrCreate?: PagoClienteCreateOrConnectWithoutUsuarioInput | PagoClienteCreateOrConnectWithoutUsuarioInput[]
+    createMany?: PagoClienteCreateManyUsuarioInputEnvelope
+    connect?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+  }
+
   export type GastoCreateNestedManyWithoutUsuarioInput = {
     create?: XOR<GastoCreateWithoutUsuarioInput, GastoUncheckedCreateWithoutUsuarioInput> | GastoCreateWithoutUsuarioInput[] | GastoUncheckedCreateWithoutUsuarioInput[]
     connectOrCreate?: GastoCreateOrConnectWithoutUsuarioInput | GastoCreateOrConnectWithoutUsuarioInput[]
@@ -37118,6 +40819,20 @@ export namespace Prisma {
     connectOrCreate?: MovimientoCajaCreateOrConnectWithoutUsuarioInput | MovimientoCajaCreateOrConnectWithoutUsuarioInput[]
     createMany?: MovimientoCajaCreateManyUsuarioInputEnvelope
     connect?: MovimientoCajaWhereUniqueInput | MovimientoCajaWhereUniqueInput[]
+  }
+
+  export type UsuarioVendedorScopeCreateNestedManyWithoutUsuarioInput = {
+    create?: XOR<UsuarioVendedorScopeCreateWithoutUsuarioInput, UsuarioVendedorScopeUncheckedCreateWithoutUsuarioInput> | UsuarioVendedorScopeCreateWithoutUsuarioInput[] | UsuarioVendedorScopeUncheckedCreateWithoutUsuarioInput[]
+    connectOrCreate?: UsuarioVendedorScopeCreateOrConnectWithoutUsuarioInput | UsuarioVendedorScopeCreateOrConnectWithoutUsuarioInput[]
+    createMany?: UsuarioVendedorScopeCreateManyUsuarioInputEnvelope
+    connect?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+  }
+
+  export type ClienteCreateNestedManyWithoutCreatedByUsuarioInput = {
+    create?: XOR<ClienteCreateWithoutCreatedByUsuarioInput, ClienteUncheckedCreateWithoutCreatedByUsuarioInput> | ClienteCreateWithoutCreatedByUsuarioInput[] | ClienteUncheckedCreateWithoutCreatedByUsuarioInput[]
+    connectOrCreate?: ClienteCreateOrConnectWithoutCreatedByUsuarioInput | ClienteCreateOrConnectWithoutCreatedByUsuarioInput[]
+    createMany?: ClienteCreateManyCreatedByUsuarioInputEnvelope
+    connect?: ClienteWhereUniqueInput | ClienteWhereUniqueInput[]
   }
 
   export type RifaUncheckedCreateNestedManyWithoutCreatedByInput = {
@@ -37155,6 +40870,13 @@ export namespace Prisma {
     connect?: AbonoVendedorWhereUniqueInput | AbonoVendedorWhereUniqueInput[]
   }
 
+  export type PagoClienteUncheckedCreateNestedManyWithoutUsuarioInput = {
+    create?: XOR<PagoClienteCreateWithoutUsuarioInput, PagoClienteUncheckedCreateWithoutUsuarioInput> | PagoClienteCreateWithoutUsuarioInput[] | PagoClienteUncheckedCreateWithoutUsuarioInput[]
+    connectOrCreate?: PagoClienteCreateOrConnectWithoutUsuarioInput | PagoClienteCreateOrConnectWithoutUsuarioInput[]
+    createMany?: PagoClienteCreateManyUsuarioInputEnvelope
+    connect?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+  }
+
   export type GastoUncheckedCreateNestedManyWithoutUsuarioInput = {
     create?: XOR<GastoCreateWithoutUsuarioInput, GastoUncheckedCreateWithoutUsuarioInput> | GastoCreateWithoutUsuarioInput[] | GastoUncheckedCreateWithoutUsuarioInput[]
     connectOrCreate?: GastoCreateOrConnectWithoutUsuarioInput | GastoCreateOrConnectWithoutUsuarioInput[]
@@ -37174,6 +40896,20 @@ export namespace Prisma {
     connectOrCreate?: MovimientoCajaCreateOrConnectWithoutUsuarioInput | MovimientoCajaCreateOrConnectWithoutUsuarioInput[]
     createMany?: MovimientoCajaCreateManyUsuarioInputEnvelope
     connect?: MovimientoCajaWhereUniqueInput | MovimientoCajaWhereUniqueInput[]
+  }
+
+  export type UsuarioVendedorScopeUncheckedCreateNestedManyWithoutUsuarioInput = {
+    create?: XOR<UsuarioVendedorScopeCreateWithoutUsuarioInput, UsuarioVendedorScopeUncheckedCreateWithoutUsuarioInput> | UsuarioVendedorScopeCreateWithoutUsuarioInput[] | UsuarioVendedorScopeUncheckedCreateWithoutUsuarioInput[]
+    connectOrCreate?: UsuarioVendedorScopeCreateOrConnectWithoutUsuarioInput | UsuarioVendedorScopeCreateOrConnectWithoutUsuarioInput[]
+    createMany?: UsuarioVendedorScopeCreateManyUsuarioInputEnvelope
+    connect?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+  }
+
+  export type ClienteUncheckedCreateNestedManyWithoutCreatedByUsuarioInput = {
+    create?: XOR<ClienteCreateWithoutCreatedByUsuarioInput, ClienteUncheckedCreateWithoutCreatedByUsuarioInput> | ClienteCreateWithoutCreatedByUsuarioInput[] | ClienteUncheckedCreateWithoutCreatedByUsuarioInput[]
+    connectOrCreate?: ClienteCreateOrConnectWithoutCreatedByUsuarioInput | ClienteCreateOrConnectWithoutCreatedByUsuarioInput[]
+    createMany?: ClienteCreateManyCreatedByUsuarioInputEnvelope
+    connect?: ClienteWhereUniqueInput | ClienteWhereUniqueInput[]
   }
 
   export type EnumRolUsuarioFieldUpdateOperationsInput = {
@@ -37254,6 +40990,20 @@ export namespace Prisma {
     deleteMany?: AbonoVendedorScalarWhereInput | AbonoVendedorScalarWhereInput[]
   }
 
+  export type PagoClienteUpdateManyWithoutUsuarioNestedInput = {
+    create?: XOR<PagoClienteCreateWithoutUsuarioInput, PagoClienteUncheckedCreateWithoutUsuarioInput> | PagoClienteCreateWithoutUsuarioInput[] | PagoClienteUncheckedCreateWithoutUsuarioInput[]
+    connectOrCreate?: PagoClienteCreateOrConnectWithoutUsuarioInput | PagoClienteCreateOrConnectWithoutUsuarioInput[]
+    upsert?: PagoClienteUpsertWithWhereUniqueWithoutUsuarioInput | PagoClienteUpsertWithWhereUniqueWithoutUsuarioInput[]
+    createMany?: PagoClienteCreateManyUsuarioInputEnvelope
+    set?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+    disconnect?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+    delete?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+    connect?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+    update?: PagoClienteUpdateWithWhereUniqueWithoutUsuarioInput | PagoClienteUpdateWithWhereUniqueWithoutUsuarioInput[]
+    updateMany?: PagoClienteUpdateManyWithWhereWithoutUsuarioInput | PagoClienteUpdateManyWithWhereWithoutUsuarioInput[]
+    deleteMany?: PagoClienteScalarWhereInput | PagoClienteScalarWhereInput[]
+  }
+
   export type GastoUpdateManyWithoutUsuarioNestedInput = {
     create?: XOR<GastoCreateWithoutUsuarioInput, GastoUncheckedCreateWithoutUsuarioInput> | GastoCreateWithoutUsuarioInput[] | GastoUncheckedCreateWithoutUsuarioInput[]
     connectOrCreate?: GastoCreateOrConnectWithoutUsuarioInput | GastoCreateOrConnectWithoutUsuarioInput[]
@@ -37294,6 +41044,34 @@ export namespace Prisma {
     update?: MovimientoCajaUpdateWithWhereUniqueWithoutUsuarioInput | MovimientoCajaUpdateWithWhereUniqueWithoutUsuarioInput[]
     updateMany?: MovimientoCajaUpdateManyWithWhereWithoutUsuarioInput | MovimientoCajaUpdateManyWithWhereWithoutUsuarioInput[]
     deleteMany?: MovimientoCajaScalarWhereInput | MovimientoCajaScalarWhereInput[]
+  }
+
+  export type UsuarioVendedorScopeUpdateManyWithoutUsuarioNestedInput = {
+    create?: XOR<UsuarioVendedorScopeCreateWithoutUsuarioInput, UsuarioVendedorScopeUncheckedCreateWithoutUsuarioInput> | UsuarioVendedorScopeCreateWithoutUsuarioInput[] | UsuarioVendedorScopeUncheckedCreateWithoutUsuarioInput[]
+    connectOrCreate?: UsuarioVendedorScopeCreateOrConnectWithoutUsuarioInput | UsuarioVendedorScopeCreateOrConnectWithoutUsuarioInput[]
+    upsert?: UsuarioVendedorScopeUpsertWithWhereUniqueWithoutUsuarioInput | UsuarioVendedorScopeUpsertWithWhereUniqueWithoutUsuarioInput[]
+    createMany?: UsuarioVendedorScopeCreateManyUsuarioInputEnvelope
+    set?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    disconnect?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    delete?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    connect?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    update?: UsuarioVendedorScopeUpdateWithWhereUniqueWithoutUsuarioInput | UsuarioVendedorScopeUpdateWithWhereUniqueWithoutUsuarioInput[]
+    updateMany?: UsuarioVendedorScopeUpdateManyWithWhereWithoutUsuarioInput | UsuarioVendedorScopeUpdateManyWithWhereWithoutUsuarioInput[]
+    deleteMany?: UsuarioVendedorScopeScalarWhereInput | UsuarioVendedorScopeScalarWhereInput[]
+  }
+
+  export type ClienteUpdateManyWithoutCreatedByUsuarioNestedInput = {
+    create?: XOR<ClienteCreateWithoutCreatedByUsuarioInput, ClienteUncheckedCreateWithoutCreatedByUsuarioInput> | ClienteCreateWithoutCreatedByUsuarioInput[] | ClienteUncheckedCreateWithoutCreatedByUsuarioInput[]
+    connectOrCreate?: ClienteCreateOrConnectWithoutCreatedByUsuarioInput | ClienteCreateOrConnectWithoutCreatedByUsuarioInput[]
+    upsert?: ClienteUpsertWithWhereUniqueWithoutCreatedByUsuarioInput | ClienteUpsertWithWhereUniqueWithoutCreatedByUsuarioInput[]
+    createMany?: ClienteCreateManyCreatedByUsuarioInputEnvelope
+    set?: ClienteWhereUniqueInput | ClienteWhereUniqueInput[]
+    disconnect?: ClienteWhereUniqueInput | ClienteWhereUniqueInput[]
+    delete?: ClienteWhereUniqueInput | ClienteWhereUniqueInput[]
+    connect?: ClienteWhereUniqueInput | ClienteWhereUniqueInput[]
+    update?: ClienteUpdateWithWhereUniqueWithoutCreatedByUsuarioInput | ClienteUpdateWithWhereUniqueWithoutCreatedByUsuarioInput[]
+    updateMany?: ClienteUpdateManyWithWhereWithoutCreatedByUsuarioInput | ClienteUpdateManyWithWhereWithoutCreatedByUsuarioInput[]
+    deleteMany?: ClienteScalarWhereInput | ClienteScalarWhereInput[]
   }
 
   export type RifaUncheckedUpdateManyWithoutCreatedByNestedInput = {
@@ -37366,6 +41144,20 @@ export namespace Prisma {
     deleteMany?: AbonoVendedorScalarWhereInput | AbonoVendedorScalarWhereInput[]
   }
 
+  export type PagoClienteUncheckedUpdateManyWithoutUsuarioNestedInput = {
+    create?: XOR<PagoClienteCreateWithoutUsuarioInput, PagoClienteUncheckedCreateWithoutUsuarioInput> | PagoClienteCreateWithoutUsuarioInput[] | PagoClienteUncheckedCreateWithoutUsuarioInput[]
+    connectOrCreate?: PagoClienteCreateOrConnectWithoutUsuarioInput | PagoClienteCreateOrConnectWithoutUsuarioInput[]
+    upsert?: PagoClienteUpsertWithWhereUniqueWithoutUsuarioInput | PagoClienteUpsertWithWhereUniqueWithoutUsuarioInput[]
+    createMany?: PagoClienteCreateManyUsuarioInputEnvelope
+    set?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+    disconnect?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+    delete?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+    connect?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+    update?: PagoClienteUpdateWithWhereUniqueWithoutUsuarioInput | PagoClienteUpdateWithWhereUniqueWithoutUsuarioInput[]
+    updateMany?: PagoClienteUpdateManyWithWhereWithoutUsuarioInput | PagoClienteUpdateManyWithWhereWithoutUsuarioInput[]
+    deleteMany?: PagoClienteScalarWhereInput | PagoClienteScalarWhereInput[]
+  }
+
   export type GastoUncheckedUpdateManyWithoutUsuarioNestedInput = {
     create?: XOR<GastoCreateWithoutUsuarioInput, GastoUncheckedCreateWithoutUsuarioInput> | GastoCreateWithoutUsuarioInput[] | GastoUncheckedCreateWithoutUsuarioInput[]
     connectOrCreate?: GastoCreateOrConnectWithoutUsuarioInput | GastoCreateOrConnectWithoutUsuarioInput[]
@@ -37406,6 +41198,34 @@ export namespace Prisma {
     update?: MovimientoCajaUpdateWithWhereUniqueWithoutUsuarioInput | MovimientoCajaUpdateWithWhereUniqueWithoutUsuarioInput[]
     updateMany?: MovimientoCajaUpdateManyWithWhereWithoutUsuarioInput | MovimientoCajaUpdateManyWithWhereWithoutUsuarioInput[]
     deleteMany?: MovimientoCajaScalarWhereInput | MovimientoCajaScalarWhereInput[]
+  }
+
+  export type UsuarioVendedorScopeUncheckedUpdateManyWithoutUsuarioNestedInput = {
+    create?: XOR<UsuarioVendedorScopeCreateWithoutUsuarioInput, UsuarioVendedorScopeUncheckedCreateWithoutUsuarioInput> | UsuarioVendedorScopeCreateWithoutUsuarioInput[] | UsuarioVendedorScopeUncheckedCreateWithoutUsuarioInput[]
+    connectOrCreate?: UsuarioVendedorScopeCreateOrConnectWithoutUsuarioInput | UsuarioVendedorScopeCreateOrConnectWithoutUsuarioInput[]
+    upsert?: UsuarioVendedorScopeUpsertWithWhereUniqueWithoutUsuarioInput | UsuarioVendedorScopeUpsertWithWhereUniqueWithoutUsuarioInput[]
+    createMany?: UsuarioVendedorScopeCreateManyUsuarioInputEnvelope
+    set?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    disconnect?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    delete?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    connect?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    update?: UsuarioVendedorScopeUpdateWithWhereUniqueWithoutUsuarioInput | UsuarioVendedorScopeUpdateWithWhereUniqueWithoutUsuarioInput[]
+    updateMany?: UsuarioVendedorScopeUpdateManyWithWhereWithoutUsuarioInput | UsuarioVendedorScopeUpdateManyWithWhereWithoutUsuarioInput[]
+    deleteMany?: UsuarioVendedorScopeScalarWhereInput | UsuarioVendedorScopeScalarWhereInput[]
+  }
+
+  export type ClienteUncheckedUpdateManyWithoutCreatedByUsuarioNestedInput = {
+    create?: XOR<ClienteCreateWithoutCreatedByUsuarioInput, ClienteUncheckedCreateWithoutCreatedByUsuarioInput> | ClienteCreateWithoutCreatedByUsuarioInput[] | ClienteUncheckedCreateWithoutCreatedByUsuarioInput[]
+    connectOrCreate?: ClienteCreateOrConnectWithoutCreatedByUsuarioInput | ClienteCreateOrConnectWithoutCreatedByUsuarioInput[]
+    upsert?: ClienteUpsertWithWhereUniqueWithoutCreatedByUsuarioInput | ClienteUpsertWithWhereUniqueWithoutCreatedByUsuarioInput[]
+    createMany?: ClienteCreateManyCreatedByUsuarioInputEnvelope
+    set?: ClienteWhereUniqueInput | ClienteWhereUniqueInput[]
+    disconnect?: ClienteWhereUniqueInput | ClienteWhereUniqueInput[]
+    delete?: ClienteWhereUniqueInput | ClienteWhereUniqueInput[]
+    connect?: ClienteWhereUniqueInput | ClienteWhereUniqueInput[]
+    update?: ClienteUpdateWithWhereUniqueWithoutCreatedByUsuarioInput | ClienteUpdateWithWhereUniqueWithoutCreatedByUsuarioInput[]
+    updateMany?: ClienteUpdateManyWithWhereWithoutCreatedByUsuarioInput | ClienteUpdateManyWithWhereWithoutCreatedByUsuarioInput[]
+    deleteMany?: ClienteScalarWhereInput | ClienteScalarWhereInput[]
   }
 
   export type UsuarioCreateNestedOneWithoutRifasCreadasInput = {
@@ -38102,6 +41922,13 @@ export namespace Prisma {
     connect?: MovimientoCajaWhereUniqueInput | MovimientoCajaWhereUniqueInput[]
   }
 
+  export type UsuarioVendedorScopeCreateNestedManyWithoutVendedorInput = {
+    create?: XOR<UsuarioVendedorScopeCreateWithoutVendedorInput, UsuarioVendedorScopeUncheckedCreateWithoutVendedorInput> | UsuarioVendedorScopeCreateWithoutVendedorInput[] | UsuarioVendedorScopeUncheckedCreateWithoutVendedorInput[]
+    connectOrCreate?: UsuarioVendedorScopeCreateOrConnectWithoutVendedorInput | UsuarioVendedorScopeCreateOrConnectWithoutVendedorInput[]
+    createMany?: UsuarioVendedorScopeCreateManyVendedorInputEnvelope
+    connect?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+  }
+
   export type RifaVendedorUncheckedCreateNestedManyWithoutVendedorInput = {
     create?: XOR<RifaVendedorCreateWithoutVendedorInput, RifaVendedorUncheckedCreateWithoutVendedorInput> | RifaVendedorCreateWithoutVendedorInput[] | RifaVendedorUncheckedCreateWithoutVendedorInput[]
     connectOrCreate?: RifaVendedorCreateOrConnectWithoutVendedorInput | RifaVendedorCreateOrConnectWithoutVendedorInput[]
@@ -38114,6 +41941,13 @@ export namespace Prisma {
     connectOrCreate?: MovimientoCajaCreateOrConnectWithoutVendedorInput | MovimientoCajaCreateOrConnectWithoutVendedorInput[]
     createMany?: MovimientoCajaCreateManyVendedorInputEnvelope
     connect?: MovimientoCajaWhereUniqueInput | MovimientoCajaWhereUniqueInput[]
+  }
+
+  export type UsuarioVendedorScopeUncheckedCreateNestedManyWithoutVendedorInput = {
+    create?: XOR<UsuarioVendedorScopeCreateWithoutVendedorInput, UsuarioVendedorScopeUncheckedCreateWithoutVendedorInput> | UsuarioVendedorScopeCreateWithoutVendedorInput[] | UsuarioVendedorScopeUncheckedCreateWithoutVendedorInput[]
+    connectOrCreate?: UsuarioVendedorScopeCreateOrConnectWithoutVendedorInput | UsuarioVendedorScopeCreateOrConnectWithoutVendedorInput[]
+    createMany?: UsuarioVendedorScopeCreateManyVendedorInputEnvelope
+    connect?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
   }
 
   export type RifaVendedorUpdateManyWithoutVendedorNestedInput = {
@@ -38144,6 +41978,20 @@ export namespace Prisma {
     deleteMany?: MovimientoCajaScalarWhereInput | MovimientoCajaScalarWhereInput[]
   }
 
+  export type UsuarioVendedorScopeUpdateManyWithoutVendedorNestedInput = {
+    create?: XOR<UsuarioVendedorScopeCreateWithoutVendedorInput, UsuarioVendedorScopeUncheckedCreateWithoutVendedorInput> | UsuarioVendedorScopeCreateWithoutVendedorInput[] | UsuarioVendedorScopeUncheckedCreateWithoutVendedorInput[]
+    connectOrCreate?: UsuarioVendedorScopeCreateOrConnectWithoutVendedorInput | UsuarioVendedorScopeCreateOrConnectWithoutVendedorInput[]
+    upsert?: UsuarioVendedorScopeUpsertWithWhereUniqueWithoutVendedorInput | UsuarioVendedorScopeUpsertWithWhereUniqueWithoutVendedorInput[]
+    createMany?: UsuarioVendedorScopeCreateManyVendedorInputEnvelope
+    set?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    disconnect?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    delete?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    connect?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    update?: UsuarioVendedorScopeUpdateWithWhereUniqueWithoutVendedorInput | UsuarioVendedorScopeUpdateWithWhereUniqueWithoutVendedorInput[]
+    updateMany?: UsuarioVendedorScopeUpdateManyWithWhereWithoutVendedorInput | UsuarioVendedorScopeUpdateManyWithWhereWithoutVendedorInput[]
+    deleteMany?: UsuarioVendedorScopeScalarWhereInput | UsuarioVendedorScopeScalarWhereInput[]
+  }
+
   export type RifaVendedorUncheckedUpdateManyWithoutVendedorNestedInput = {
     create?: XOR<RifaVendedorCreateWithoutVendedorInput, RifaVendedorUncheckedCreateWithoutVendedorInput> | RifaVendedorCreateWithoutVendedorInput[] | RifaVendedorUncheckedCreateWithoutVendedorInput[]
     connectOrCreate?: RifaVendedorCreateOrConnectWithoutVendedorInput | RifaVendedorCreateOrConnectWithoutVendedorInput[]
@@ -38170,6 +42018,20 @@ export namespace Prisma {
     update?: MovimientoCajaUpdateWithWhereUniqueWithoutVendedorInput | MovimientoCajaUpdateWithWhereUniqueWithoutVendedorInput[]
     updateMany?: MovimientoCajaUpdateManyWithWhereWithoutVendedorInput | MovimientoCajaUpdateManyWithWhereWithoutVendedorInput[]
     deleteMany?: MovimientoCajaScalarWhereInput | MovimientoCajaScalarWhereInput[]
+  }
+
+  export type UsuarioVendedorScopeUncheckedUpdateManyWithoutVendedorNestedInput = {
+    create?: XOR<UsuarioVendedorScopeCreateWithoutVendedorInput, UsuarioVendedorScopeUncheckedCreateWithoutVendedorInput> | UsuarioVendedorScopeCreateWithoutVendedorInput[] | UsuarioVendedorScopeUncheckedCreateWithoutVendedorInput[]
+    connectOrCreate?: UsuarioVendedorScopeCreateOrConnectWithoutVendedorInput | UsuarioVendedorScopeCreateOrConnectWithoutVendedorInput[]
+    upsert?: UsuarioVendedorScopeUpsertWithWhereUniqueWithoutVendedorInput | UsuarioVendedorScopeUpsertWithWhereUniqueWithoutVendedorInput[]
+    createMany?: UsuarioVendedorScopeCreateManyVendedorInputEnvelope
+    set?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    disconnect?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    delete?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    connect?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    update?: UsuarioVendedorScopeUpdateWithWhereUniqueWithoutVendedorInput | UsuarioVendedorScopeUpdateWithWhereUniqueWithoutVendedorInput[]
+    updateMany?: UsuarioVendedorScopeUpdateManyWithWhereWithoutVendedorInput | UsuarioVendedorScopeUpdateManyWithWhereWithoutVendedorInput[]
+    deleteMany?: UsuarioVendedorScopeScalarWhereInput | UsuarioVendedorScopeScalarWhereInput[]
   }
 
   export type RifaCreateNestedOneWithoutVendedoresInput = {
@@ -38219,6 +42081,20 @@ export namespace Prisma {
     connect?: JuegoRegistroWhereUniqueInput | JuegoRegistroWhereUniqueInput[]
   }
 
+  export type UsuarioVendedorScopeCreateNestedManyWithoutRifaVendedorInput = {
+    create?: XOR<UsuarioVendedorScopeCreateWithoutRifaVendedorInput, UsuarioVendedorScopeUncheckedCreateWithoutRifaVendedorInput> | UsuarioVendedorScopeCreateWithoutRifaVendedorInput[] | UsuarioVendedorScopeUncheckedCreateWithoutRifaVendedorInput[]
+    connectOrCreate?: UsuarioVendedorScopeCreateOrConnectWithoutRifaVendedorInput | UsuarioVendedorScopeCreateOrConnectWithoutRifaVendedorInput[]
+    createMany?: UsuarioVendedorScopeCreateManyRifaVendedorInputEnvelope
+    connect?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+  }
+
+  export type VentaCreateNestedManyWithoutRifaVendedorInput = {
+    create?: XOR<VentaCreateWithoutRifaVendedorInput, VentaUncheckedCreateWithoutRifaVendedorInput> | VentaCreateWithoutRifaVendedorInput[] | VentaUncheckedCreateWithoutRifaVendedorInput[]
+    connectOrCreate?: VentaCreateOrConnectWithoutRifaVendedorInput | VentaCreateOrConnectWithoutRifaVendedorInput[]
+    createMany?: VentaCreateManyRifaVendedorInputEnvelope
+    connect?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
+  }
+
   export type AsignacionBoletasUncheckedCreateNestedManyWithoutRifaVendedorInput = {
     create?: XOR<AsignacionBoletasCreateWithoutRifaVendedorInput, AsignacionBoletasUncheckedCreateWithoutRifaVendedorInput> | AsignacionBoletasCreateWithoutRifaVendedorInput[] | AsignacionBoletasUncheckedCreateWithoutRifaVendedorInput[]
     connectOrCreate?: AsignacionBoletasCreateOrConnectWithoutRifaVendedorInput | AsignacionBoletasCreateOrConnectWithoutRifaVendedorInput[]
@@ -38252,6 +42128,20 @@ export namespace Prisma {
     connectOrCreate?: JuegoRegistroCreateOrConnectWithoutRifaVendedorInput | JuegoRegistroCreateOrConnectWithoutRifaVendedorInput[]
     createMany?: JuegoRegistroCreateManyRifaVendedorInputEnvelope
     connect?: JuegoRegistroWhereUniqueInput | JuegoRegistroWhereUniqueInput[]
+  }
+
+  export type UsuarioVendedorScopeUncheckedCreateNestedManyWithoutRifaVendedorInput = {
+    create?: XOR<UsuarioVendedorScopeCreateWithoutRifaVendedorInput, UsuarioVendedorScopeUncheckedCreateWithoutRifaVendedorInput> | UsuarioVendedorScopeCreateWithoutRifaVendedorInput[] | UsuarioVendedorScopeUncheckedCreateWithoutRifaVendedorInput[]
+    connectOrCreate?: UsuarioVendedorScopeCreateOrConnectWithoutRifaVendedorInput | UsuarioVendedorScopeCreateOrConnectWithoutRifaVendedorInput[]
+    createMany?: UsuarioVendedorScopeCreateManyRifaVendedorInputEnvelope
+    connect?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+  }
+
+  export type VentaUncheckedCreateNestedManyWithoutRifaVendedorInput = {
+    create?: XOR<VentaCreateWithoutRifaVendedorInput, VentaUncheckedCreateWithoutRifaVendedorInput> | VentaCreateWithoutRifaVendedorInput[] | VentaUncheckedCreateWithoutRifaVendedorInput[]
+    connectOrCreate?: VentaCreateOrConnectWithoutRifaVendedorInput | VentaCreateOrConnectWithoutRifaVendedorInput[]
+    createMany?: VentaCreateManyRifaVendedorInputEnvelope
+    connect?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
   }
 
   export type RifaUpdateOneRequiredWithoutVendedoresNestedInput = {
@@ -38340,6 +42230,34 @@ export namespace Prisma {
     deleteMany?: JuegoRegistroScalarWhereInput | JuegoRegistroScalarWhereInput[]
   }
 
+  export type UsuarioVendedorScopeUpdateManyWithoutRifaVendedorNestedInput = {
+    create?: XOR<UsuarioVendedorScopeCreateWithoutRifaVendedorInput, UsuarioVendedorScopeUncheckedCreateWithoutRifaVendedorInput> | UsuarioVendedorScopeCreateWithoutRifaVendedorInput[] | UsuarioVendedorScopeUncheckedCreateWithoutRifaVendedorInput[]
+    connectOrCreate?: UsuarioVendedorScopeCreateOrConnectWithoutRifaVendedorInput | UsuarioVendedorScopeCreateOrConnectWithoutRifaVendedorInput[]
+    upsert?: UsuarioVendedorScopeUpsertWithWhereUniqueWithoutRifaVendedorInput | UsuarioVendedorScopeUpsertWithWhereUniqueWithoutRifaVendedorInput[]
+    createMany?: UsuarioVendedorScopeCreateManyRifaVendedorInputEnvelope
+    set?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    disconnect?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    delete?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    connect?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    update?: UsuarioVendedorScopeUpdateWithWhereUniqueWithoutRifaVendedorInput | UsuarioVendedorScopeUpdateWithWhereUniqueWithoutRifaVendedorInput[]
+    updateMany?: UsuarioVendedorScopeUpdateManyWithWhereWithoutRifaVendedorInput | UsuarioVendedorScopeUpdateManyWithWhereWithoutRifaVendedorInput[]
+    deleteMany?: UsuarioVendedorScopeScalarWhereInput | UsuarioVendedorScopeScalarWhereInput[]
+  }
+
+  export type VentaUpdateManyWithoutRifaVendedorNestedInput = {
+    create?: XOR<VentaCreateWithoutRifaVendedorInput, VentaUncheckedCreateWithoutRifaVendedorInput> | VentaCreateWithoutRifaVendedorInput[] | VentaUncheckedCreateWithoutRifaVendedorInput[]
+    connectOrCreate?: VentaCreateOrConnectWithoutRifaVendedorInput | VentaCreateOrConnectWithoutRifaVendedorInput[]
+    upsert?: VentaUpsertWithWhereUniqueWithoutRifaVendedorInput | VentaUpsertWithWhereUniqueWithoutRifaVendedorInput[]
+    createMany?: VentaCreateManyRifaVendedorInputEnvelope
+    set?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
+    disconnect?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
+    delete?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
+    connect?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
+    update?: VentaUpdateWithWhereUniqueWithoutRifaVendedorInput | VentaUpdateWithWhereUniqueWithoutRifaVendedorInput[]
+    updateMany?: VentaUpdateManyWithWhereWithoutRifaVendedorInput | VentaUpdateManyWithWhereWithoutRifaVendedorInput[]
+    deleteMany?: VentaScalarWhereInput | VentaScalarWhereInput[]
+  }
+
   export type AsignacionBoletasUncheckedUpdateManyWithoutRifaVendedorNestedInput = {
     create?: XOR<AsignacionBoletasCreateWithoutRifaVendedorInput, AsignacionBoletasUncheckedCreateWithoutRifaVendedorInput> | AsignacionBoletasCreateWithoutRifaVendedorInput[] | AsignacionBoletasUncheckedCreateWithoutRifaVendedorInput[]
     connectOrCreate?: AsignacionBoletasCreateOrConnectWithoutRifaVendedorInput | AsignacionBoletasCreateOrConnectWithoutRifaVendedorInput[]
@@ -38408,6 +42326,80 @@ export namespace Prisma {
     update?: JuegoRegistroUpdateWithWhereUniqueWithoutRifaVendedorInput | JuegoRegistroUpdateWithWhereUniqueWithoutRifaVendedorInput[]
     updateMany?: JuegoRegistroUpdateManyWithWhereWithoutRifaVendedorInput | JuegoRegistroUpdateManyWithWhereWithoutRifaVendedorInput[]
     deleteMany?: JuegoRegistroScalarWhereInput | JuegoRegistroScalarWhereInput[]
+  }
+
+  export type UsuarioVendedorScopeUncheckedUpdateManyWithoutRifaVendedorNestedInput = {
+    create?: XOR<UsuarioVendedorScopeCreateWithoutRifaVendedorInput, UsuarioVendedorScopeUncheckedCreateWithoutRifaVendedorInput> | UsuarioVendedorScopeCreateWithoutRifaVendedorInput[] | UsuarioVendedorScopeUncheckedCreateWithoutRifaVendedorInput[]
+    connectOrCreate?: UsuarioVendedorScopeCreateOrConnectWithoutRifaVendedorInput | UsuarioVendedorScopeCreateOrConnectWithoutRifaVendedorInput[]
+    upsert?: UsuarioVendedorScopeUpsertWithWhereUniqueWithoutRifaVendedorInput | UsuarioVendedorScopeUpsertWithWhereUniqueWithoutRifaVendedorInput[]
+    createMany?: UsuarioVendedorScopeCreateManyRifaVendedorInputEnvelope
+    set?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    disconnect?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    delete?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    connect?: UsuarioVendedorScopeWhereUniqueInput | UsuarioVendedorScopeWhereUniqueInput[]
+    update?: UsuarioVendedorScopeUpdateWithWhereUniqueWithoutRifaVendedorInput | UsuarioVendedorScopeUpdateWithWhereUniqueWithoutRifaVendedorInput[]
+    updateMany?: UsuarioVendedorScopeUpdateManyWithWhereWithoutRifaVendedorInput | UsuarioVendedorScopeUpdateManyWithWhereWithoutRifaVendedorInput[]
+    deleteMany?: UsuarioVendedorScopeScalarWhereInput | UsuarioVendedorScopeScalarWhereInput[]
+  }
+
+  export type VentaUncheckedUpdateManyWithoutRifaVendedorNestedInput = {
+    create?: XOR<VentaCreateWithoutRifaVendedorInput, VentaUncheckedCreateWithoutRifaVendedorInput> | VentaCreateWithoutRifaVendedorInput[] | VentaUncheckedCreateWithoutRifaVendedorInput[]
+    connectOrCreate?: VentaCreateOrConnectWithoutRifaVendedorInput | VentaCreateOrConnectWithoutRifaVendedorInput[]
+    upsert?: VentaUpsertWithWhereUniqueWithoutRifaVendedorInput | VentaUpsertWithWhereUniqueWithoutRifaVendedorInput[]
+    createMany?: VentaCreateManyRifaVendedorInputEnvelope
+    set?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
+    disconnect?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
+    delete?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
+    connect?: VentaWhereUniqueInput | VentaWhereUniqueInput[]
+    update?: VentaUpdateWithWhereUniqueWithoutRifaVendedorInput | VentaUpdateWithWhereUniqueWithoutRifaVendedorInput[]
+    updateMany?: VentaUpdateManyWithWhereWithoutRifaVendedorInput | VentaUpdateManyWithWhereWithoutRifaVendedorInput[]
+    deleteMany?: VentaScalarWhereInput | VentaScalarWhereInput[]
+  }
+
+  export type UsuarioCreateNestedOneWithoutVendedorScopesInput = {
+    create?: XOR<UsuarioCreateWithoutVendedorScopesInput, UsuarioUncheckedCreateWithoutVendedorScopesInput>
+    connectOrCreate?: UsuarioCreateOrConnectWithoutVendedorScopesInput
+    connect?: UsuarioWhereUniqueInput
+  }
+
+  export type VendedorCreateNestedOneWithoutUsuarioScopesInput = {
+    create?: XOR<VendedorCreateWithoutUsuarioScopesInput, VendedorUncheckedCreateWithoutUsuarioScopesInput>
+    connectOrCreate?: VendedorCreateOrConnectWithoutUsuarioScopesInput
+    connect?: VendedorWhereUniqueInput
+  }
+
+  export type RifaVendedorCreateNestedOneWithoutUsuarioScopesInput = {
+    create?: XOR<RifaVendedorCreateWithoutUsuarioScopesInput, RifaVendedorUncheckedCreateWithoutUsuarioScopesInput>
+    connectOrCreate?: RifaVendedorCreateOrConnectWithoutUsuarioScopesInput
+    connect?: RifaVendedorWhereUniqueInput
+  }
+
+  export type UsuarioUpdateOneRequiredWithoutVendedorScopesNestedInput = {
+    create?: XOR<UsuarioCreateWithoutVendedorScopesInput, UsuarioUncheckedCreateWithoutVendedorScopesInput>
+    connectOrCreate?: UsuarioCreateOrConnectWithoutVendedorScopesInput
+    upsert?: UsuarioUpsertWithoutVendedorScopesInput
+    connect?: UsuarioWhereUniqueInput
+    update?: XOR<XOR<UsuarioUpdateToOneWithWhereWithoutVendedorScopesInput, UsuarioUpdateWithoutVendedorScopesInput>, UsuarioUncheckedUpdateWithoutVendedorScopesInput>
+  }
+
+  export type VendedorUpdateOneWithoutUsuarioScopesNestedInput = {
+    create?: XOR<VendedorCreateWithoutUsuarioScopesInput, VendedorUncheckedCreateWithoutUsuarioScopesInput>
+    connectOrCreate?: VendedorCreateOrConnectWithoutUsuarioScopesInput
+    upsert?: VendedorUpsertWithoutUsuarioScopesInput
+    disconnect?: VendedorWhereInput | boolean
+    delete?: VendedorWhereInput | boolean
+    connect?: VendedorWhereUniqueInput
+    update?: XOR<XOR<VendedorUpdateToOneWithWhereWithoutUsuarioScopesInput, VendedorUpdateWithoutUsuarioScopesInput>, VendedorUncheckedUpdateWithoutUsuarioScopesInput>
+  }
+
+  export type RifaVendedorUpdateOneWithoutUsuarioScopesNestedInput = {
+    create?: XOR<RifaVendedorCreateWithoutUsuarioScopesInput, RifaVendedorUncheckedCreateWithoutUsuarioScopesInput>
+    connectOrCreate?: RifaVendedorCreateOrConnectWithoutUsuarioScopesInput
+    upsert?: RifaVendedorUpsertWithoutUsuarioScopesInput
+    disconnect?: RifaVendedorWhereInput | boolean
+    delete?: RifaVendedorWhereInput | boolean
+    connect?: RifaVendedorWhereUniqueInput
+    update?: XOR<XOR<RifaVendedorUpdateToOneWithWhereWithoutUsuarioScopesInput, RifaVendedorUpdateWithoutUsuarioScopesInput>, RifaVendedorUncheckedUpdateWithoutUsuarioScopesInput>
   }
 
   export type RifaVendedorCreateNestedOneWithoutAsignacionesInput = {
@@ -38635,6 +42627,12 @@ export namespace Prisma {
     connect?: MovimientoCajaWhereUniqueInput | MovimientoCajaWhereUniqueInput[]
   }
 
+  export type UsuarioCreateNestedOneWithoutClientesCreadosInput = {
+    create?: XOR<UsuarioCreateWithoutClientesCreadosInput, UsuarioUncheckedCreateWithoutClientesCreadosInput>
+    connectOrCreate?: UsuarioCreateOrConnectWithoutClientesCreadosInput
+    connect?: UsuarioWhereUniqueInput
+  }
+
   export type VentaUncheckedCreateNestedManyWithoutClienteInput = {
     create?: XOR<VentaCreateWithoutClienteInput, VentaUncheckedCreateWithoutClienteInput> | VentaCreateWithoutClienteInput[] | VentaUncheckedCreateWithoutClienteInput[]
     connectOrCreate?: VentaCreateOrConnectWithoutClienteInput | VentaCreateOrConnectWithoutClienteInput[]
@@ -38698,6 +42696,16 @@ export namespace Prisma {
     deleteMany?: MovimientoCajaScalarWhereInput | MovimientoCajaScalarWhereInput[]
   }
 
+  export type UsuarioUpdateOneWithoutClientesCreadosNestedInput = {
+    create?: XOR<UsuarioCreateWithoutClientesCreadosInput, UsuarioUncheckedCreateWithoutClientesCreadosInput>
+    connectOrCreate?: UsuarioCreateOrConnectWithoutClientesCreadosInput
+    upsert?: UsuarioUpsertWithoutClientesCreadosInput
+    disconnect?: UsuarioWhereInput | boolean
+    delete?: UsuarioWhereInput | boolean
+    connect?: UsuarioWhereUniqueInput
+    update?: XOR<XOR<UsuarioUpdateToOneWithWhereWithoutClientesCreadosInput, UsuarioUpdateWithoutClientesCreadosInput>, UsuarioUncheckedUpdateWithoutClientesCreadosInput>
+  }
+
   export type VentaUncheckedUpdateManyWithoutClienteNestedInput = {
     create?: XOR<VentaCreateWithoutClienteInput, VentaUncheckedCreateWithoutClienteInput> | VentaCreateWithoutClienteInput[] | VentaUncheckedCreateWithoutClienteInput[]
     connectOrCreate?: VentaCreateOrConnectWithoutClienteInput | VentaCreateOrConnectWithoutClienteInput[]
@@ -38750,6 +42758,12 @@ export namespace Prisma {
     create?: XOR<RifaCreateWithoutVentasInput, RifaUncheckedCreateWithoutVentasInput>
     connectOrCreate?: RifaCreateOrConnectWithoutVentasInput
     connect?: RifaWhereUniqueInput
+  }
+
+  export type RifaVendedorCreateNestedOneWithoutVentasInput = {
+    create?: XOR<RifaVendedorCreateWithoutVentasInput, RifaVendedorUncheckedCreateWithoutVentasInput>
+    connectOrCreate?: RifaVendedorCreateOrConnectWithoutVentasInput
+    connect?: RifaVendedorWhereUniqueInput
   }
 
   export type BoletaCreateNestedManyWithoutVentaInput = {
@@ -38812,6 +42826,16 @@ export namespace Prisma {
     upsert?: RifaUpsertWithoutVentasInput
     connect?: RifaWhereUniqueInput
     update?: XOR<XOR<RifaUpdateToOneWithWhereWithoutVentasInput, RifaUpdateWithoutVentasInput>, RifaUncheckedUpdateWithoutVentasInput>
+  }
+
+  export type RifaVendedorUpdateOneWithoutVentasNestedInput = {
+    create?: XOR<RifaVendedorCreateWithoutVentasInput, RifaVendedorUncheckedCreateWithoutVentasInput>
+    connectOrCreate?: RifaVendedorCreateOrConnectWithoutVentasInput
+    upsert?: RifaVendedorUpsertWithoutVentasInput
+    disconnect?: RifaVendedorWhereInput | boolean
+    delete?: RifaVendedorWhereInput | boolean
+    connect?: RifaVendedorWhereUniqueInput
+    update?: XOR<XOR<RifaVendedorUpdateToOneWithWhereWithoutVentasInput, RifaVendedorUpdateWithoutVentasInput>, RifaVendedorUncheckedUpdateWithoutVentasInput>
   }
 
   export type BoletaUpdateManyWithoutVentaNestedInput = {
@@ -38904,11 +42928,35 @@ export namespace Prisma {
     connect?: VentaWhereUniqueInput
   }
 
+  export type SubCajaCreateNestedOneWithoutPagosClienteInput = {
+    create?: XOR<SubCajaCreateWithoutPagosClienteInput, SubCajaUncheckedCreateWithoutPagosClienteInput>
+    connectOrCreate?: SubCajaCreateOrConnectWithoutPagosClienteInput
+    connect?: SubCajaWhereUniqueInput
+  }
+
+  export type UsuarioCreateNestedOneWithoutPagosClienteRegistradosInput = {
+    create?: XOR<UsuarioCreateWithoutPagosClienteRegistradosInput, UsuarioUncheckedCreateWithoutPagosClienteRegistradosInput>
+    connectOrCreate?: UsuarioCreateOrConnectWithoutPagosClienteRegistradosInput
+    connect?: UsuarioWhereUniqueInput
+  }
+
+  export type PagoClienteReciboCreateNestedOneWithoutPagoClienteInput = {
+    create?: XOR<PagoClienteReciboCreateWithoutPagoClienteInput, PagoClienteReciboUncheckedCreateWithoutPagoClienteInput>
+    connectOrCreate?: PagoClienteReciboCreateOrConnectWithoutPagoClienteInput
+    connect?: PagoClienteReciboWhereUniqueInput
+  }
+
   export type MovimientoCajaCreateNestedManyWithoutPagoClienteInput = {
     create?: XOR<MovimientoCajaCreateWithoutPagoClienteInput, MovimientoCajaUncheckedCreateWithoutPagoClienteInput> | MovimientoCajaCreateWithoutPagoClienteInput[] | MovimientoCajaUncheckedCreateWithoutPagoClienteInput[]
     connectOrCreate?: MovimientoCajaCreateOrConnectWithoutPagoClienteInput | MovimientoCajaCreateOrConnectWithoutPagoClienteInput[]
     createMany?: MovimientoCajaCreateManyPagoClienteInputEnvelope
     connect?: MovimientoCajaWhereUniqueInput | MovimientoCajaWhereUniqueInput[]
+  }
+
+  export type PagoClienteReciboUncheckedCreateNestedOneWithoutPagoClienteInput = {
+    create?: XOR<PagoClienteReciboCreateWithoutPagoClienteInput, PagoClienteReciboUncheckedCreateWithoutPagoClienteInput>
+    connectOrCreate?: PagoClienteReciboCreateOrConnectWithoutPagoClienteInput
+    connect?: PagoClienteReciboWhereUniqueInput
   }
 
   export type MovimientoCajaUncheckedCreateNestedManyWithoutPagoClienteInput = {
@@ -38934,6 +42982,36 @@ export namespace Prisma {
     update?: XOR<XOR<VentaUpdateToOneWithWhereWithoutPagosInput, VentaUpdateWithoutPagosInput>, VentaUncheckedUpdateWithoutPagosInput>
   }
 
+  export type SubCajaUpdateOneWithoutPagosClienteNestedInput = {
+    create?: XOR<SubCajaCreateWithoutPagosClienteInput, SubCajaUncheckedCreateWithoutPagosClienteInput>
+    connectOrCreate?: SubCajaCreateOrConnectWithoutPagosClienteInput
+    upsert?: SubCajaUpsertWithoutPagosClienteInput
+    disconnect?: SubCajaWhereInput | boolean
+    delete?: SubCajaWhereInput | boolean
+    connect?: SubCajaWhereUniqueInput
+    update?: XOR<XOR<SubCajaUpdateToOneWithWhereWithoutPagosClienteInput, SubCajaUpdateWithoutPagosClienteInput>, SubCajaUncheckedUpdateWithoutPagosClienteInput>
+  }
+
+  export type UsuarioUpdateOneWithoutPagosClienteRegistradosNestedInput = {
+    create?: XOR<UsuarioCreateWithoutPagosClienteRegistradosInput, UsuarioUncheckedCreateWithoutPagosClienteRegistradosInput>
+    connectOrCreate?: UsuarioCreateOrConnectWithoutPagosClienteRegistradosInput
+    upsert?: UsuarioUpsertWithoutPagosClienteRegistradosInput
+    disconnect?: UsuarioWhereInput | boolean
+    delete?: UsuarioWhereInput | boolean
+    connect?: UsuarioWhereUniqueInput
+    update?: XOR<XOR<UsuarioUpdateToOneWithWhereWithoutPagosClienteRegistradosInput, UsuarioUpdateWithoutPagosClienteRegistradosInput>, UsuarioUncheckedUpdateWithoutPagosClienteRegistradosInput>
+  }
+
+  export type PagoClienteReciboUpdateOneWithoutPagoClienteNestedInput = {
+    create?: XOR<PagoClienteReciboCreateWithoutPagoClienteInput, PagoClienteReciboUncheckedCreateWithoutPagoClienteInput>
+    connectOrCreate?: PagoClienteReciboCreateOrConnectWithoutPagoClienteInput
+    upsert?: PagoClienteReciboUpsertWithoutPagoClienteInput
+    disconnect?: PagoClienteReciboWhereInput | boolean
+    delete?: PagoClienteReciboWhereInput | boolean
+    connect?: PagoClienteReciboWhereUniqueInput
+    update?: XOR<XOR<PagoClienteReciboUpdateToOneWithWhereWithoutPagoClienteInput, PagoClienteReciboUpdateWithoutPagoClienteInput>, PagoClienteReciboUncheckedUpdateWithoutPagoClienteInput>
+  }
+
   export type MovimientoCajaUpdateManyWithoutPagoClienteNestedInput = {
     create?: XOR<MovimientoCajaCreateWithoutPagoClienteInput, MovimientoCajaUncheckedCreateWithoutPagoClienteInput> | MovimientoCajaCreateWithoutPagoClienteInput[] | MovimientoCajaUncheckedCreateWithoutPagoClienteInput[]
     connectOrCreate?: MovimientoCajaCreateOrConnectWithoutPagoClienteInput | MovimientoCajaCreateOrConnectWithoutPagoClienteInput[]
@@ -38948,6 +43026,16 @@ export namespace Prisma {
     deleteMany?: MovimientoCajaScalarWhereInput | MovimientoCajaScalarWhereInput[]
   }
 
+  export type PagoClienteReciboUncheckedUpdateOneWithoutPagoClienteNestedInput = {
+    create?: XOR<PagoClienteReciboCreateWithoutPagoClienteInput, PagoClienteReciboUncheckedCreateWithoutPagoClienteInput>
+    connectOrCreate?: PagoClienteReciboCreateOrConnectWithoutPagoClienteInput
+    upsert?: PagoClienteReciboUpsertWithoutPagoClienteInput
+    disconnect?: PagoClienteReciboWhereInput | boolean
+    delete?: PagoClienteReciboWhereInput | boolean
+    connect?: PagoClienteReciboWhereUniqueInput
+    update?: XOR<XOR<PagoClienteReciboUpdateToOneWithWhereWithoutPagoClienteInput, PagoClienteReciboUpdateWithoutPagoClienteInput>, PagoClienteReciboUncheckedUpdateWithoutPagoClienteInput>
+  }
+
   export type MovimientoCajaUncheckedUpdateManyWithoutPagoClienteNestedInput = {
     create?: XOR<MovimientoCajaCreateWithoutPagoClienteInput, MovimientoCajaUncheckedCreateWithoutPagoClienteInput> | MovimientoCajaCreateWithoutPagoClienteInput[] | MovimientoCajaUncheckedCreateWithoutPagoClienteInput[]
     connectOrCreate?: MovimientoCajaCreateOrConnectWithoutPagoClienteInput | MovimientoCajaCreateOrConnectWithoutPagoClienteInput[]
@@ -38960,6 +43048,20 @@ export namespace Prisma {
     update?: MovimientoCajaUpdateWithWhereUniqueWithoutPagoClienteInput | MovimientoCajaUpdateWithWhereUniqueWithoutPagoClienteInput[]
     updateMany?: MovimientoCajaUpdateManyWithWhereWithoutPagoClienteInput | MovimientoCajaUpdateManyWithWhereWithoutPagoClienteInput[]
     deleteMany?: MovimientoCajaScalarWhereInput | MovimientoCajaScalarWhereInput[]
+  }
+
+  export type PagoClienteCreateNestedOneWithoutReciboInput = {
+    create?: XOR<PagoClienteCreateWithoutReciboInput, PagoClienteUncheckedCreateWithoutReciboInput>
+    connectOrCreate?: PagoClienteCreateOrConnectWithoutReciboInput
+    connect?: PagoClienteWhereUniqueInput
+  }
+
+  export type PagoClienteUpdateOneRequiredWithoutReciboNestedInput = {
+    create?: XOR<PagoClienteCreateWithoutReciboInput, PagoClienteUncheckedCreateWithoutReciboInput>
+    connectOrCreate?: PagoClienteCreateOrConnectWithoutReciboInput
+    upsert?: PagoClienteUpsertWithoutReciboInput
+    connect?: PagoClienteWhereUniqueInput
+    update?: XOR<XOR<PagoClienteUpdateToOneWithWhereWithoutReciboInput, PagoClienteUpdateWithoutReciboInput>, PagoClienteUncheckedUpdateWithoutReciboInput>
   }
 
   export type RifaVendedorCreateNestedOneWithoutAbonosInput = {
@@ -39214,6 +43316,13 @@ export namespace Prisma {
     connect?: AbonoVendedorWhereUniqueInput | AbonoVendedorWhereUniqueInput[]
   }
 
+  export type PagoClienteCreateNestedManyWithoutSubCajaInput = {
+    create?: XOR<PagoClienteCreateWithoutSubCajaInput, PagoClienteUncheckedCreateWithoutSubCajaInput> | PagoClienteCreateWithoutSubCajaInput[] | PagoClienteUncheckedCreateWithoutSubCajaInput[]
+    connectOrCreate?: PagoClienteCreateOrConnectWithoutSubCajaInput | PagoClienteCreateOrConnectWithoutSubCajaInput[]
+    createMany?: PagoClienteCreateManySubCajaInputEnvelope
+    connect?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+  }
+
   export type GastoCreateNestedManyWithoutSubCajaInput = {
     create?: XOR<GastoCreateWithoutSubCajaInput, GastoUncheckedCreateWithoutSubCajaInput> | GastoCreateWithoutSubCajaInput[] | GastoUncheckedCreateWithoutSubCajaInput[]
     connectOrCreate?: GastoCreateOrConnectWithoutSubCajaInput | GastoCreateOrConnectWithoutSubCajaInput[]
@@ -39233,6 +43342,13 @@ export namespace Prisma {
     connectOrCreate?: AbonoVendedorCreateOrConnectWithoutSubCajaInput | AbonoVendedorCreateOrConnectWithoutSubCajaInput[]
     createMany?: AbonoVendedorCreateManySubCajaInputEnvelope
     connect?: AbonoVendedorWhereUniqueInput | AbonoVendedorWhereUniqueInput[]
+  }
+
+  export type PagoClienteUncheckedCreateNestedManyWithoutSubCajaInput = {
+    create?: XOR<PagoClienteCreateWithoutSubCajaInput, PagoClienteUncheckedCreateWithoutSubCajaInput> | PagoClienteCreateWithoutSubCajaInput[] | PagoClienteUncheckedCreateWithoutSubCajaInput[]
+    connectOrCreate?: PagoClienteCreateOrConnectWithoutSubCajaInput | PagoClienteCreateOrConnectWithoutSubCajaInput[]
+    createMany?: PagoClienteCreateManySubCajaInputEnvelope
+    connect?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
   }
 
   export type GastoUncheckedCreateNestedManyWithoutSubCajaInput = {
@@ -39278,6 +43394,20 @@ export namespace Prisma {
     deleteMany?: AbonoVendedorScalarWhereInput | AbonoVendedorScalarWhereInput[]
   }
 
+  export type PagoClienteUpdateManyWithoutSubCajaNestedInput = {
+    create?: XOR<PagoClienteCreateWithoutSubCajaInput, PagoClienteUncheckedCreateWithoutSubCajaInput> | PagoClienteCreateWithoutSubCajaInput[] | PagoClienteUncheckedCreateWithoutSubCajaInput[]
+    connectOrCreate?: PagoClienteCreateOrConnectWithoutSubCajaInput | PagoClienteCreateOrConnectWithoutSubCajaInput[]
+    upsert?: PagoClienteUpsertWithWhereUniqueWithoutSubCajaInput | PagoClienteUpsertWithWhereUniqueWithoutSubCajaInput[]
+    createMany?: PagoClienteCreateManySubCajaInputEnvelope
+    set?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+    disconnect?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+    delete?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+    connect?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+    update?: PagoClienteUpdateWithWhereUniqueWithoutSubCajaInput | PagoClienteUpdateWithWhereUniqueWithoutSubCajaInput[]
+    updateMany?: PagoClienteUpdateManyWithWhereWithoutSubCajaInput | PagoClienteUpdateManyWithWhereWithoutSubCajaInput[]
+    deleteMany?: PagoClienteScalarWhereInput | PagoClienteScalarWhereInput[]
+  }
+
   export type GastoUpdateManyWithoutSubCajaNestedInput = {
     create?: XOR<GastoCreateWithoutSubCajaInput, GastoUncheckedCreateWithoutSubCajaInput> | GastoCreateWithoutSubCajaInput[] | GastoUncheckedCreateWithoutSubCajaInput[]
     connectOrCreate?: GastoCreateOrConnectWithoutSubCajaInput | GastoCreateOrConnectWithoutSubCajaInput[]
@@ -39318,6 +43448,20 @@ export namespace Prisma {
     update?: AbonoVendedorUpdateWithWhereUniqueWithoutSubCajaInput | AbonoVendedorUpdateWithWhereUniqueWithoutSubCajaInput[]
     updateMany?: AbonoVendedorUpdateManyWithWhereWithoutSubCajaInput | AbonoVendedorUpdateManyWithWhereWithoutSubCajaInput[]
     deleteMany?: AbonoVendedorScalarWhereInput | AbonoVendedorScalarWhereInput[]
+  }
+
+  export type PagoClienteUncheckedUpdateManyWithoutSubCajaNestedInput = {
+    create?: XOR<PagoClienteCreateWithoutSubCajaInput, PagoClienteUncheckedCreateWithoutSubCajaInput> | PagoClienteCreateWithoutSubCajaInput[] | PagoClienteUncheckedCreateWithoutSubCajaInput[]
+    connectOrCreate?: PagoClienteCreateOrConnectWithoutSubCajaInput | PagoClienteCreateOrConnectWithoutSubCajaInput[]
+    upsert?: PagoClienteUpsertWithWhereUniqueWithoutSubCajaInput | PagoClienteUpsertWithWhereUniqueWithoutSubCajaInput[]
+    createMany?: PagoClienteCreateManySubCajaInputEnvelope
+    set?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+    disconnect?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+    delete?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+    connect?: PagoClienteWhereUniqueInput | PagoClienteWhereUniqueInput[]
+    update?: PagoClienteUpdateWithWhereUniqueWithoutSubCajaInput | PagoClienteUpdateWithWhereUniqueWithoutSubCajaInput[]
+    updateMany?: PagoClienteUpdateManyWithWhereWithoutSubCajaInput | PagoClienteUpdateManyWithWhereWithoutSubCajaInput[]
+    deleteMany?: PagoClienteScalarWhereInput | PagoClienteScalarWhereInput[]
   }
 
   export type GastoUncheckedUpdateManyWithoutSubCajaNestedInput = {
@@ -40301,6 +44445,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PagoClienteCreateWithoutUsuarioInput = {
+    id?: string
+    monto: Decimal | DecimalJsLike | number | string
+    fecha?: Date | string
+    metodoPago: $Enums.MetodoPago
+    estado?: $Enums.EstadoPago
+    descripcion?: string | null
+    venta: VentaCreateNestedOneWithoutPagosInput
+    subCaja?: SubCajaCreateNestedOneWithoutPagosClienteInput
+    recibo?: PagoClienteReciboCreateNestedOneWithoutPagoClienteInput
+    movimientos?: MovimientoCajaCreateNestedManyWithoutPagoClienteInput
+  }
+
+  export type PagoClienteUncheckedCreateWithoutUsuarioInput = {
+    id?: string
+    ventaId: string
+    monto: Decimal | DecimalJsLike | number | string
+    fecha?: Date | string
+    metodoPago: $Enums.MetodoPago
+    estado?: $Enums.EstadoPago
+    descripcion?: string | null
+    subCajaId?: string | null
+    recibo?: PagoClienteReciboUncheckedCreateNestedOneWithoutPagoClienteInput
+    movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutPagoClienteInput
+  }
+
+  export type PagoClienteCreateOrConnectWithoutUsuarioInput = {
+    where: PagoClienteWhereUniqueInput
+    create: XOR<PagoClienteCreateWithoutUsuarioInput, PagoClienteUncheckedCreateWithoutUsuarioInput>
+  }
+
+  export type PagoClienteCreateManyUsuarioInputEnvelope = {
+    data: PagoClienteCreateManyUsuarioInput | PagoClienteCreateManyUsuarioInput[]
+    skipDuplicates?: boolean
+  }
+
   export type GastoCreateWithoutUsuarioInput = {
     id?: string
     categoria?: $Enums.CategoriaGasto
@@ -40406,6 +44586,68 @@ export namespace Prisma {
 
   export type MovimientoCajaCreateManyUsuarioInputEnvelope = {
     data: MovimientoCajaCreateManyUsuarioInput | MovimientoCajaCreateManyUsuarioInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UsuarioVendedorScopeCreateWithoutUsuarioInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    vendedor?: VendedorCreateNestedOneWithoutUsuarioScopesInput
+    rifaVendedor?: RifaVendedorCreateNestedOneWithoutUsuarioScopesInput
+  }
+
+  export type UsuarioVendedorScopeUncheckedCreateWithoutUsuarioInput = {
+    id?: string
+    vendedorId?: string | null
+    rifaVendedorId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UsuarioVendedorScopeCreateOrConnectWithoutUsuarioInput = {
+    where: UsuarioVendedorScopeWhereUniqueInput
+    create: XOR<UsuarioVendedorScopeCreateWithoutUsuarioInput, UsuarioVendedorScopeUncheckedCreateWithoutUsuarioInput>
+  }
+
+  export type UsuarioVendedorScopeCreateManyUsuarioInputEnvelope = {
+    data: UsuarioVendedorScopeCreateManyUsuarioInput | UsuarioVendedorScopeCreateManyUsuarioInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ClienteCreateWithoutCreatedByUsuarioInput = {
+    id?: string
+    nombre: string
+    email?: string | null
+    telefono?: string | null
+    documento?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ventas?: VentaCreateNestedManyWithoutClienteInput
+    boletas?: BoletaCreateNestedManyWithoutClienteInput
+    movimientos?: MovimientoCajaCreateNestedManyWithoutClienteInput
+  }
+
+  export type ClienteUncheckedCreateWithoutCreatedByUsuarioInput = {
+    id?: string
+    nombre: string
+    email?: string | null
+    telefono?: string | null
+    documento?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    ventas?: VentaUncheckedCreateNestedManyWithoutClienteInput
+    boletas?: BoletaUncheckedCreateNestedManyWithoutClienteInput
+    movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutClienteInput
+  }
+
+  export type ClienteCreateOrConnectWithoutCreatedByUsuarioInput = {
+    where: ClienteWhereUniqueInput
+    create: XOR<ClienteCreateWithoutCreatedByUsuarioInput, ClienteUncheckedCreateWithoutCreatedByUsuarioInput>
+  }
+
+  export type ClienteCreateManyCreatedByUsuarioInputEnvelope = {
+    data: ClienteCreateManyCreatedByUsuarioInput | ClienteCreateManyCreatedByUsuarioInput[]
     skipDuplicates?: boolean
   }
 
@@ -40549,6 +44791,37 @@ export namespace Prisma {
     boletasActuales?: IntFilter<"AbonoVendedor"> | number
   }
 
+  export type PagoClienteUpsertWithWhereUniqueWithoutUsuarioInput = {
+    where: PagoClienteWhereUniqueInput
+    update: XOR<PagoClienteUpdateWithoutUsuarioInput, PagoClienteUncheckedUpdateWithoutUsuarioInput>
+    create: XOR<PagoClienteCreateWithoutUsuarioInput, PagoClienteUncheckedCreateWithoutUsuarioInput>
+  }
+
+  export type PagoClienteUpdateWithWhereUniqueWithoutUsuarioInput = {
+    where: PagoClienteWhereUniqueInput
+    data: XOR<PagoClienteUpdateWithoutUsuarioInput, PagoClienteUncheckedUpdateWithoutUsuarioInput>
+  }
+
+  export type PagoClienteUpdateManyWithWhereWithoutUsuarioInput = {
+    where: PagoClienteScalarWhereInput
+    data: XOR<PagoClienteUpdateManyMutationInput, PagoClienteUncheckedUpdateManyWithoutUsuarioInput>
+  }
+
+  export type PagoClienteScalarWhereInput = {
+    AND?: PagoClienteScalarWhereInput | PagoClienteScalarWhereInput[]
+    OR?: PagoClienteScalarWhereInput[]
+    NOT?: PagoClienteScalarWhereInput | PagoClienteScalarWhereInput[]
+    id?: StringFilter<"PagoCliente"> | string
+    ventaId?: StringFilter<"PagoCliente"> | string
+    monto?: DecimalFilter<"PagoCliente"> | Decimal | DecimalJsLike | number | string
+    fecha?: DateTimeFilter<"PagoCliente"> | Date | string
+    metodoPago?: EnumMetodoPagoFilter<"PagoCliente"> | $Enums.MetodoPago
+    estado?: EnumEstadoPagoFilter<"PagoCliente"> | $Enums.EstadoPago
+    descripcion?: StringNullableFilter<"PagoCliente"> | string | null
+    subCajaId?: StringNullableFilter<"PagoCliente"> | string | null
+    usuarioId?: StringNullableFilter<"PagoCliente"> | string | null
+  }
+
   export type GastoUpsertWithWhereUniqueWithoutUsuarioInput = {
     where: GastoWhereUniqueInput
     update: XOR<GastoUpdateWithoutUsuarioInput, GastoUncheckedUpdateWithoutUsuarioInput>
@@ -40646,6 +44919,64 @@ export namespace Prisma {
     usuarioId?: StringNullableFilter<"MovimientoCaja"> | string | null
   }
 
+  export type UsuarioVendedorScopeUpsertWithWhereUniqueWithoutUsuarioInput = {
+    where: UsuarioVendedorScopeWhereUniqueInput
+    update: XOR<UsuarioVendedorScopeUpdateWithoutUsuarioInput, UsuarioVendedorScopeUncheckedUpdateWithoutUsuarioInput>
+    create: XOR<UsuarioVendedorScopeCreateWithoutUsuarioInput, UsuarioVendedorScopeUncheckedCreateWithoutUsuarioInput>
+  }
+
+  export type UsuarioVendedorScopeUpdateWithWhereUniqueWithoutUsuarioInput = {
+    where: UsuarioVendedorScopeWhereUniqueInput
+    data: XOR<UsuarioVendedorScopeUpdateWithoutUsuarioInput, UsuarioVendedorScopeUncheckedUpdateWithoutUsuarioInput>
+  }
+
+  export type UsuarioVendedorScopeUpdateManyWithWhereWithoutUsuarioInput = {
+    where: UsuarioVendedorScopeScalarWhereInput
+    data: XOR<UsuarioVendedorScopeUpdateManyMutationInput, UsuarioVendedorScopeUncheckedUpdateManyWithoutUsuarioInput>
+  }
+
+  export type UsuarioVendedorScopeScalarWhereInput = {
+    AND?: UsuarioVendedorScopeScalarWhereInput | UsuarioVendedorScopeScalarWhereInput[]
+    OR?: UsuarioVendedorScopeScalarWhereInput[]
+    NOT?: UsuarioVendedorScopeScalarWhereInput | UsuarioVendedorScopeScalarWhereInput[]
+    id?: StringFilter<"UsuarioVendedorScope"> | string
+    usuarioId?: StringFilter<"UsuarioVendedorScope"> | string
+    vendedorId?: StringNullableFilter<"UsuarioVendedorScope"> | string | null
+    rifaVendedorId?: StringNullableFilter<"UsuarioVendedorScope"> | string | null
+    createdAt?: DateTimeFilter<"UsuarioVendedorScope"> | Date | string
+    updatedAt?: DateTimeFilter<"UsuarioVendedorScope"> | Date | string
+  }
+
+  export type ClienteUpsertWithWhereUniqueWithoutCreatedByUsuarioInput = {
+    where: ClienteWhereUniqueInput
+    update: XOR<ClienteUpdateWithoutCreatedByUsuarioInput, ClienteUncheckedUpdateWithoutCreatedByUsuarioInput>
+    create: XOR<ClienteCreateWithoutCreatedByUsuarioInput, ClienteUncheckedCreateWithoutCreatedByUsuarioInput>
+  }
+
+  export type ClienteUpdateWithWhereUniqueWithoutCreatedByUsuarioInput = {
+    where: ClienteWhereUniqueInput
+    data: XOR<ClienteUpdateWithoutCreatedByUsuarioInput, ClienteUncheckedUpdateWithoutCreatedByUsuarioInput>
+  }
+
+  export type ClienteUpdateManyWithWhereWithoutCreatedByUsuarioInput = {
+    where: ClienteScalarWhereInput
+    data: XOR<ClienteUpdateManyMutationInput, ClienteUncheckedUpdateManyWithoutCreatedByUsuarioInput>
+  }
+
+  export type ClienteScalarWhereInput = {
+    AND?: ClienteScalarWhereInput | ClienteScalarWhereInput[]
+    OR?: ClienteScalarWhereInput[]
+    NOT?: ClienteScalarWhereInput | ClienteScalarWhereInput[]
+    id?: StringFilter<"Cliente"> | string
+    nombre?: StringFilter<"Cliente"> | string
+    email?: StringNullableFilter<"Cliente"> | string | null
+    telefono?: StringNullableFilter<"Cliente"> | string | null
+    documento?: StringNullableFilter<"Cliente"> | string | null
+    createdByUsuarioId?: StringNullableFilter<"Cliente"> | string | null
+    createdAt?: DateTimeFilter<"Cliente"> | Date | string
+    updatedAt?: DateTimeFilter<"Cliente"> | Date | string
+  }
+
   export type UsuarioCreateWithoutRifasCreadasInput = {
     id?: string
     nombre: string
@@ -40659,9 +44990,12 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasCreateNestedManyWithoutUsuarioInput
     devoluciones?: DevolucionBoletasCreateNestedManyWithoutUsuarioInput
     abonosRegistrados?: AbonoVendedorCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteCreateNestedManyWithoutUsuarioInput
     gastosRegistrados?: GastoCreateNestedManyWithoutUsuarioInput
     juegosRegistrados?: JuegoRegistroCreateNestedManyWithoutUsuarioInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteCreateNestedManyWithoutCreatedByUsuarioInput
   }
 
   export type UsuarioUncheckedCreateWithoutRifasCreadasInput = {
@@ -40677,9 +45011,12 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
     devoluciones?: DevolucionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
     abonosRegistrados?: AbonoVendedorUncheckedCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteUncheckedCreateNestedManyWithoutUsuarioInput
     gastosRegistrados?: GastoUncheckedCreateNestedManyWithoutUsuarioInput
     juegosRegistrados?: JuegoRegistroUncheckedCreateNestedManyWithoutUsuarioInput
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteUncheckedCreateNestedManyWithoutCreatedByUsuarioInput
   }
 
   export type UsuarioCreateOrConnectWithoutRifasCreadasInput = {
@@ -40700,9 +45037,12 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasCreateNestedManyWithoutUsuarioInput
     devoluciones?: DevolucionBoletasCreateNestedManyWithoutUsuarioInput
     abonosRegistrados?: AbonoVendedorCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteCreateNestedManyWithoutUsuarioInput
     gastosRegistrados?: GastoCreateNestedManyWithoutUsuarioInput
     juegosRegistrados?: JuegoRegistroCreateNestedManyWithoutUsuarioInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteCreateNestedManyWithoutCreatedByUsuarioInput
   }
 
   export type UsuarioUncheckedCreateWithoutRifasEditadasInput = {
@@ -40718,9 +45058,12 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
     devoluciones?: DevolucionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
     abonosRegistrados?: AbonoVendedorUncheckedCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteUncheckedCreateNestedManyWithoutUsuarioInput
     gastosRegistrados?: GastoUncheckedCreateNestedManyWithoutUsuarioInput
     juegosRegistrados?: JuegoRegistroUncheckedCreateNestedManyWithoutUsuarioInput
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteUncheckedCreateNestedManyWithoutCreatedByUsuarioInput
   }
 
   export type UsuarioCreateOrConnectWithoutRifasEditadasInput = {
@@ -40732,6 +45075,7 @@ export namespace Prisma {
     id?: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -40752,6 +45096,7 @@ export namespace Prisma {
     id?: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -40789,6 +45134,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorCreateNestedManyWithoutRifaVendedorInput
     boletas?: BoletaCreateNestedManyWithoutRifaVendedorInput
     juegos?: JuegoRegistroCreateNestedManyWithoutRifaVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeCreateNestedManyWithoutRifaVendedorInput
+    ventas?: VentaCreateNestedManyWithoutRifaVendedorInput
   }
 
   export type RifaVendedorUncheckedCreateWithoutRifaInput = {
@@ -40802,6 +45149,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorUncheckedCreateNestedManyWithoutRifaVendedorInput
     boletas?: BoletaUncheckedCreateNestedManyWithoutRifaVendedorInput
     juegos?: JuegoRegistroUncheckedCreateNestedManyWithoutRifaVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutRifaVendedorInput
+    ventas?: VentaUncheckedCreateNestedManyWithoutRifaVendedorInput
   }
 
   export type RifaVendedorCreateOrConnectWithoutRifaInput = {
@@ -40816,6 +45165,14 @@ export namespace Prisma {
 
   export type VentaCreateWithoutRifaInput = {
     id?: string
+    canalOrigen?: string | null
+    referenciaExterna?: string | null
+    sesionExternaId?: string | null
+    linkPagoUrl?: string | null
+    linkPagoEnviadoAt?: Date | string | null
+    linkPagoAbiertoAt?: Date | string | null
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: string | null
     estado?: $Enums.EstadoVenta
     total: Decimal | DecimalJsLike | number | string
     saldoPendiente: Decimal | DecimalJsLike | number | string
@@ -40826,6 +45183,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     cliente: ClienteCreateNestedOneWithoutVentasInput
+    rifaVendedor?: RifaVendedorCreateNestedOneWithoutVentasInput
     boletas?: BoletaCreateNestedManyWithoutVentaInput
     pagos?: PagoClienteCreateNestedManyWithoutVentaInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutVentaInput
@@ -40834,6 +45192,15 @@ export namespace Prisma {
   export type VentaUncheckedCreateWithoutRifaInput = {
     id?: string
     clienteId: string
+    rifaVendedorId?: string | null
+    canalOrigen?: string | null
+    referenciaExterna?: string | null
+    sesionExternaId?: string | null
+    linkPagoUrl?: string | null
+    linkPagoEnviadoAt?: Date | string | null
+    linkPagoAbiertoAt?: Date | string | null
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: string | null
     estado?: $Enums.EstadoVenta
     total: Decimal | DecimalJsLike | number | string
     saldoPendiente: Decimal | DecimalJsLike | number | string
@@ -41028,9 +45395,12 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasUpdateManyWithoutUsuarioNestedInput
     devoluciones?: DevolucionBoletasUpdateManyWithoutUsuarioNestedInput
     abonosRegistrados?: AbonoVendedorUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUpdateManyWithoutUsuarioNestedInput
     gastosRegistrados?: GastoUpdateManyWithoutUsuarioNestedInput
     juegosRegistrados?: JuegoRegistroUpdateManyWithoutUsuarioNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUpdateManyWithoutCreatedByUsuarioNestedInput
   }
 
   export type UsuarioUncheckedUpdateWithoutRifasCreadasInput = {
@@ -41046,9 +45416,12 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
     devoluciones?: DevolucionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
     abonosRegistrados?: AbonoVendedorUncheckedUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUncheckedUpdateManyWithoutUsuarioNestedInput
     gastosRegistrados?: GastoUncheckedUpdateManyWithoutUsuarioNestedInput
     juegosRegistrados?: JuegoRegistroUncheckedUpdateManyWithoutUsuarioNestedInput
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUncheckedUpdateManyWithoutCreatedByUsuarioNestedInput
   }
 
   export type UsuarioUpsertWithoutRifasEditadasInput = {
@@ -41075,9 +45448,12 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasUpdateManyWithoutUsuarioNestedInput
     devoluciones?: DevolucionBoletasUpdateManyWithoutUsuarioNestedInput
     abonosRegistrados?: AbonoVendedorUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUpdateManyWithoutUsuarioNestedInput
     gastosRegistrados?: GastoUpdateManyWithoutUsuarioNestedInput
     juegosRegistrados?: JuegoRegistroUpdateManyWithoutUsuarioNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUpdateManyWithoutCreatedByUsuarioNestedInput
   }
 
   export type UsuarioUncheckedUpdateWithoutRifasEditadasInput = {
@@ -41093,9 +45469,12 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
     devoluciones?: DevolucionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
     abonosRegistrados?: AbonoVendedorUncheckedUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUncheckedUpdateManyWithoutUsuarioNestedInput
     gastosRegistrados?: GastoUncheckedUpdateManyWithoutUsuarioNestedInput
     juegosRegistrados?: JuegoRegistroUncheckedUpdateManyWithoutUsuarioNestedInput
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUncheckedUpdateManyWithoutCreatedByUsuarioNestedInput
   }
 
   export type BoletaUpsertWithWhereUniqueWithoutRifaInput = {
@@ -41122,6 +45501,7 @@ export namespace Prisma {
     rifaId?: StringFilter<"Boleta"> | string
     numero?: StringFilter<"Boleta"> | string
     codigoBarras?: StringNullableFilter<"Boleta"> | string | null
+    publicToken?: StringNullableFilter<"Boleta"> | string | null
     estado?: EnumEstadoBoletaFilter<"Boleta"> | $Enums.EstadoBoleta
     juega?: BoolFilter<"Boleta"> | boolean
     precio?: DecimalFilter<"Boleta"> | Decimal | DecimalJsLike | number | string
@@ -41186,6 +45566,15 @@ export namespace Prisma {
     id?: StringFilter<"Venta"> | string
     clienteId?: StringFilter<"Venta"> | string
     rifaId?: StringFilter<"Venta"> | string
+    rifaVendedorId?: StringNullableFilter<"Venta"> | string | null
+    canalOrigen?: StringNullableFilter<"Venta"> | string | null
+    referenciaExterna?: StringNullableFilter<"Venta"> | string | null
+    sesionExternaId?: StringNullableFilter<"Venta"> | string | null
+    linkPagoUrl?: StringNullableFilter<"Venta"> | string | null
+    linkPagoEnviadoAt?: DateTimeNullableFilter<"Venta"> | Date | string | null
+    linkPagoAbiertoAt?: DateTimeNullableFilter<"Venta"> | Date | string | null
+    requiereSeguimientoHumano?: BoolFilter<"Venta"> | boolean
+    seguimientoMotivo?: StringNullableFilter<"Venta"> | string | null
     estado?: EnumEstadoVentaFilter<"Venta"> | $Enums.EstadoVenta
     total?: DecimalFilter<"Venta"> | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFilter<"Venta"> | Decimal | DecimalJsLike | number | string
@@ -41478,6 +45867,7 @@ export namespace Prisma {
     id?: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -41499,6 +45889,7 @@ export namespace Prisma {
     rifaId: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -41567,6 +45958,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -41588,6 +45980,7 @@ export namespace Prisma {
     rifaId?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -41700,6 +46093,8 @@ export namespace Prisma {
     devoluciones?: DevolucionBoletasCreateNestedManyWithoutRifaVendedorInput
     abonos?: AbonoVendedorCreateNestedManyWithoutRifaVendedorInput
     juegos?: JuegoRegistroCreateNestedManyWithoutRifaVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeCreateNestedManyWithoutRifaVendedorInput
+    ventas?: VentaCreateNestedManyWithoutRifaVendedorInput
   }
 
   export type RifaVendedorUncheckedCreateWithoutBoletasInput = {
@@ -41713,6 +46108,8 @@ export namespace Prisma {
     devoluciones?: DevolucionBoletasUncheckedCreateNestedManyWithoutRifaVendedorInput
     abonos?: AbonoVendedorUncheckedCreateNestedManyWithoutRifaVendedorInput
     juegos?: JuegoRegistroUncheckedCreateNestedManyWithoutRifaVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutRifaVendedorInput
+    ventas?: VentaUncheckedCreateNestedManyWithoutRifaVendedorInput
   }
 
   export type RifaVendedorCreateOrConnectWithoutBoletasInput = {
@@ -41726,8 +46123,11 @@ export namespace Prisma {
     email?: string | null
     telefono?: string | null
     documento?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
     ventas?: VentaCreateNestedManyWithoutClienteInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutClienteInput
+    createdByUsuario?: UsuarioCreateNestedOneWithoutClientesCreadosInput
   }
 
   export type ClienteUncheckedCreateWithoutBoletasInput = {
@@ -41736,6 +46136,9 @@ export namespace Prisma {
     email?: string | null
     telefono?: string | null
     documento?: string | null
+    createdByUsuarioId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
     ventas?: VentaUncheckedCreateNestedManyWithoutClienteInput
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutClienteInput
   }
@@ -41747,6 +46150,14 @@ export namespace Prisma {
 
   export type VentaCreateWithoutBoletasInput = {
     id?: string
+    canalOrigen?: string | null
+    referenciaExterna?: string | null
+    sesionExternaId?: string | null
+    linkPagoUrl?: string | null
+    linkPagoEnviadoAt?: Date | string | null
+    linkPagoAbiertoAt?: Date | string | null
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: string | null
     estado?: $Enums.EstadoVenta
     total: Decimal | DecimalJsLike | number | string
     saldoPendiente: Decimal | DecimalJsLike | number | string
@@ -41758,6 +46169,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     cliente: ClienteCreateNestedOneWithoutVentasInput
     rifa: RifaCreateNestedOneWithoutVentasInput
+    rifaVendedor?: RifaVendedorCreateNestedOneWithoutVentasInput
     pagos?: PagoClienteCreateNestedManyWithoutVentaInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutVentaInput
   }
@@ -41766,6 +46178,15 @@ export namespace Prisma {
     id?: string
     clienteId: string
     rifaId: string
+    rifaVendedorId?: string | null
+    canalOrigen?: string | null
+    referenciaExterna?: string | null
+    sesionExternaId?: string | null
+    linkPagoUrl?: string | null
+    linkPagoEnviadoAt?: Date | string | null
+    linkPagoAbiertoAt?: Date | string | null
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: string | null
     estado?: $Enums.EstadoVenta
     total: Decimal | DecimalJsLike | number | string
     saldoPendiente: Decimal | DecimalJsLike | number | string
@@ -41919,6 +46340,8 @@ export namespace Prisma {
     devoluciones?: DevolucionBoletasUpdateManyWithoutRifaVendedorNestedInput
     abonos?: AbonoVendedorUpdateManyWithoutRifaVendedorNestedInput
     juegos?: JuegoRegistroUpdateManyWithoutRifaVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUpdateManyWithoutRifaVendedorNestedInput
+    ventas?: VentaUpdateManyWithoutRifaVendedorNestedInput
   }
 
   export type RifaVendedorUncheckedUpdateWithoutBoletasInput = {
@@ -41932,6 +46355,8 @@ export namespace Prisma {
     devoluciones?: DevolucionBoletasUncheckedUpdateManyWithoutRifaVendedorNestedInput
     abonos?: AbonoVendedorUncheckedUpdateManyWithoutRifaVendedorNestedInput
     juegos?: JuegoRegistroUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    ventas?: VentaUncheckedUpdateManyWithoutRifaVendedorNestedInput
   }
 
   export type ClienteUpsertWithoutBoletasInput = {
@@ -41951,8 +46376,11 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     telefono?: NullableStringFieldUpdateOperationsInput | string | null
     documento?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ventas?: VentaUpdateManyWithoutClienteNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutClienteNestedInput
+    createdByUsuario?: UsuarioUpdateOneWithoutClientesCreadosNestedInput
   }
 
   export type ClienteUncheckedUpdateWithoutBoletasInput = {
@@ -41961,6 +46389,9 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     telefono?: NullableStringFieldUpdateOperationsInput | string | null
     documento?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUsuarioId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ventas?: VentaUncheckedUpdateManyWithoutClienteNestedInput
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutClienteNestedInput
   }
@@ -41978,6 +46409,14 @@ export namespace Prisma {
 
   export type VentaUpdateWithoutBoletasInput = {
     id?: StringFieldUpdateOperationsInput | string
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -41989,6 +46428,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     cliente?: ClienteUpdateOneRequiredWithoutVentasNestedInput
     rifa?: RifaUpdateOneRequiredWithoutVentasNestedInput
+    rifaVendedor?: RifaVendedorUpdateOneWithoutVentasNestedInput
     pagos?: PagoClienteUpdateManyWithoutVentaNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutVentaNestedInput
   }
@@ -41997,6 +46437,15 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     clienteId?: StringFieldUpdateOperationsInput | string
     rifaId?: StringFieldUpdateOperationsInput | string
+    rifaVendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -42087,6 +46536,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorCreateNestedManyWithoutRifaVendedorInput
     boletas?: BoletaCreateNestedManyWithoutRifaVendedorInput
     juegos?: JuegoRegistroCreateNestedManyWithoutRifaVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeCreateNestedManyWithoutRifaVendedorInput
+    ventas?: VentaCreateNestedManyWithoutRifaVendedorInput
   }
 
   export type RifaVendedorUncheckedCreateWithoutVendedorInput = {
@@ -42100,6 +46551,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorUncheckedCreateNestedManyWithoutRifaVendedorInput
     boletas?: BoletaUncheckedCreateNestedManyWithoutRifaVendedorInput
     juegos?: JuegoRegistroUncheckedCreateNestedManyWithoutRifaVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutRifaVendedorInput
+    ventas?: VentaUncheckedCreateNestedManyWithoutRifaVendedorInput
   }
 
   export type RifaVendedorCreateOrConnectWithoutVendedorInput = {
@@ -42156,6 +46609,32 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UsuarioVendedorScopeCreateWithoutVendedorInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    usuario: UsuarioCreateNestedOneWithoutVendedorScopesInput
+    rifaVendedor?: RifaVendedorCreateNestedOneWithoutUsuarioScopesInput
+  }
+
+  export type UsuarioVendedorScopeUncheckedCreateWithoutVendedorInput = {
+    id?: string
+    usuarioId: string
+    rifaVendedorId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UsuarioVendedorScopeCreateOrConnectWithoutVendedorInput = {
+    where: UsuarioVendedorScopeWhereUniqueInput
+    create: XOR<UsuarioVendedorScopeCreateWithoutVendedorInput, UsuarioVendedorScopeUncheckedCreateWithoutVendedorInput>
+  }
+
+  export type UsuarioVendedorScopeCreateManyVendedorInputEnvelope = {
+    data: UsuarioVendedorScopeCreateManyVendedorInput | UsuarioVendedorScopeCreateManyVendedorInput[]
+    skipDuplicates?: boolean
+  }
+
   export type RifaVendedorUpsertWithWhereUniqueWithoutVendedorInput = {
     where: RifaVendedorWhereUniqueInput
     update: XOR<RifaVendedorUpdateWithoutVendedorInput, RifaVendedorUncheckedUpdateWithoutVendedorInput>
@@ -42186,6 +46665,22 @@ export namespace Prisma {
   export type MovimientoCajaUpdateManyWithWhereWithoutVendedorInput = {
     where: MovimientoCajaScalarWhereInput
     data: XOR<MovimientoCajaUpdateManyMutationInput, MovimientoCajaUncheckedUpdateManyWithoutVendedorInput>
+  }
+
+  export type UsuarioVendedorScopeUpsertWithWhereUniqueWithoutVendedorInput = {
+    where: UsuarioVendedorScopeWhereUniqueInput
+    update: XOR<UsuarioVendedorScopeUpdateWithoutVendedorInput, UsuarioVendedorScopeUncheckedUpdateWithoutVendedorInput>
+    create: XOR<UsuarioVendedorScopeCreateWithoutVendedorInput, UsuarioVendedorScopeUncheckedCreateWithoutVendedorInput>
+  }
+
+  export type UsuarioVendedorScopeUpdateWithWhereUniqueWithoutVendedorInput = {
+    where: UsuarioVendedorScopeWhereUniqueInput
+    data: XOR<UsuarioVendedorScopeUpdateWithoutVendedorInput, UsuarioVendedorScopeUncheckedUpdateWithoutVendedorInput>
+  }
+
+  export type UsuarioVendedorScopeUpdateManyWithWhereWithoutVendedorInput = {
+    where: UsuarioVendedorScopeScalarWhereInput
+    data: XOR<UsuarioVendedorScopeUpdateManyMutationInput, UsuarioVendedorScopeUncheckedUpdateManyWithoutVendedorInput>
   }
 
   export type RifaCreateWithoutVendedoresInput = {
@@ -42244,6 +46739,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     movimientos?: MovimientoCajaCreateNestedManyWithoutVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeCreateNestedManyWithoutVendedorInput
   }
 
   export type VendedorUncheckedCreateWithoutRifasInput = {
@@ -42255,6 +46751,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutVendedorInput
   }
 
   export type VendedorCreateOrConnectWithoutRifasInput = {
@@ -42364,6 +46861,7 @@ export namespace Prisma {
     id?: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -42385,6 +46883,7 @@ export namespace Prisma {
     rifaId: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -42433,6 +46932,94 @@ export namespace Prisma {
 
   export type JuegoRegistroCreateManyRifaVendedorInputEnvelope = {
     data: JuegoRegistroCreateManyRifaVendedorInput | JuegoRegistroCreateManyRifaVendedorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UsuarioVendedorScopeCreateWithoutRifaVendedorInput = {
+    id?: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    usuario: UsuarioCreateNestedOneWithoutVendedorScopesInput
+    vendedor?: VendedorCreateNestedOneWithoutUsuarioScopesInput
+  }
+
+  export type UsuarioVendedorScopeUncheckedCreateWithoutRifaVendedorInput = {
+    id?: string
+    usuarioId: string
+    vendedorId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UsuarioVendedorScopeCreateOrConnectWithoutRifaVendedorInput = {
+    where: UsuarioVendedorScopeWhereUniqueInput
+    create: XOR<UsuarioVendedorScopeCreateWithoutRifaVendedorInput, UsuarioVendedorScopeUncheckedCreateWithoutRifaVendedorInput>
+  }
+
+  export type UsuarioVendedorScopeCreateManyRifaVendedorInputEnvelope = {
+    data: UsuarioVendedorScopeCreateManyRifaVendedorInput | UsuarioVendedorScopeCreateManyRifaVendedorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type VentaCreateWithoutRifaVendedorInput = {
+    id?: string
+    canalOrigen?: string | null
+    referenciaExterna?: string | null
+    sesionExternaId?: string | null
+    linkPagoUrl?: string | null
+    linkPagoEnviadoAt?: Date | string | null
+    linkPagoAbiertoAt?: Date | string | null
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: string | null
+    estado?: $Enums.EstadoVenta
+    total: Decimal | DecimalJsLike | number | string
+    saldoPendiente: Decimal | DecimalJsLike | number | string
+    referenciaPago?: string | null
+    pasarelaPago?: string | null
+    pasarelaEstado?: string | null
+    pasarelaTransaccionId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    cliente: ClienteCreateNestedOneWithoutVentasInput
+    rifa: RifaCreateNestedOneWithoutVentasInput
+    boletas?: BoletaCreateNestedManyWithoutVentaInput
+    pagos?: PagoClienteCreateNestedManyWithoutVentaInput
+    movimientos?: MovimientoCajaCreateNestedManyWithoutVentaInput
+  }
+
+  export type VentaUncheckedCreateWithoutRifaVendedorInput = {
+    id?: string
+    clienteId: string
+    rifaId: string
+    canalOrigen?: string | null
+    referenciaExterna?: string | null
+    sesionExternaId?: string | null
+    linkPagoUrl?: string | null
+    linkPagoEnviadoAt?: Date | string | null
+    linkPagoAbiertoAt?: Date | string | null
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: string | null
+    estado?: $Enums.EstadoVenta
+    total: Decimal | DecimalJsLike | number | string
+    saldoPendiente: Decimal | DecimalJsLike | number | string
+    referenciaPago?: string | null
+    pasarelaPago?: string | null
+    pasarelaEstado?: string | null
+    pasarelaTransaccionId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    boletas?: BoletaUncheckedCreateNestedManyWithoutVentaInput
+    pagos?: PagoClienteUncheckedCreateNestedManyWithoutVentaInput
+    movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutVentaInput
+  }
+
+  export type VentaCreateOrConnectWithoutRifaVendedorInput = {
+    where: VentaWhereUniqueInput
+    create: XOR<VentaCreateWithoutRifaVendedorInput, VentaUncheckedCreateWithoutRifaVendedorInput>
+  }
+
+  export type VentaCreateManyRifaVendedorInputEnvelope = {
+    data: VentaCreateManyRifaVendedorInput | VentaCreateManyRifaVendedorInput[]
     skipDuplicates?: boolean
   }
 
@@ -42509,6 +47096,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     movimientos?: MovimientoCajaUpdateManyWithoutVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUpdateManyWithoutVendedorNestedInput
   }
 
   export type VendedorUncheckedUpdateWithoutRifasInput = {
@@ -42520,6 +47108,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutVendedorNestedInput
   }
 
   export type AsignacionBoletasUpsertWithWhereUniqueWithoutRifaVendedorInput = {
@@ -42602,6 +47191,278 @@ export namespace Prisma {
     data: XOR<JuegoRegistroUpdateManyMutationInput, JuegoRegistroUncheckedUpdateManyWithoutRifaVendedorInput>
   }
 
+  export type UsuarioVendedorScopeUpsertWithWhereUniqueWithoutRifaVendedorInput = {
+    where: UsuarioVendedorScopeWhereUniqueInput
+    update: XOR<UsuarioVendedorScopeUpdateWithoutRifaVendedorInput, UsuarioVendedorScopeUncheckedUpdateWithoutRifaVendedorInput>
+    create: XOR<UsuarioVendedorScopeCreateWithoutRifaVendedorInput, UsuarioVendedorScopeUncheckedCreateWithoutRifaVendedorInput>
+  }
+
+  export type UsuarioVendedorScopeUpdateWithWhereUniqueWithoutRifaVendedorInput = {
+    where: UsuarioVendedorScopeWhereUniqueInput
+    data: XOR<UsuarioVendedorScopeUpdateWithoutRifaVendedorInput, UsuarioVendedorScopeUncheckedUpdateWithoutRifaVendedorInput>
+  }
+
+  export type UsuarioVendedorScopeUpdateManyWithWhereWithoutRifaVendedorInput = {
+    where: UsuarioVendedorScopeScalarWhereInput
+    data: XOR<UsuarioVendedorScopeUpdateManyMutationInput, UsuarioVendedorScopeUncheckedUpdateManyWithoutRifaVendedorInput>
+  }
+
+  export type VentaUpsertWithWhereUniqueWithoutRifaVendedorInput = {
+    where: VentaWhereUniqueInput
+    update: XOR<VentaUpdateWithoutRifaVendedorInput, VentaUncheckedUpdateWithoutRifaVendedorInput>
+    create: XOR<VentaCreateWithoutRifaVendedorInput, VentaUncheckedCreateWithoutRifaVendedorInput>
+  }
+
+  export type VentaUpdateWithWhereUniqueWithoutRifaVendedorInput = {
+    where: VentaWhereUniqueInput
+    data: XOR<VentaUpdateWithoutRifaVendedorInput, VentaUncheckedUpdateWithoutRifaVendedorInput>
+  }
+
+  export type VentaUpdateManyWithWhereWithoutRifaVendedorInput = {
+    where: VentaScalarWhereInput
+    data: XOR<VentaUpdateManyMutationInput, VentaUncheckedUpdateManyWithoutRifaVendedorInput>
+  }
+
+  export type UsuarioCreateWithoutVendedorScopesInput = {
+    id?: string
+    nombre: string
+    email: string
+    password: string
+    rol: $Enums.RolUsuario
+    activo?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rifasCreadas?: RifaCreateNestedManyWithoutCreatedByInput
+    rifasEditadas?: RifaCreateNestedManyWithoutUpdatedByInput
+    asignaciones?: AsignacionBoletasCreateNestedManyWithoutUsuarioInput
+    devoluciones?: DevolucionBoletasCreateNestedManyWithoutUsuarioInput
+    abonosRegistrados?: AbonoVendedorCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteCreateNestedManyWithoutUsuarioInput
+    gastosRegistrados?: GastoCreateNestedManyWithoutUsuarioInput
+    juegosRegistrados?: JuegoRegistroCreateNestedManyWithoutUsuarioInput
+    movimientos?: MovimientoCajaCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteCreateNestedManyWithoutCreatedByUsuarioInput
+  }
+
+  export type UsuarioUncheckedCreateWithoutVendedorScopesInput = {
+    id?: string
+    nombre: string
+    email: string
+    password: string
+    rol: $Enums.RolUsuario
+    activo?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rifasCreadas?: RifaUncheckedCreateNestedManyWithoutCreatedByInput
+    rifasEditadas?: RifaUncheckedCreateNestedManyWithoutUpdatedByInput
+    asignaciones?: AsignacionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
+    devoluciones?: DevolucionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
+    abonosRegistrados?: AbonoVendedorUncheckedCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteUncheckedCreateNestedManyWithoutUsuarioInput
+    gastosRegistrados?: GastoUncheckedCreateNestedManyWithoutUsuarioInput
+    juegosRegistrados?: JuegoRegistroUncheckedCreateNestedManyWithoutUsuarioInput
+    movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteUncheckedCreateNestedManyWithoutCreatedByUsuarioInput
+  }
+
+  export type UsuarioCreateOrConnectWithoutVendedorScopesInput = {
+    where: UsuarioWhereUniqueInput
+    create: XOR<UsuarioCreateWithoutVendedorScopesInput, UsuarioUncheckedCreateWithoutVendedorScopesInput>
+  }
+
+  export type VendedorCreateWithoutUsuarioScopesInput = {
+    id?: string
+    nombre: string
+    telefono?: string | null
+    documento?: string | null
+    direccion?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rifas?: RifaVendedorCreateNestedManyWithoutVendedorInput
+    movimientos?: MovimientoCajaCreateNestedManyWithoutVendedorInput
+  }
+
+  export type VendedorUncheckedCreateWithoutUsuarioScopesInput = {
+    id?: string
+    nombre: string
+    telefono?: string | null
+    documento?: string | null
+    direccion?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rifas?: RifaVendedorUncheckedCreateNestedManyWithoutVendedorInput
+    movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutVendedorInput
+  }
+
+  export type VendedorCreateOrConnectWithoutUsuarioScopesInput = {
+    where: VendedorWhereUniqueInput
+    create: XOR<VendedorCreateWithoutUsuarioScopesInput, VendedorUncheckedCreateWithoutUsuarioScopesInput>
+  }
+
+  export type RifaVendedorCreateWithoutUsuarioScopesInput = {
+    id?: string
+    comisionPct: Decimal | DecimalJsLike | number | string
+    precioCasa: Decimal | DecimalJsLike | number | string
+    saldoActual?: Decimal | DecimalJsLike | number | string
+    rifa: RifaCreateNestedOneWithoutVendedoresInput
+    vendedor: VendedorCreateNestedOneWithoutRifasInput
+    asignaciones?: AsignacionBoletasCreateNestedManyWithoutRifaVendedorInput
+    devoluciones?: DevolucionBoletasCreateNestedManyWithoutRifaVendedorInput
+    abonos?: AbonoVendedorCreateNestedManyWithoutRifaVendedorInput
+    boletas?: BoletaCreateNestedManyWithoutRifaVendedorInput
+    juegos?: JuegoRegistroCreateNestedManyWithoutRifaVendedorInput
+    ventas?: VentaCreateNestedManyWithoutRifaVendedorInput
+  }
+
+  export type RifaVendedorUncheckedCreateWithoutUsuarioScopesInput = {
+    id?: string
+    rifaId: string
+    vendedorId: string
+    comisionPct: Decimal | DecimalJsLike | number | string
+    precioCasa: Decimal | DecimalJsLike | number | string
+    saldoActual?: Decimal | DecimalJsLike | number | string
+    asignaciones?: AsignacionBoletasUncheckedCreateNestedManyWithoutRifaVendedorInput
+    devoluciones?: DevolucionBoletasUncheckedCreateNestedManyWithoutRifaVendedorInput
+    abonos?: AbonoVendedorUncheckedCreateNestedManyWithoutRifaVendedorInput
+    boletas?: BoletaUncheckedCreateNestedManyWithoutRifaVendedorInput
+    juegos?: JuegoRegistroUncheckedCreateNestedManyWithoutRifaVendedorInput
+    ventas?: VentaUncheckedCreateNestedManyWithoutRifaVendedorInput
+  }
+
+  export type RifaVendedorCreateOrConnectWithoutUsuarioScopesInput = {
+    where: RifaVendedorWhereUniqueInput
+    create: XOR<RifaVendedorCreateWithoutUsuarioScopesInput, RifaVendedorUncheckedCreateWithoutUsuarioScopesInput>
+  }
+
+  export type UsuarioUpsertWithoutVendedorScopesInput = {
+    update: XOR<UsuarioUpdateWithoutVendedorScopesInput, UsuarioUncheckedUpdateWithoutVendedorScopesInput>
+    create: XOR<UsuarioCreateWithoutVendedorScopesInput, UsuarioUncheckedCreateWithoutVendedorScopesInput>
+    where?: UsuarioWhereInput
+  }
+
+  export type UsuarioUpdateToOneWithWhereWithoutVendedorScopesInput = {
+    where?: UsuarioWhereInput
+    data: XOR<UsuarioUpdateWithoutVendedorScopesInput, UsuarioUncheckedUpdateWithoutVendedorScopesInput>
+  }
+
+  export type UsuarioUpdateWithoutVendedorScopesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nombre?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    rol?: EnumRolUsuarioFieldUpdateOperationsInput | $Enums.RolUsuario
+    activo?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rifasCreadas?: RifaUpdateManyWithoutCreatedByNestedInput
+    rifasEditadas?: RifaUpdateManyWithoutUpdatedByNestedInput
+    asignaciones?: AsignacionBoletasUpdateManyWithoutUsuarioNestedInput
+    devoluciones?: DevolucionBoletasUpdateManyWithoutUsuarioNestedInput
+    abonosRegistrados?: AbonoVendedorUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUpdateManyWithoutUsuarioNestedInput
+    gastosRegistrados?: GastoUpdateManyWithoutUsuarioNestedInput
+    juegosRegistrados?: JuegoRegistroUpdateManyWithoutUsuarioNestedInput
+    movimientos?: MovimientoCajaUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUpdateManyWithoutCreatedByUsuarioNestedInput
+  }
+
+  export type UsuarioUncheckedUpdateWithoutVendedorScopesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nombre?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    rol?: EnumRolUsuarioFieldUpdateOperationsInput | $Enums.RolUsuario
+    activo?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rifasCreadas?: RifaUncheckedUpdateManyWithoutCreatedByNestedInput
+    rifasEditadas?: RifaUncheckedUpdateManyWithoutUpdatedByNestedInput
+    asignaciones?: AsignacionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
+    devoluciones?: DevolucionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
+    abonosRegistrados?: AbonoVendedorUncheckedUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUncheckedUpdateManyWithoutUsuarioNestedInput
+    gastosRegistrados?: GastoUncheckedUpdateManyWithoutUsuarioNestedInput
+    juegosRegistrados?: JuegoRegistroUncheckedUpdateManyWithoutUsuarioNestedInput
+    movimientos?: MovimientoCajaUncheckedUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUncheckedUpdateManyWithoutCreatedByUsuarioNestedInput
+  }
+
+  export type VendedorUpsertWithoutUsuarioScopesInput = {
+    update: XOR<VendedorUpdateWithoutUsuarioScopesInput, VendedorUncheckedUpdateWithoutUsuarioScopesInput>
+    create: XOR<VendedorCreateWithoutUsuarioScopesInput, VendedorUncheckedCreateWithoutUsuarioScopesInput>
+    where?: VendedorWhereInput
+  }
+
+  export type VendedorUpdateToOneWithWhereWithoutUsuarioScopesInput = {
+    where?: VendedorWhereInput
+    data: XOR<VendedorUpdateWithoutUsuarioScopesInput, VendedorUncheckedUpdateWithoutUsuarioScopesInput>
+  }
+
+  export type VendedorUpdateWithoutUsuarioScopesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nombre?: StringFieldUpdateOperationsInput | string
+    telefono?: NullableStringFieldUpdateOperationsInput | string | null
+    documento?: NullableStringFieldUpdateOperationsInput | string | null
+    direccion?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rifas?: RifaVendedorUpdateManyWithoutVendedorNestedInput
+    movimientos?: MovimientoCajaUpdateManyWithoutVendedorNestedInput
+  }
+
+  export type VendedorUncheckedUpdateWithoutUsuarioScopesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nombre?: StringFieldUpdateOperationsInput | string
+    telefono?: NullableStringFieldUpdateOperationsInput | string | null
+    documento?: NullableStringFieldUpdateOperationsInput | string | null
+    direccion?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rifas?: RifaVendedorUncheckedUpdateManyWithoutVendedorNestedInput
+    movimientos?: MovimientoCajaUncheckedUpdateManyWithoutVendedorNestedInput
+  }
+
+  export type RifaVendedorUpsertWithoutUsuarioScopesInput = {
+    update: XOR<RifaVendedorUpdateWithoutUsuarioScopesInput, RifaVendedorUncheckedUpdateWithoutUsuarioScopesInput>
+    create: XOR<RifaVendedorCreateWithoutUsuarioScopesInput, RifaVendedorUncheckedCreateWithoutUsuarioScopesInput>
+    where?: RifaVendedorWhereInput
+  }
+
+  export type RifaVendedorUpdateToOneWithWhereWithoutUsuarioScopesInput = {
+    where?: RifaVendedorWhereInput
+    data: XOR<RifaVendedorUpdateWithoutUsuarioScopesInput, RifaVendedorUncheckedUpdateWithoutUsuarioScopesInput>
+  }
+
+  export type RifaVendedorUpdateWithoutUsuarioScopesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    comisionPct?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    precioCasa?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    saldoActual?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    rifa?: RifaUpdateOneRequiredWithoutVendedoresNestedInput
+    vendedor?: VendedorUpdateOneRequiredWithoutRifasNestedInput
+    asignaciones?: AsignacionBoletasUpdateManyWithoutRifaVendedorNestedInput
+    devoluciones?: DevolucionBoletasUpdateManyWithoutRifaVendedorNestedInput
+    abonos?: AbonoVendedorUpdateManyWithoutRifaVendedorNestedInput
+    boletas?: BoletaUpdateManyWithoutRifaVendedorNestedInput
+    juegos?: JuegoRegistroUpdateManyWithoutRifaVendedorNestedInput
+    ventas?: VentaUpdateManyWithoutRifaVendedorNestedInput
+  }
+
+  export type RifaVendedorUncheckedUpdateWithoutUsuarioScopesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rifaId?: StringFieldUpdateOperationsInput | string
+    vendedorId?: StringFieldUpdateOperationsInput | string
+    comisionPct?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    precioCasa?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    saldoActual?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    asignaciones?: AsignacionBoletasUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    devoluciones?: DevolucionBoletasUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    abonos?: AbonoVendedorUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    boletas?: BoletaUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    juegos?: JuegoRegistroUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    ventas?: VentaUncheckedUpdateManyWithoutRifaVendedorNestedInput
+  }
+
   export type RifaVendedorCreateWithoutAsignacionesInput = {
     id?: string
     comisionPct: Decimal | DecimalJsLike | number | string
@@ -42613,6 +47474,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorCreateNestedManyWithoutRifaVendedorInput
     boletas?: BoletaCreateNestedManyWithoutRifaVendedorInput
     juegos?: JuegoRegistroCreateNestedManyWithoutRifaVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeCreateNestedManyWithoutRifaVendedorInput
+    ventas?: VentaCreateNestedManyWithoutRifaVendedorInput
   }
 
   export type RifaVendedorUncheckedCreateWithoutAsignacionesInput = {
@@ -42626,6 +47489,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorUncheckedCreateNestedManyWithoutRifaVendedorInput
     boletas?: BoletaUncheckedCreateNestedManyWithoutRifaVendedorInput
     juegos?: JuegoRegistroUncheckedCreateNestedManyWithoutRifaVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutRifaVendedorInput
+    ventas?: VentaUncheckedCreateNestedManyWithoutRifaVendedorInput
   }
 
   export type RifaVendedorCreateOrConnectWithoutAsignacionesInput = {
@@ -42646,9 +47511,12 @@ export namespace Prisma {
     rifasEditadas?: RifaCreateNestedManyWithoutUpdatedByInput
     devoluciones?: DevolucionBoletasCreateNestedManyWithoutUsuarioInput
     abonosRegistrados?: AbonoVendedorCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteCreateNestedManyWithoutUsuarioInput
     gastosRegistrados?: GastoCreateNestedManyWithoutUsuarioInput
     juegosRegistrados?: JuegoRegistroCreateNestedManyWithoutUsuarioInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteCreateNestedManyWithoutCreatedByUsuarioInput
   }
 
   export type UsuarioUncheckedCreateWithoutAsignacionesInput = {
@@ -42664,9 +47532,12 @@ export namespace Prisma {
     rifasEditadas?: RifaUncheckedCreateNestedManyWithoutUpdatedByInput
     devoluciones?: DevolucionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
     abonosRegistrados?: AbonoVendedorUncheckedCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteUncheckedCreateNestedManyWithoutUsuarioInput
     gastosRegistrados?: GastoUncheckedCreateNestedManyWithoutUsuarioInput
     juegosRegistrados?: JuegoRegistroUncheckedCreateNestedManyWithoutUsuarioInput
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteUncheckedCreateNestedManyWithoutCreatedByUsuarioInput
   }
 
   export type UsuarioCreateOrConnectWithoutAsignacionesInput = {
@@ -42716,6 +47587,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorUpdateManyWithoutRifaVendedorNestedInput
     boletas?: BoletaUpdateManyWithoutRifaVendedorNestedInput
     juegos?: JuegoRegistroUpdateManyWithoutRifaVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUpdateManyWithoutRifaVendedorNestedInput
+    ventas?: VentaUpdateManyWithoutRifaVendedorNestedInput
   }
 
   export type RifaVendedorUncheckedUpdateWithoutAsignacionesInput = {
@@ -42729,6 +47602,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorUncheckedUpdateManyWithoutRifaVendedorNestedInput
     boletas?: BoletaUncheckedUpdateManyWithoutRifaVendedorNestedInput
     juegos?: JuegoRegistroUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    ventas?: VentaUncheckedUpdateManyWithoutRifaVendedorNestedInput
   }
 
   export type UsuarioUpsertWithoutAsignacionesInput = {
@@ -42755,9 +47630,12 @@ export namespace Prisma {
     rifasEditadas?: RifaUpdateManyWithoutUpdatedByNestedInput
     devoluciones?: DevolucionBoletasUpdateManyWithoutUsuarioNestedInput
     abonosRegistrados?: AbonoVendedorUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUpdateManyWithoutUsuarioNestedInput
     gastosRegistrados?: GastoUpdateManyWithoutUsuarioNestedInput
     juegosRegistrados?: JuegoRegistroUpdateManyWithoutUsuarioNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUpdateManyWithoutCreatedByUsuarioNestedInput
   }
 
   export type UsuarioUncheckedUpdateWithoutAsignacionesInput = {
@@ -42773,9 +47651,12 @@ export namespace Prisma {
     rifasEditadas?: RifaUncheckedUpdateManyWithoutUpdatedByNestedInput
     devoluciones?: DevolucionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
     abonosRegistrados?: AbonoVendedorUncheckedUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUncheckedUpdateManyWithoutUsuarioNestedInput
     gastosRegistrados?: GastoUncheckedUpdateManyWithoutUsuarioNestedInput
     juegosRegistrados?: JuegoRegistroUncheckedUpdateManyWithoutUsuarioNestedInput
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUncheckedUpdateManyWithoutCreatedByUsuarioNestedInput
   }
 
   export type AsignacionDetalleUpsertWithWhereUniqueWithoutAsignacionInput = {
@@ -42819,6 +47700,7 @@ export namespace Prisma {
     id?: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -42840,6 +47722,7 @@ export namespace Prisma {
     rifaId: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -42902,6 +47785,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -42923,6 +47807,7 @@ export namespace Prisma {
     rifaId?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -42949,6 +47834,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorCreateNestedManyWithoutRifaVendedorInput
     boletas?: BoletaCreateNestedManyWithoutRifaVendedorInput
     juegos?: JuegoRegistroCreateNestedManyWithoutRifaVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeCreateNestedManyWithoutRifaVendedorInput
+    ventas?: VentaCreateNestedManyWithoutRifaVendedorInput
   }
 
   export type RifaVendedorUncheckedCreateWithoutDevolucionesInput = {
@@ -42962,6 +47849,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorUncheckedCreateNestedManyWithoutRifaVendedorInput
     boletas?: BoletaUncheckedCreateNestedManyWithoutRifaVendedorInput
     juegos?: JuegoRegistroUncheckedCreateNestedManyWithoutRifaVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutRifaVendedorInput
+    ventas?: VentaUncheckedCreateNestedManyWithoutRifaVendedorInput
   }
 
   export type RifaVendedorCreateOrConnectWithoutDevolucionesInput = {
@@ -42982,9 +47871,12 @@ export namespace Prisma {
     rifasEditadas?: RifaCreateNestedManyWithoutUpdatedByInput
     asignaciones?: AsignacionBoletasCreateNestedManyWithoutUsuarioInput
     abonosRegistrados?: AbonoVendedorCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteCreateNestedManyWithoutUsuarioInput
     gastosRegistrados?: GastoCreateNestedManyWithoutUsuarioInput
     juegosRegistrados?: JuegoRegistroCreateNestedManyWithoutUsuarioInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteCreateNestedManyWithoutCreatedByUsuarioInput
   }
 
   export type UsuarioUncheckedCreateWithoutDevolucionesInput = {
@@ -43000,9 +47892,12 @@ export namespace Prisma {
     rifasEditadas?: RifaUncheckedCreateNestedManyWithoutUpdatedByInput
     asignaciones?: AsignacionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
     abonosRegistrados?: AbonoVendedorUncheckedCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteUncheckedCreateNestedManyWithoutUsuarioInput
     gastosRegistrados?: GastoUncheckedCreateNestedManyWithoutUsuarioInput
     juegosRegistrados?: JuegoRegistroUncheckedCreateNestedManyWithoutUsuarioInput
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteUncheckedCreateNestedManyWithoutCreatedByUsuarioInput
   }
 
   export type UsuarioCreateOrConnectWithoutDevolucionesInput = {
@@ -43052,6 +47947,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorUpdateManyWithoutRifaVendedorNestedInput
     boletas?: BoletaUpdateManyWithoutRifaVendedorNestedInput
     juegos?: JuegoRegistroUpdateManyWithoutRifaVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUpdateManyWithoutRifaVendedorNestedInput
+    ventas?: VentaUpdateManyWithoutRifaVendedorNestedInput
   }
 
   export type RifaVendedorUncheckedUpdateWithoutDevolucionesInput = {
@@ -43065,6 +47962,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorUncheckedUpdateManyWithoutRifaVendedorNestedInput
     boletas?: BoletaUncheckedUpdateManyWithoutRifaVendedorNestedInput
     juegos?: JuegoRegistroUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    ventas?: VentaUncheckedUpdateManyWithoutRifaVendedorNestedInput
   }
 
   export type UsuarioUpsertWithoutDevolucionesInput = {
@@ -43091,9 +47990,12 @@ export namespace Prisma {
     rifasEditadas?: RifaUpdateManyWithoutUpdatedByNestedInput
     asignaciones?: AsignacionBoletasUpdateManyWithoutUsuarioNestedInput
     abonosRegistrados?: AbonoVendedorUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUpdateManyWithoutUsuarioNestedInput
     gastosRegistrados?: GastoUpdateManyWithoutUsuarioNestedInput
     juegosRegistrados?: JuegoRegistroUpdateManyWithoutUsuarioNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUpdateManyWithoutCreatedByUsuarioNestedInput
   }
 
   export type UsuarioUncheckedUpdateWithoutDevolucionesInput = {
@@ -43109,9 +48011,12 @@ export namespace Prisma {
     rifasEditadas?: RifaUncheckedUpdateManyWithoutUpdatedByNestedInput
     asignaciones?: AsignacionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
     abonosRegistrados?: AbonoVendedorUncheckedUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUncheckedUpdateManyWithoutUsuarioNestedInput
     gastosRegistrados?: GastoUncheckedUpdateManyWithoutUsuarioNestedInput
     juegosRegistrados?: JuegoRegistroUncheckedUpdateManyWithoutUsuarioNestedInput
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUncheckedUpdateManyWithoutCreatedByUsuarioNestedInput
   }
 
   export type DevolucionDetalleUpsertWithWhereUniqueWithoutDevolucionInput = {
@@ -43155,6 +48060,7 @@ export namespace Prisma {
     id?: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -43176,6 +48082,7 @@ export namespace Prisma {
     rifaId: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -43238,6 +48145,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -43259,6 +48167,7 @@ export namespace Prisma {
     rifaId?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -43276,6 +48185,14 @@ export namespace Prisma {
 
   export type VentaCreateWithoutClienteInput = {
     id?: string
+    canalOrigen?: string | null
+    referenciaExterna?: string | null
+    sesionExternaId?: string | null
+    linkPagoUrl?: string | null
+    linkPagoEnviadoAt?: Date | string | null
+    linkPagoAbiertoAt?: Date | string | null
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: string | null
     estado?: $Enums.EstadoVenta
     total: Decimal | DecimalJsLike | number | string
     saldoPendiente: Decimal | DecimalJsLike | number | string
@@ -43286,6 +48203,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     rifa: RifaCreateNestedOneWithoutVentasInput
+    rifaVendedor?: RifaVendedorCreateNestedOneWithoutVentasInput
     boletas?: BoletaCreateNestedManyWithoutVentaInput
     pagos?: PagoClienteCreateNestedManyWithoutVentaInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutVentaInput
@@ -43294,6 +48212,15 @@ export namespace Prisma {
   export type VentaUncheckedCreateWithoutClienteInput = {
     id?: string
     rifaId: string
+    rifaVendedorId?: string | null
+    canalOrigen?: string | null
+    referenciaExterna?: string | null
+    sesionExternaId?: string | null
+    linkPagoUrl?: string | null
+    linkPagoEnviadoAt?: Date | string | null
+    linkPagoAbiertoAt?: Date | string | null
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: string | null
     estado?: $Enums.EstadoVenta
     total: Decimal | DecimalJsLike | number | string
     saldoPendiente: Decimal | DecimalJsLike | number | string
@@ -43322,6 +48249,7 @@ export namespace Prisma {
     id?: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -43343,6 +48271,7 @@ export namespace Prisma {
     rifaId: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -43412,6 +48341,53 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UsuarioCreateWithoutClientesCreadosInput = {
+    id?: string
+    nombre: string
+    email: string
+    password: string
+    rol: $Enums.RolUsuario
+    activo?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rifasCreadas?: RifaCreateNestedManyWithoutCreatedByInput
+    rifasEditadas?: RifaCreateNestedManyWithoutUpdatedByInput
+    asignaciones?: AsignacionBoletasCreateNestedManyWithoutUsuarioInput
+    devoluciones?: DevolucionBoletasCreateNestedManyWithoutUsuarioInput
+    abonosRegistrados?: AbonoVendedorCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteCreateNestedManyWithoutUsuarioInput
+    gastosRegistrados?: GastoCreateNestedManyWithoutUsuarioInput
+    juegosRegistrados?: JuegoRegistroCreateNestedManyWithoutUsuarioInput
+    movimientos?: MovimientoCajaCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeCreateNestedManyWithoutUsuarioInput
+  }
+
+  export type UsuarioUncheckedCreateWithoutClientesCreadosInput = {
+    id?: string
+    nombre: string
+    email: string
+    password: string
+    rol: $Enums.RolUsuario
+    activo?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rifasCreadas?: RifaUncheckedCreateNestedManyWithoutCreatedByInput
+    rifasEditadas?: RifaUncheckedCreateNestedManyWithoutUpdatedByInput
+    asignaciones?: AsignacionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
+    devoluciones?: DevolucionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
+    abonosRegistrados?: AbonoVendedorUncheckedCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteUncheckedCreateNestedManyWithoutUsuarioInput
+    gastosRegistrados?: GastoUncheckedCreateNestedManyWithoutUsuarioInput
+    juegosRegistrados?: JuegoRegistroUncheckedCreateNestedManyWithoutUsuarioInput
+    movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutUsuarioInput
+  }
+
+  export type UsuarioCreateOrConnectWithoutClientesCreadosInput = {
+    where: UsuarioWhereUniqueInput
+    create: XOR<UsuarioCreateWithoutClientesCreadosInput, UsuarioUncheckedCreateWithoutClientesCreadosInput>
+  }
+
   export type VentaUpsertWithWhereUniqueWithoutClienteInput = {
     where: VentaWhereUniqueInput
     update: XOR<VentaUpdateWithoutClienteInput, VentaUncheckedUpdateWithoutClienteInput>
@@ -43460,14 +48436,70 @@ export namespace Prisma {
     data: XOR<MovimientoCajaUpdateManyMutationInput, MovimientoCajaUncheckedUpdateManyWithoutClienteInput>
   }
 
+  export type UsuarioUpsertWithoutClientesCreadosInput = {
+    update: XOR<UsuarioUpdateWithoutClientesCreadosInput, UsuarioUncheckedUpdateWithoutClientesCreadosInput>
+    create: XOR<UsuarioCreateWithoutClientesCreadosInput, UsuarioUncheckedCreateWithoutClientesCreadosInput>
+    where?: UsuarioWhereInput
+  }
+
+  export type UsuarioUpdateToOneWithWhereWithoutClientesCreadosInput = {
+    where?: UsuarioWhereInput
+    data: XOR<UsuarioUpdateWithoutClientesCreadosInput, UsuarioUncheckedUpdateWithoutClientesCreadosInput>
+  }
+
+  export type UsuarioUpdateWithoutClientesCreadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nombre?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    rol?: EnumRolUsuarioFieldUpdateOperationsInput | $Enums.RolUsuario
+    activo?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rifasCreadas?: RifaUpdateManyWithoutCreatedByNestedInput
+    rifasEditadas?: RifaUpdateManyWithoutUpdatedByNestedInput
+    asignaciones?: AsignacionBoletasUpdateManyWithoutUsuarioNestedInput
+    devoluciones?: DevolucionBoletasUpdateManyWithoutUsuarioNestedInput
+    abonosRegistrados?: AbonoVendedorUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUpdateManyWithoutUsuarioNestedInput
+    gastosRegistrados?: GastoUpdateManyWithoutUsuarioNestedInput
+    juegosRegistrados?: JuegoRegistroUpdateManyWithoutUsuarioNestedInput
+    movimientos?: MovimientoCajaUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUpdateManyWithoutUsuarioNestedInput
+  }
+
+  export type UsuarioUncheckedUpdateWithoutClientesCreadosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nombre?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    rol?: EnumRolUsuarioFieldUpdateOperationsInput | $Enums.RolUsuario
+    activo?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rifasCreadas?: RifaUncheckedUpdateManyWithoutCreatedByNestedInput
+    rifasEditadas?: RifaUncheckedUpdateManyWithoutUpdatedByNestedInput
+    asignaciones?: AsignacionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
+    devoluciones?: DevolucionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
+    abonosRegistrados?: AbonoVendedorUncheckedUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUncheckedUpdateManyWithoutUsuarioNestedInput
+    gastosRegistrados?: GastoUncheckedUpdateManyWithoutUsuarioNestedInput
+    juegosRegistrados?: JuegoRegistroUncheckedUpdateManyWithoutUsuarioNestedInput
+    movimientos?: MovimientoCajaUncheckedUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutUsuarioNestedInput
+  }
+
   export type ClienteCreateWithoutVentasInput = {
     id?: string
     nombre: string
     email?: string | null
     telefono?: string | null
     documento?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
     boletas?: BoletaCreateNestedManyWithoutClienteInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutClienteInput
+    createdByUsuario?: UsuarioCreateNestedOneWithoutClientesCreadosInput
   }
 
   export type ClienteUncheckedCreateWithoutVentasInput = {
@@ -43476,6 +48508,9 @@ export namespace Prisma {
     email?: string | null
     telefono?: string | null
     documento?: string | null
+    createdByUsuarioId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
     boletas?: BoletaUncheckedCreateNestedManyWithoutClienteInput
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutClienteInput
   }
@@ -43532,10 +48567,46 @@ export namespace Prisma {
     create: XOR<RifaCreateWithoutVentasInput, RifaUncheckedCreateWithoutVentasInput>
   }
 
+  export type RifaVendedorCreateWithoutVentasInput = {
+    id?: string
+    comisionPct: Decimal | DecimalJsLike | number | string
+    precioCasa: Decimal | DecimalJsLike | number | string
+    saldoActual?: Decimal | DecimalJsLike | number | string
+    rifa: RifaCreateNestedOneWithoutVendedoresInput
+    vendedor: VendedorCreateNestedOneWithoutRifasInput
+    asignaciones?: AsignacionBoletasCreateNestedManyWithoutRifaVendedorInput
+    devoluciones?: DevolucionBoletasCreateNestedManyWithoutRifaVendedorInput
+    abonos?: AbonoVendedorCreateNestedManyWithoutRifaVendedorInput
+    boletas?: BoletaCreateNestedManyWithoutRifaVendedorInput
+    juegos?: JuegoRegistroCreateNestedManyWithoutRifaVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeCreateNestedManyWithoutRifaVendedorInput
+  }
+
+  export type RifaVendedorUncheckedCreateWithoutVentasInput = {
+    id?: string
+    rifaId: string
+    vendedorId: string
+    comisionPct: Decimal | DecimalJsLike | number | string
+    precioCasa: Decimal | DecimalJsLike | number | string
+    saldoActual?: Decimal | DecimalJsLike | number | string
+    asignaciones?: AsignacionBoletasUncheckedCreateNestedManyWithoutRifaVendedorInput
+    devoluciones?: DevolucionBoletasUncheckedCreateNestedManyWithoutRifaVendedorInput
+    abonos?: AbonoVendedorUncheckedCreateNestedManyWithoutRifaVendedorInput
+    boletas?: BoletaUncheckedCreateNestedManyWithoutRifaVendedorInput
+    juegos?: JuegoRegistroUncheckedCreateNestedManyWithoutRifaVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutRifaVendedorInput
+  }
+
+  export type RifaVendedorCreateOrConnectWithoutVentasInput = {
+    where: RifaVendedorWhereUniqueInput
+    create: XOR<RifaVendedorCreateWithoutVentasInput, RifaVendedorUncheckedCreateWithoutVentasInput>
+  }
+
   export type BoletaCreateWithoutVentaInput = {
     id?: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -43557,6 +48628,7 @@ export namespace Prisma {
     rifaId: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -43588,6 +48660,10 @@ export namespace Prisma {
     fecha?: Date | string
     metodoPago: $Enums.MetodoPago
     estado?: $Enums.EstadoPago
+    descripcion?: string | null
+    subCaja?: SubCajaCreateNestedOneWithoutPagosClienteInput
+    usuario?: UsuarioCreateNestedOneWithoutPagosClienteRegistradosInput
+    recibo?: PagoClienteReciboCreateNestedOneWithoutPagoClienteInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutPagoClienteInput
   }
 
@@ -43597,6 +48673,10 @@ export namespace Prisma {
     fecha?: Date | string
     metodoPago: $Enums.MetodoPago
     estado?: $Enums.EstadoPago
+    descripcion?: string | null
+    subCajaId?: string | null
+    usuarioId?: string | null
+    recibo?: PagoClienteReciboUncheckedCreateNestedOneWithoutPagoClienteInput
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutPagoClienteInput
   }
 
@@ -43671,8 +48751,11 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     telefono?: NullableStringFieldUpdateOperationsInput | string | null
     documento?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     boletas?: BoletaUpdateManyWithoutClienteNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutClienteNestedInput
+    createdByUsuario?: UsuarioUpdateOneWithoutClientesCreadosNestedInput
   }
 
   export type ClienteUncheckedUpdateWithoutVentasInput = {
@@ -43681,6 +48764,9 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     telefono?: NullableStringFieldUpdateOperationsInput | string | null
     documento?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUsuarioId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     boletas?: BoletaUncheckedUpdateManyWithoutClienteNestedInput
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutClienteNestedInput
   }
@@ -43738,6 +48824,47 @@ export namespace Prisma {
     premios?: PremioUncheckedUpdateManyWithoutRifaNestedInput
   }
 
+  export type RifaVendedorUpsertWithoutVentasInput = {
+    update: XOR<RifaVendedorUpdateWithoutVentasInput, RifaVendedorUncheckedUpdateWithoutVentasInput>
+    create: XOR<RifaVendedorCreateWithoutVentasInput, RifaVendedorUncheckedCreateWithoutVentasInput>
+    where?: RifaVendedorWhereInput
+  }
+
+  export type RifaVendedorUpdateToOneWithWhereWithoutVentasInput = {
+    where?: RifaVendedorWhereInput
+    data: XOR<RifaVendedorUpdateWithoutVentasInput, RifaVendedorUncheckedUpdateWithoutVentasInput>
+  }
+
+  export type RifaVendedorUpdateWithoutVentasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    comisionPct?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    precioCasa?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    saldoActual?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    rifa?: RifaUpdateOneRequiredWithoutVendedoresNestedInput
+    vendedor?: VendedorUpdateOneRequiredWithoutRifasNestedInput
+    asignaciones?: AsignacionBoletasUpdateManyWithoutRifaVendedorNestedInput
+    devoluciones?: DevolucionBoletasUpdateManyWithoutRifaVendedorNestedInput
+    abonos?: AbonoVendedorUpdateManyWithoutRifaVendedorNestedInput
+    boletas?: BoletaUpdateManyWithoutRifaVendedorNestedInput
+    juegos?: JuegoRegistroUpdateManyWithoutRifaVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUpdateManyWithoutRifaVendedorNestedInput
+  }
+
+  export type RifaVendedorUncheckedUpdateWithoutVentasInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    rifaId?: StringFieldUpdateOperationsInput | string
+    vendedorId?: StringFieldUpdateOperationsInput | string
+    comisionPct?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    precioCasa?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    saldoActual?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    asignaciones?: AsignacionBoletasUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    devoluciones?: DevolucionBoletasUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    abonos?: AbonoVendedorUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    boletas?: BoletaUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    juegos?: JuegoRegistroUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutRifaVendedorNestedInput
+  }
+
   export type BoletaUpsertWithWhereUniqueWithoutVentaInput = {
     where: BoletaWhereUniqueInput
     update: XOR<BoletaUpdateWithoutVentaInput, BoletaUncheckedUpdateWithoutVentaInput>
@@ -43770,18 +48897,6 @@ export namespace Prisma {
     data: XOR<PagoClienteUpdateManyMutationInput, PagoClienteUncheckedUpdateManyWithoutVentaInput>
   }
 
-  export type PagoClienteScalarWhereInput = {
-    AND?: PagoClienteScalarWhereInput | PagoClienteScalarWhereInput[]
-    OR?: PagoClienteScalarWhereInput[]
-    NOT?: PagoClienteScalarWhereInput | PagoClienteScalarWhereInput[]
-    id?: StringFilter<"PagoCliente"> | string
-    ventaId?: StringFilter<"PagoCliente"> | string
-    monto?: DecimalFilter<"PagoCliente"> | Decimal | DecimalJsLike | number | string
-    fecha?: DateTimeFilter<"PagoCliente"> | Date | string
-    metodoPago?: EnumMetodoPagoFilter<"PagoCliente"> | $Enums.MetodoPago
-    estado?: EnumEstadoPagoFilter<"PagoCliente"> | $Enums.EstadoPago
-  }
-
   export type MovimientoCajaUpsertWithWhereUniqueWithoutVentaInput = {
     where: MovimientoCajaWhereUniqueInput
     update: XOR<MovimientoCajaUpdateWithoutVentaInput, MovimientoCajaUncheckedUpdateWithoutVentaInput>
@@ -43800,6 +48915,14 @@ export namespace Prisma {
 
   export type VentaCreateWithoutPagosInput = {
     id?: string
+    canalOrigen?: string | null
+    referenciaExterna?: string | null
+    sesionExternaId?: string | null
+    linkPagoUrl?: string | null
+    linkPagoEnviadoAt?: Date | string | null
+    linkPagoAbiertoAt?: Date | string | null
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: string | null
     estado?: $Enums.EstadoVenta
     total: Decimal | DecimalJsLike | number | string
     saldoPendiente: Decimal | DecimalJsLike | number | string
@@ -43811,6 +48934,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     cliente: ClienteCreateNestedOneWithoutVentasInput
     rifa: RifaCreateNestedOneWithoutVentasInput
+    rifaVendedor?: RifaVendedorCreateNestedOneWithoutVentasInput
     boletas?: BoletaCreateNestedManyWithoutVentaInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutVentaInput
   }
@@ -43819,6 +48943,15 @@ export namespace Prisma {
     id?: string
     clienteId: string
     rifaId: string
+    rifaVendedorId?: string | null
+    canalOrigen?: string | null
+    referenciaExterna?: string | null
+    sesionExternaId?: string | null
+    linkPagoUrl?: string | null
+    linkPagoEnviadoAt?: Date | string | null
+    linkPagoAbiertoAt?: Date | string | null
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: string | null
     estado?: $Enums.EstadoVenta
     total: Decimal | DecimalJsLike | number | string
     saldoPendiente: Decimal | DecimalJsLike | number | string
@@ -43835,6 +48968,97 @@ export namespace Prisma {
   export type VentaCreateOrConnectWithoutPagosInput = {
     where: VentaWhereUniqueInput
     create: XOR<VentaCreateWithoutPagosInput, VentaUncheckedCreateWithoutPagosInput>
+  }
+
+  export type SubCajaCreateWithoutPagosClienteInput = {
+    id?: string
+    nombre: string
+    saldo?: Decimal | DecimalJsLike | number | string
+    caja: CajaCreateNestedOneWithoutSubcajasInput
+    movimientos?: MovimientoCajaCreateNestedManyWithoutSubCajaInput
+    abonos?: AbonoVendedorCreateNestedManyWithoutSubCajaInput
+    gastos?: GastoCreateNestedManyWithoutSubCajaInput
+  }
+
+  export type SubCajaUncheckedCreateWithoutPagosClienteInput = {
+    id?: string
+    nombre: string
+    saldo?: Decimal | DecimalJsLike | number | string
+    cajaId: string
+    movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutSubCajaInput
+    abonos?: AbonoVendedorUncheckedCreateNestedManyWithoutSubCajaInput
+    gastos?: GastoUncheckedCreateNestedManyWithoutSubCajaInput
+  }
+
+  export type SubCajaCreateOrConnectWithoutPagosClienteInput = {
+    where: SubCajaWhereUniqueInput
+    create: XOR<SubCajaCreateWithoutPagosClienteInput, SubCajaUncheckedCreateWithoutPagosClienteInput>
+  }
+
+  export type UsuarioCreateWithoutPagosClienteRegistradosInput = {
+    id?: string
+    nombre: string
+    email: string
+    password: string
+    rol: $Enums.RolUsuario
+    activo?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rifasCreadas?: RifaCreateNestedManyWithoutCreatedByInput
+    rifasEditadas?: RifaCreateNestedManyWithoutUpdatedByInput
+    asignaciones?: AsignacionBoletasCreateNestedManyWithoutUsuarioInput
+    devoluciones?: DevolucionBoletasCreateNestedManyWithoutUsuarioInput
+    abonosRegistrados?: AbonoVendedorCreateNestedManyWithoutUsuarioInput
+    gastosRegistrados?: GastoCreateNestedManyWithoutUsuarioInput
+    juegosRegistrados?: JuegoRegistroCreateNestedManyWithoutUsuarioInput
+    movimientos?: MovimientoCajaCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteCreateNestedManyWithoutCreatedByUsuarioInput
+  }
+
+  export type UsuarioUncheckedCreateWithoutPagosClienteRegistradosInput = {
+    id?: string
+    nombre: string
+    email: string
+    password: string
+    rol: $Enums.RolUsuario
+    activo?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rifasCreadas?: RifaUncheckedCreateNestedManyWithoutCreatedByInput
+    rifasEditadas?: RifaUncheckedCreateNestedManyWithoutUpdatedByInput
+    asignaciones?: AsignacionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
+    devoluciones?: DevolucionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
+    abonosRegistrados?: AbonoVendedorUncheckedCreateNestedManyWithoutUsuarioInput
+    gastosRegistrados?: GastoUncheckedCreateNestedManyWithoutUsuarioInput
+    juegosRegistrados?: JuegoRegistroUncheckedCreateNestedManyWithoutUsuarioInput
+    movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteUncheckedCreateNestedManyWithoutCreatedByUsuarioInput
+  }
+
+  export type UsuarioCreateOrConnectWithoutPagosClienteRegistradosInput = {
+    where: UsuarioWhereUniqueInput
+    create: XOR<UsuarioCreateWithoutPagosClienteRegistradosInput, UsuarioUncheckedCreateWithoutPagosClienteRegistradosInput>
+  }
+
+  export type PagoClienteReciboCreateWithoutPagoClienteInput = {
+    id?: string
+    consecutivo: number
+    codigoUnico: string
+    fecha?: Date | string
+  }
+
+  export type PagoClienteReciboUncheckedCreateWithoutPagoClienteInput = {
+    id?: string
+    consecutivo: number
+    codigoUnico: string
+    fecha?: Date | string
+  }
+
+  export type PagoClienteReciboCreateOrConnectWithoutPagoClienteInput = {
+    where: PagoClienteReciboWhereUniqueInput
+    create: XOR<PagoClienteReciboCreateWithoutPagoClienteInput, PagoClienteReciboUncheckedCreateWithoutPagoClienteInput>
   }
 
   export type MovimientoCajaCreateWithoutPagoClienteInput = {
@@ -43894,6 +49118,14 @@ export namespace Prisma {
 
   export type VentaUpdateWithoutPagosInput = {
     id?: StringFieldUpdateOperationsInput | string
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -43905,6 +49137,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     cliente?: ClienteUpdateOneRequiredWithoutVentasNestedInput
     rifa?: RifaUpdateOneRequiredWithoutVentasNestedInput
+    rifaVendedor?: RifaVendedorUpdateOneWithoutVentasNestedInput
     boletas?: BoletaUpdateManyWithoutVentaNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutVentaNestedInput
   }
@@ -43913,6 +49146,15 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     clienteId?: StringFieldUpdateOperationsInput | string
     rifaId?: StringFieldUpdateOperationsInput | string
+    rifaVendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -43924,6 +49166,115 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     boletas?: BoletaUncheckedUpdateManyWithoutVentaNestedInput
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutVentaNestedInput
+  }
+
+  export type SubCajaUpsertWithoutPagosClienteInput = {
+    update: XOR<SubCajaUpdateWithoutPagosClienteInput, SubCajaUncheckedUpdateWithoutPagosClienteInput>
+    create: XOR<SubCajaCreateWithoutPagosClienteInput, SubCajaUncheckedCreateWithoutPagosClienteInput>
+    where?: SubCajaWhereInput
+  }
+
+  export type SubCajaUpdateToOneWithWhereWithoutPagosClienteInput = {
+    where?: SubCajaWhereInput
+    data: XOR<SubCajaUpdateWithoutPagosClienteInput, SubCajaUncheckedUpdateWithoutPagosClienteInput>
+  }
+
+  export type SubCajaUpdateWithoutPagosClienteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nombre?: StringFieldUpdateOperationsInput | string
+    saldo?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    caja?: CajaUpdateOneRequiredWithoutSubcajasNestedInput
+    movimientos?: MovimientoCajaUpdateManyWithoutSubCajaNestedInput
+    abonos?: AbonoVendedorUpdateManyWithoutSubCajaNestedInput
+    gastos?: GastoUpdateManyWithoutSubCajaNestedInput
+  }
+
+  export type SubCajaUncheckedUpdateWithoutPagosClienteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nombre?: StringFieldUpdateOperationsInput | string
+    saldo?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    cajaId?: StringFieldUpdateOperationsInput | string
+    movimientos?: MovimientoCajaUncheckedUpdateManyWithoutSubCajaNestedInput
+    abonos?: AbonoVendedorUncheckedUpdateManyWithoutSubCajaNestedInput
+    gastos?: GastoUncheckedUpdateManyWithoutSubCajaNestedInput
+  }
+
+  export type UsuarioUpsertWithoutPagosClienteRegistradosInput = {
+    update: XOR<UsuarioUpdateWithoutPagosClienteRegistradosInput, UsuarioUncheckedUpdateWithoutPagosClienteRegistradosInput>
+    create: XOR<UsuarioCreateWithoutPagosClienteRegistradosInput, UsuarioUncheckedCreateWithoutPagosClienteRegistradosInput>
+    where?: UsuarioWhereInput
+  }
+
+  export type UsuarioUpdateToOneWithWhereWithoutPagosClienteRegistradosInput = {
+    where?: UsuarioWhereInput
+    data: XOR<UsuarioUpdateWithoutPagosClienteRegistradosInput, UsuarioUncheckedUpdateWithoutPagosClienteRegistradosInput>
+  }
+
+  export type UsuarioUpdateWithoutPagosClienteRegistradosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nombre?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    rol?: EnumRolUsuarioFieldUpdateOperationsInput | $Enums.RolUsuario
+    activo?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rifasCreadas?: RifaUpdateManyWithoutCreatedByNestedInput
+    rifasEditadas?: RifaUpdateManyWithoutUpdatedByNestedInput
+    asignaciones?: AsignacionBoletasUpdateManyWithoutUsuarioNestedInput
+    devoluciones?: DevolucionBoletasUpdateManyWithoutUsuarioNestedInput
+    abonosRegistrados?: AbonoVendedorUpdateManyWithoutUsuarioNestedInput
+    gastosRegistrados?: GastoUpdateManyWithoutUsuarioNestedInput
+    juegosRegistrados?: JuegoRegistroUpdateManyWithoutUsuarioNestedInput
+    movimientos?: MovimientoCajaUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUpdateManyWithoutCreatedByUsuarioNestedInput
+  }
+
+  export type UsuarioUncheckedUpdateWithoutPagosClienteRegistradosInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nombre?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    rol?: EnumRolUsuarioFieldUpdateOperationsInput | $Enums.RolUsuario
+    activo?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rifasCreadas?: RifaUncheckedUpdateManyWithoutCreatedByNestedInput
+    rifasEditadas?: RifaUncheckedUpdateManyWithoutUpdatedByNestedInput
+    asignaciones?: AsignacionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
+    devoluciones?: DevolucionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
+    abonosRegistrados?: AbonoVendedorUncheckedUpdateManyWithoutUsuarioNestedInput
+    gastosRegistrados?: GastoUncheckedUpdateManyWithoutUsuarioNestedInput
+    juegosRegistrados?: JuegoRegistroUncheckedUpdateManyWithoutUsuarioNestedInput
+    movimientos?: MovimientoCajaUncheckedUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUncheckedUpdateManyWithoutCreatedByUsuarioNestedInput
+  }
+
+  export type PagoClienteReciboUpsertWithoutPagoClienteInput = {
+    update: XOR<PagoClienteReciboUpdateWithoutPagoClienteInput, PagoClienteReciboUncheckedUpdateWithoutPagoClienteInput>
+    create: XOR<PagoClienteReciboCreateWithoutPagoClienteInput, PagoClienteReciboUncheckedCreateWithoutPagoClienteInput>
+    where?: PagoClienteReciboWhereInput
+  }
+
+  export type PagoClienteReciboUpdateToOneWithWhereWithoutPagoClienteInput = {
+    where?: PagoClienteReciboWhereInput
+    data: XOR<PagoClienteReciboUpdateWithoutPagoClienteInput, PagoClienteReciboUncheckedUpdateWithoutPagoClienteInput>
+  }
+
+  export type PagoClienteReciboUpdateWithoutPagoClienteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    consecutivo?: IntFieldUpdateOperationsInput | number
+    codigoUnico?: StringFieldUpdateOperationsInput | string
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PagoClienteReciboUncheckedUpdateWithoutPagoClienteInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    consecutivo?: IntFieldUpdateOperationsInput | number
+    codigoUnico?: StringFieldUpdateOperationsInput | string
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MovimientoCajaUpsertWithWhereUniqueWithoutPagoClienteInput = {
@@ -43942,6 +49293,74 @@ export namespace Prisma {
     data: XOR<MovimientoCajaUpdateManyMutationInput, MovimientoCajaUncheckedUpdateManyWithoutPagoClienteInput>
   }
 
+  export type PagoClienteCreateWithoutReciboInput = {
+    id?: string
+    monto: Decimal | DecimalJsLike | number | string
+    fecha?: Date | string
+    metodoPago: $Enums.MetodoPago
+    estado?: $Enums.EstadoPago
+    descripcion?: string | null
+    venta: VentaCreateNestedOneWithoutPagosInput
+    subCaja?: SubCajaCreateNestedOneWithoutPagosClienteInput
+    usuario?: UsuarioCreateNestedOneWithoutPagosClienteRegistradosInput
+    movimientos?: MovimientoCajaCreateNestedManyWithoutPagoClienteInput
+  }
+
+  export type PagoClienteUncheckedCreateWithoutReciboInput = {
+    id?: string
+    ventaId: string
+    monto: Decimal | DecimalJsLike | number | string
+    fecha?: Date | string
+    metodoPago: $Enums.MetodoPago
+    estado?: $Enums.EstadoPago
+    descripcion?: string | null
+    subCajaId?: string | null
+    usuarioId?: string | null
+    movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutPagoClienteInput
+  }
+
+  export type PagoClienteCreateOrConnectWithoutReciboInput = {
+    where: PagoClienteWhereUniqueInput
+    create: XOR<PagoClienteCreateWithoutReciboInput, PagoClienteUncheckedCreateWithoutReciboInput>
+  }
+
+  export type PagoClienteUpsertWithoutReciboInput = {
+    update: XOR<PagoClienteUpdateWithoutReciboInput, PagoClienteUncheckedUpdateWithoutReciboInput>
+    create: XOR<PagoClienteCreateWithoutReciboInput, PagoClienteUncheckedCreateWithoutReciboInput>
+    where?: PagoClienteWhereInput
+  }
+
+  export type PagoClienteUpdateToOneWithWhereWithoutReciboInput = {
+    where?: PagoClienteWhereInput
+    data: XOR<PagoClienteUpdateWithoutReciboInput, PagoClienteUncheckedUpdateWithoutReciboInput>
+  }
+
+  export type PagoClienteUpdateWithoutReciboInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    monto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+    metodoPago?: EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+    estado?: EnumEstadoPagoFieldUpdateOperationsInput | $Enums.EstadoPago
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    venta?: VentaUpdateOneRequiredWithoutPagosNestedInput
+    subCaja?: SubCajaUpdateOneWithoutPagosClienteNestedInput
+    usuario?: UsuarioUpdateOneWithoutPagosClienteRegistradosNestedInput
+    movimientos?: MovimientoCajaUpdateManyWithoutPagoClienteNestedInput
+  }
+
+  export type PagoClienteUncheckedUpdateWithoutReciboInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ventaId?: StringFieldUpdateOperationsInput | string
+    monto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+    metodoPago?: EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+    estado?: EnumEstadoPagoFieldUpdateOperationsInput | $Enums.EstadoPago
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    subCajaId?: NullableStringFieldUpdateOperationsInput | string | null
+    usuarioId?: NullableStringFieldUpdateOperationsInput | string | null
+    movimientos?: MovimientoCajaUncheckedUpdateManyWithoutPagoClienteNestedInput
+  }
+
   export type RifaVendedorCreateWithoutAbonosInput = {
     id?: string
     comisionPct: Decimal | DecimalJsLike | number | string
@@ -43953,6 +49372,8 @@ export namespace Prisma {
     devoluciones?: DevolucionBoletasCreateNestedManyWithoutRifaVendedorInput
     boletas?: BoletaCreateNestedManyWithoutRifaVendedorInput
     juegos?: JuegoRegistroCreateNestedManyWithoutRifaVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeCreateNestedManyWithoutRifaVendedorInput
+    ventas?: VentaCreateNestedManyWithoutRifaVendedorInput
   }
 
   export type RifaVendedorUncheckedCreateWithoutAbonosInput = {
@@ -43966,6 +49387,8 @@ export namespace Prisma {
     devoluciones?: DevolucionBoletasUncheckedCreateNestedManyWithoutRifaVendedorInput
     boletas?: BoletaUncheckedCreateNestedManyWithoutRifaVendedorInput
     juegos?: JuegoRegistroUncheckedCreateNestedManyWithoutRifaVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutRifaVendedorInput
+    ventas?: VentaUncheckedCreateNestedManyWithoutRifaVendedorInput
   }
 
   export type RifaVendedorCreateOrConnectWithoutAbonosInput = {
@@ -43979,6 +49402,7 @@ export namespace Prisma {
     saldo?: Decimal | DecimalJsLike | number | string
     caja: CajaCreateNestedOneWithoutSubcajasInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutSubCajaInput
+    pagosCliente?: PagoClienteCreateNestedManyWithoutSubCajaInput
     gastos?: GastoCreateNestedManyWithoutSubCajaInput
   }
 
@@ -43988,6 +49412,7 @@ export namespace Prisma {
     saldo?: Decimal | DecimalJsLike | number | string
     cajaId: string
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutSubCajaInput
+    pagosCliente?: PagoClienteUncheckedCreateNestedManyWithoutSubCajaInput
     gastos?: GastoUncheckedCreateNestedManyWithoutSubCajaInput
   }
 
@@ -44009,9 +49434,12 @@ export namespace Prisma {
     rifasEditadas?: RifaCreateNestedManyWithoutUpdatedByInput
     asignaciones?: AsignacionBoletasCreateNestedManyWithoutUsuarioInput
     devoluciones?: DevolucionBoletasCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteCreateNestedManyWithoutUsuarioInput
     gastosRegistrados?: GastoCreateNestedManyWithoutUsuarioInput
     juegosRegistrados?: JuegoRegistroCreateNestedManyWithoutUsuarioInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteCreateNestedManyWithoutCreatedByUsuarioInput
   }
 
   export type UsuarioUncheckedCreateWithoutAbonosRegistradosInput = {
@@ -44027,9 +49455,12 @@ export namespace Prisma {
     rifasEditadas?: RifaUncheckedCreateNestedManyWithoutUpdatedByInput
     asignaciones?: AsignacionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
     devoluciones?: DevolucionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteUncheckedCreateNestedManyWithoutUsuarioInput
     gastosRegistrados?: GastoUncheckedCreateNestedManyWithoutUsuarioInput
     juegosRegistrados?: JuegoRegistroUncheckedCreateNestedManyWithoutUsuarioInput
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteUncheckedCreateNestedManyWithoutCreatedByUsuarioInput
   }
 
   export type UsuarioCreateOrConnectWithoutAbonosRegistradosInput = {
@@ -44122,6 +49553,8 @@ export namespace Prisma {
     devoluciones?: DevolucionBoletasUpdateManyWithoutRifaVendedorNestedInput
     boletas?: BoletaUpdateManyWithoutRifaVendedorNestedInput
     juegos?: JuegoRegistroUpdateManyWithoutRifaVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUpdateManyWithoutRifaVendedorNestedInput
+    ventas?: VentaUpdateManyWithoutRifaVendedorNestedInput
   }
 
   export type RifaVendedorUncheckedUpdateWithoutAbonosInput = {
@@ -44135,6 +49568,8 @@ export namespace Prisma {
     devoluciones?: DevolucionBoletasUncheckedUpdateManyWithoutRifaVendedorNestedInput
     boletas?: BoletaUncheckedUpdateManyWithoutRifaVendedorNestedInput
     juegos?: JuegoRegistroUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    ventas?: VentaUncheckedUpdateManyWithoutRifaVendedorNestedInput
   }
 
   export type SubCajaUpsertWithoutAbonosInput = {
@@ -44154,6 +49589,7 @@ export namespace Prisma {
     saldo?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     caja?: CajaUpdateOneRequiredWithoutSubcajasNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutSubCajaNestedInput
+    pagosCliente?: PagoClienteUpdateManyWithoutSubCajaNestedInput
     gastos?: GastoUpdateManyWithoutSubCajaNestedInput
   }
 
@@ -44163,6 +49599,7 @@ export namespace Prisma {
     saldo?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     cajaId?: StringFieldUpdateOperationsInput | string
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutSubCajaNestedInput
+    pagosCliente?: PagoClienteUncheckedUpdateManyWithoutSubCajaNestedInput
     gastos?: GastoUncheckedUpdateManyWithoutSubCajaNestedInput
   }
 
@@ -44190,9 +49627,12 @@ export namespace Prisma {
     rifasEditadas?: RifaUpdateManyWithoutUpdatedByNestedInput
     asignaciones?: AsignacionBoletasUpdateManyWithoutUsuarioNestedInput
     devoluciones?: DevolucionBoletasUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUpdateManyWithoutUsuarioNestedInput
     gastosRegistrados?: GastoUpdateManyWithoutUsuarioNestedInput
     juegosRegistrados?: JuegoRegistroUpdateManyWithoutUsuarioNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUpdateManyWithoutCreatedByUsuarioNestedInput
   }
 
   export type UsuarioUncheckedUpdateWithoutAbonosRegistradosInput = {
@@ -44208,9 +49648,12 @@ export namespace Prisma {
     rifasEditadas?: RifaUncheckedUpdateManyWithoutUpdatedByNestedInput
     asignaciones?: AsignacionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
     devoluciones?: DevolucionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUncheckedUpdateManyWithoutUsuarioNestedInput
     gastosRegistrados?: GastoUncheckedUpdateManyWithoutUsuarioNestedInput
     juegosRegistrados?: JuegoRegistroUncheckedUpdateManyWithoutUsuarioNestedInput
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUncheckedUpdateManyWithoutCreatedByUsuarioNestedInput
   }
 
   export type ReciboUpsertWithoutAbonoInput = {
@@ -44395,6 +49838,7 @@ export namespace Prisma {
     saldo?: Decimal | DecimalJsLike | number | string
     movimientos?: MovimientoCajaCreateNestedManyWithoutSubCajaInput
     abonos?: AbonoVendedorCreateNestedManyWithoutSubCajaInput
+    pagosCliente?: PagoClienteCreateNestedManyWithoutSubCajaInput
     gastos?: GastoCreateNestedManyWithoutSubCajaInput
   }
 
@@ -44404,6 +49848,7 @@ export namespace Prisma {
     saldo?: Decimal | DecimalJsLike | number | string
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutSubCajaInput
     abonos?: AbonoVendedorUncheckedCreateNestedManyWithoutSubCajaInput
+    pagosCliente?: PagoClienteUncheckedCreateNestedManyWithoutSubCajaInput
     gastos?: GastoUncheckedCreateNestedManyWithoutSubCajaInput
   }
 
@@ -44667,6 +50112,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PagoClienteCreateWithoutSubCajaInput = {
+    id?: string
+    monto: Decimal | DecimalJsLike | number | string
+    fecha?: Date | string
+    metodoPago: $Enums.MetodoPago
+    estado?: $Enums.EstadoPago
+    descripcion?: string | null
+    venta: VentaCreateNestedOneWithoutPagosInput
+    usuario?: UsuarioCreateNestedOneWithoutPagosClienteRegistradosInput
+    recibo?: PagoClienteReciboCreateNestedOneWithoutPagoClienteInput
+    movimientos?: MovimientoCajaCreateNestedManyWithoutPagoClienteInput
+  }
+
+  export type PagoClienteUncheckedCreateWithoutSubCajaInput = {
+    id?: string
+    ventaId: string
+    monto: Decimal | DecimalJsLike | number | string
+    fecha?: Date | string
+    metodoPago: $Enums.MetodoPago
+    estado?: $Enums.EstadoPago
+    descripcion?: string | null
+    usuarioId?: string | null
+    recibo?: PagoClienteReciboUncheckedCreateNestedOneWithoutPagoClienteInput
+    movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutPagoClienteInput
+  }
+
+  export type PagoClienteCreateOrConnectWithoutSubCajaInput = {
+    where: PagoClienteWhereUniqueInput
+    create: XOR<PagoClienteCreateWithoutSubCajaInput, PagoClienteUncheckedCreateWithoutSubCajaInput>
+  }
+
+  export type PagoClienteCreateManySubCajaInputEnvelope = {
+    data: PagoClienteCreateManySubCajaInput | PagoClienteCreateManySubCajaInput[]
+    skipDuplicates?: boolean
+  }
+
   export type GastoCreateWithoutSubCajaInput = {
     id?: string
     categoria?: $Enums.CategoriaGasto
@@ -44764,6 +50245,22 @@ export namespace Prisma {
     data: XOR<AbonoVendedorUpdateManyMutationInput, AbonoVendedorUncheckedUpdateManyWithoutSubCajaInput>
   }
 
+  export type PagoClienteUpsertWithWhereUniqueWithoutSubCajaInput = {
+    where: PagoClienteWhereUniqueInput
+    update: XOR<PagoClienteUpdateWithoutSubCajaInput, PagoClienteUncheckedUpdateWithoutSubCajaInput>
+    create: XOR<PagoClienteCreateWithoutSubCajaInput, PagoClienteUncheckedCreateWithoutSubCajaInput>
+  }
+
+  export type PagoClienteUpdateWithWhereUniqueWithoutSubCajaInput = {
+    where: PagoClienteWhereUniqueInput
+    data: XOR<PagoClienteUpdateWithoutSubCajaInput, PagoClienteUncheckedUpdateWithoutSubCajaInput>
+  }
+
+  export type PagoClienteUpdateManyWithWhereWithoutSubCajaInput = {
+    where: PagoClienteScalarWhereInput
+    data: XOR<PagoClienteUpdateManyMutationInput, PagoClienteUncheckedUpdateManyWithoutSubCajaInput>
+  }
+
   export type GastoUpsertWithWhereUniqueWithoutSubCajaInput = {
     where: GastoWhereUniqueInput
     update: XOR<GastoUpdateWithoutSubCajaInput, GastoUncheckedUpdateWithoutSubCajaInput>
@@ -44807,6 +50304,7 @@ export namespace Prisma {
     saldo?: Decimal | DecimalJsLike | number | string
     caja: CajaCreateNestedOneWithoutSubcajasInput
     abonos?: AbonoVendedorCreateNestedManyWithoutSubCajaInput
+    pagosCliente?: PagoClienteCreateNestedManyWithoutSubCajaInput
     gastos?: GastoCreateNestedManyWithoutSubCajaInput
   }
 
@@ -44816,6 +50314,7 @@ export namespace Prisma {
     saldo?: Decimal | DecimalJsLike | number | string
     cajaId: string
     abonos?: AbonoVendedorUncheckedCreateNestedManyWithoutSubCajaInput
+    pagosCliente?: PagoClienteUncheckedCreateNestedManyWithoutSubCajaInput
     gastos?: GastoUncheckedCreateNestedManyWithoutSubCajaInput
   }
 
@@ -44880,6 +50379,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     rifas?: RifaVendedorCreateNestedManyWithoutVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeCreateNestedManyWithoutVendedorInput
   }
 
   export type VendedorUncheckedCreateWithoutMovimientosInput = {
@@ -44891,6 +50391,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     rifas?: RifaVendedorUncheckedCreateNestedManyWithoutVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutVendedorInput
   }
 
   export type VendedorCreateOrConnectWithoutMovimientosInput = {
@@ -44904,8 +50405,11 @@ export namespace Prisma {
     email?: string | null
     telefono?: string | null
     documento?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
     ventas?: VentaCreateNestedManyWithoutClienteInput
     boletas?: BoletaCreateNestedManyWithoutClienteInput
+    createdByUsuario?: UsuarioCreateNestedOneWithoutClientesCreadosInput
   }
 
   export type ClienteUncheckedCreateWithoutMovimientosInput = {
@@ -44914,6 +50418,9 @@ export namespace Prisma {
     email?: string | null
     telefono?: string | null
     documento?: string | null
+    createdByUsuarioId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
     ventas?: VentaUncheckedCreateNestedManyWithoutClienteInput
     boletas?: BoletaUncheckedCreateNestedManyWithoutClienteInput
   }
@@ -44925,6 +50432,14 @@ export namespace Prisma {
 
   export type VentaCreateWithoutMovimientosInput = {
     id?: string
+    canalOrigen?: string | null
+    referenciaExterna?: string | null
+    sesionExternaId?: string | null
+    linkPagoUrl?: string | null
+    linkPagoEnviadoAt?: Date | string | null
+    linkPagoAbiertoAt?: Date | string | null
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: string | null
     estado?: $Enums.EstadoVenta
     total: Decimal | DecimalJsLike | number | string
     saldoPendiente: Decimal | DecimalJsLike | number | string
@@ -44936,6 +50451,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     cliente: ClienteCreateNestedOneWithoutVentasInput
     rifa: RifaCreateNestedOneWithoutVentasInput
+    rifaVendedor?: RifaVendedorCreateNestedOneWithoutVentasInput
     boletas?: BoletaCreateNestedManyWithoutVentaInput
     pagos?: PagoClienteCreateNestedManyWithoutVentaInput
   }
@@ -44944,6 +50460,15 @@ export namespace Prisma {
     id?: string
     clienteId: string
     rifaId: string
+    rifaVendedorId?: string | null
+    canalOrigen?: string | null
+    referenciaExterna?: string | null
+    sesionExternaId?: string | null
+    linkPagoUrl?: string | null
+    linkPagoEnviadoAt?: Date | string | null
+    linkPagoAbiertoAt?: Date | string | null
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: string | null
     estado?: $Enums.EstadoVenta
     total: Decimal | DecimalJsLike | number | string
     saldoPendiente: Decimal | DecimalJsLike | number | string
@@ -45001,7 +50526,11 @@ export namespace Prisma {
     fecha?: Date | string
     metodoPago: $Enums.MetodoPago
     estado?: $Enums.EstadoPago
+    descripcion?: string | null
     venta: VentaCreateNestedOneWithoutPagosInput
+    subCaja?: SubCajaCreateNestedOneWithoutPagosClienteInput
+    usuario?: UsuarioCreateNestedOneWithoutPagosClienteRegistradosInput
+    recibo?: PagoClienteReciboCreateNestedOneWithoutPagoClienteInput
   }
 
   export type PagoClienteUncheckedCreateWithoutMovimientosInput = {
@@ -45011,6 +50540,10 @@ export namespace Prisma {
     fecha?: Date | string
     metodoPago: $Enums.MetodoPago
     estado?: $Enums.EstadoPago
+    descripcion?: string | null
+    subCajaId?: string | null
+    usuarioId?: string | null
+    recibo?: PagoClienteReciboUncheckedCreateNestedOneWithoutPagoClienteInput
   }
 
   export type PagoClienteCreateOrConnectWithoutMovimientosInput = {
@@ -45073,8 +50606,11 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasCreateNestedManyWithoutUsuarioInput
     devoluciones?: DevolucionBoletasCreateNestedManyWithoutUsuarioInput
     abonosRegistrados?: AbonoVendedorCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteCreateNestedManyWithoutUsuarioInput
     gastosRegistrados?: GastoCreateNestedManyWithoutUsuarioInput
     juegosRegistrados?: JuegoRegistroCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteCreateNestedManyWithoutCreatedByUsuarioInput
   }
 
   export type UsuarioUncheckedCreateWithoutMovimientosInput = {
@@ -45091,8 +50627,11 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
     devoluciones?: DevolucionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
     abonosRegistrados?: AbonoVendedorUncheckedCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteUncheckedCreateNestedManyWithoutUsuarioInput
     gastosRegistrados?: GastoUncheckedCreateNestedManyWithoutUsuarioInput
     juegosRegistrados?: JuegoRegistroUncheckedCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteUncheckedCreateNestedManyWithoutCreatedByUsuarioInput
   }
 
   export type UsuarioCreateOrConnectWithoutMovimientosInput = {
@@ -45144,6 +50683,7 @@ export namespace Prisma {
     saldo?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     caja?: CajaUpdateOneRequiredWithoutSubcajasNestedInput
     abonos?: AbonoVendedorUpdateManyWithoutSubCajaNestedInput
+    pagosCliente?: PagoClienteUpdateManyWithoutSubCajaNestedInput
     gastos?: GastoUpdateManyWithoutSubCajaNestedInput
   }
 
@@ -45153,6 +50693,7 @@ export namespace Prisma {
     saldo?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     cajaId?: StringFieldUpdateOperationsInput | string
     abonos?: AbonoVendedorUncheckedUpdateManyWithoutSubCajaNestedInput
+    pagosCliente?: PagoClienteUncheckedUpdateManyWithoutSubCajaNestedInput
     gastos?: GastoUncheckedUpdateManyWithoutSubCajaNestedInput
   }
 
@@ -45229,6 +50770,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rifas?: RifaVendedorUpdateManyWithoutVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUpdateManyWithoutVendedorNestedInput
   }
 
   export type VendedorUncheckedUpdateWithoutMovimientosInput = {
@@ -45240,6 +50782,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rifas?: RifaVendedorUncheckedUpdateManyWithoutVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutVendedorNestedInput
   }
 
   export type ClienteUpsertWithoutMovimientosInput = {
@@ -45259,8 +50802,11 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     telefono?: NullableStringFieldUpdateOperationsInput | string | null
     documento?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ventas?: VentaUpdateManyWithoutClienteNestedInput
     boletas?: BoletaUpdateManyWithoutClienteNestedInput
+    createdByUsuario?: UsuarioUpdateOneWithoutClientesCreadosNestedInput
   }
 
   export type ClienteUncheckedUpdateWithoutMovimientosInput = {
@@ -45269,6 +50815,9 @@ export namespace Prisma {
     email?: NullableStringFieldUpdateOperationsInput | string | null
     telefono?: NullableStringFieldUpdateOperationsInput | string | null
     documento?: NullableStringFieldUpdateOperationsInput | string | null
+    createdByUsuarioId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     ventas?: VentaUncheckedUpdateManyWithoutClienteNestedInput
     boletas?: BoletaUncheckedUpdateManyWithoutClienteNestedInput
   }
@@ -45286,6 +50835,14 @@ export namespace Prisma {
 
   export type VentaUpdateWithoutMovimientosInput = {
     id?: StringFieldUpdateOperationsInput | string
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -45297,6 +50854,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     cliente?: ClienteUpdateOneRequiredWithoutVentasNestedInput
     rifa?: RifaUpdateOneRequiredWithoutVentasNestedInput
+    rifaVendedor?: RifaVendedorUpdateOneWithoutVentasNestedInput
     boletas?: BoletaUpdateManyWithoutVentaNestedInput
     pagos?: PagoClienteUpdateManyWithoutVentaNestedInput
   }
@@ -45305,6 +50863,15 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     clienteId?: StringFieldUpdateOperationsInput | string
     rifaId?: StringFieldUpdateOperationsInput | string
+    rifaVendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -45374,7 +50941,11 @@ export namespace Prisma {
     fecha?: DateTimeFieldUpdateOperationsInput | Date | string
     metodoPago?: EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
     estado?: EnumEstadoPagoFieldUpdateOperationsInput | $Enums.EstadoPago
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
     venta?: VentaUpdateOneRequiredWithoutPagosNestedInput
+    subCaja?: SubCajaUpdateOneWithoutPagosClienteNestedInput
+    usuario?: UsuarioUpdateOneWithoutPagosClienteRegistradosNestedInput
+    recibo?: PagoClienteReciboUpdateOneWithoutPagoClienteNestedInput
   }
 
   export type PagoClienteUncheckedUpdateWithoutMovimientosInput = {
@@ -45384,6 +50955,10 @@ export namespace Prisma {
     fecha?: DateTimeFieldUpdateOperationsInput | Date | string
     metodoPago?: EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
     estado?: EnumEstadoPagoFieldUpdateOperationsInput | $Enums.EstadoPago
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    subCajaId?: NullableStringFieldUpdateOperationsInput | string | null
+    usuarioId?: NullableStringFieldUpdateOperationsInput | string | null
+    recibo?: PagoClienteReciboUncheckedUpdateOneWithoutPagoClienteNestedInput
   }
 
   export type AbonoVendedorUpsertWithoutMovimientosInput = {
@@ -45458,8 +51033,11 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasUpdateManyWithoutUsuarioNestedInput
     devoluciones?: DevolucionBoletasUpdateManyWithoutUsuarioNestedInput
     abonosRegistrados?: AbonoVendedorUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUpdateManyWithoutUsuarioNestedInput
     gastosRegistrados?: GastoUpdateManyWithoutUsuarioNestedInput
     juegosRegistrados?: JuegoRegistroUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUpdateManyWithoutCreatedByUsuarioNestedInput
   }
 
   export type UsuarioUncheckedUpdateWithoutMovimientosInput = {
@@ -45476,8 +51054,11 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
     devoluciones?: DevolucionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
     abonosRegistrados?: AbonoVendedorUncheckedUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUncheckedUpdateManyWithoutUsuarioNestedInput
     gastosRegistrados?: GastoUncheckedUpdateManyWithoutUsuarioNestedInput
     juegosRegistrados?: JuegoRegistroUncheckedUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUncheckedUpdateManyWithoutCreatedByUsuarioNestedInput
   }
 
   export type RifaCreateWithoutGastosInput = {
@@ -45534,6 +51115,7 @@ export namespace Prisma {
     caja: CajaCreateNestedOneWithoutSubcajasInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutSubCajaInput
     abonos?: AbonoVendedorCreateNestedManyWithoutSubCajaInput
+    pagosCliente?: PagoClienteCreateNestedManyWithoutSubCajaInput
   }
 
   export type SubCajaUncheckedCreateWithoutGastosInput = {
@@ -45543,6 +51125,7 @@ export namespace Prisma {
     cajaId: string
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutSubCajaInput
     abonos?: AbonoVendedorUncheckedCreateNestedManyWithoutSubCajaInput
+    pagosCliente?: PagoClienteUncheckedCreateNestedManyWithoutSubCajaInput
   }
 
   export type SubCajaCreateOrConnectWithoutGastosInput = {
@@ -45564,8 +51147,11 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasCreateNestedManyWithoutUsuarioInput
     devoluciones?: DevolucionBoletasCreateNestedManyWithoutUsuarioInput
     abonosRegistrados?: AbonoVendedorCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteCreateNestedManyWithoutUsuarioInput
     juegosRegistrados?: JuegoRegistroCreateNestedManyWithoutUsuarioInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteCreateNestedManyWithoutCreatedByUsuarioInput
   }
 
   export type UsuarioUncheckedCreateWithoutGastosRegistradosInput = {
@@ -45582,8 +51168,11 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
     devoluciones?: DevolucionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
     abonosRegistrados?: AbonoVendedorUncheckedCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteUncheckedCreateNestedManyWithoutUsuarioInput
     juegosRegistrados?: JuegoRegistroUncheckedCreateNestedManyWithoutUsuarioInput
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteUncheckedCreateNestedManyWithoutCreatedByUsuarioInput
   }
 
   export type UsuarioCreateOrConnectWithoutGastosRegistradosInput = {
@@ -45725,6 +51314,7 @@ export namespace Prisma {
     caja?: CajaUpdateOneRequiredWithoutSubcajasNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutSubCajaNestedInput
     abonos?: AbonoVendedorUpdateManyWithoutSubCajaNestedInput
+    pagosCliente?: PagoClienteUpdateManyWithoutSubCajaNestedInput
   }
 
   export type SubCajaUncheckedUpdateWithoutGastosInput = {
@@ -45734,6 +51324,7 @@ export namespace Prisma {
     cajaId?: StringFieldUpdateOperationsInput | string
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutSubCajaNestedInput
     abonos?: AbonoVendedorUncheckedUpdateManyWithoutSubCajaNestedInput
+    pagosCliente?: PagoClienteUncheckedUpdateManyWithoutSubCajaNestedInput
   }
 
   export type UsuarioUpsertWithoutGastosRegistradosInput = {
@@ -45761,8 +51352,11 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasUpdateManyWithoutUsuarioNestedInput
     devoluciones?: DevolucionBoletasUpdateManyWithoutUsuarioNestedInput
     abonosRegistrados?: AbonoVendedorUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUpdateManyWithoutUsuarioNestedInput
     juegosRegistrados?: JuegoRegistroUpdateManyWithoutUsuarioNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUpdateManyWithoutCreatedByUsuarioNestedInput
   }
 
   export type UsuarioUncheckedUpdateWithoutGastosRegistradosInput = {
@@ -45779,8 +51373,11 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
     devoluciones?: DevolucionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
     abonosRegistrados?: AbonoVendedorUncheckedUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUncheckedUpdateManyWithoutUsuarioNestedInput
     juegosRegistrados?: JuegoRegistroUncheckedUpdateManyWithoutUsuarioNestedInput
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUncheckedUpdateManyWithoutCreatedByUsuarioNestedInput
   }
 
   export type MovimientoCajaUpsertWithWhereUniqueWithoutGastoInput = {
@@ -45835,6 +51432,8 @@ export namespace Prisma {
     devoluciones?: DevolucionBoletasCreateNestedManyWithoutRifaVendedorInput
     abonos?: AbonoVendedorCreateNestedManyWithoutRifaVendedorInput
     boletas?: BoletaCreateNestedManyWithoutRifaVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeCreateNestedManyWithoutRifaVendedorInput
+    ventas?: VentaCreateNestedManyWithoutRifaVendedorInput
   }
 
   export type RifaVendedorUncheckedCreateWithoutJuegosInput = {
@@ -45848,6 +51447,8 @@ export namespace Prisma {
     devoluciones?: DevolucionBoletasUncheckedCreateNestedManyWithoutRifaVendedorInput
     abonos?: AbonoVendedorUncheckedCreateNestedManyWithoutRifaVendedorInput
     boletas?: BoletaUncheckedCreateNestedManyWithoutRifaVendedorInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutRifaVendedorInput
+    ventas?: VentaUncheckedCreateNestedManyWithoutRifaVendedorInput
   }
 
   export type RifaVendedorCreateOrConnectWithoutJuegosInput = {
@@ -45902,8 +51503,11 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasCreateNestedManyWithoutUsuarioInput
     devoluciones?: DevolucionBoletasCreateNestedManyWithoutUsuarioInput
     abonosRegistrados?: AbonoVendedorCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteCreateNestedManyWithoutUsuarioInput
     gastosRegistrados?: GastoCreateNestedManyWithoutUsuarioInput
     movimientos?: MovimientoCajaCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteCreateNestedManyWithoutCreatedByUsuarioInput
   }
 
   export type UsuarioUncheckedCreateWithoutJuegosRegistradosInput = {
@@ -45920,8 +51524,11 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
     devoluciones?: DevolucionBoletasUncheckedCreateNestedManyWithoutUsuarioInput
     abonosRegistrados?: AbonoVendedorUncheckedCreateNestedManyWithoutUsuarioInput
+    pagosClienteRegistrados?: PagoClienteUncheckedCreateNestedManyWithoutUsuarioInput
     gastosRegistrados?: GastoUncheckedCreateNestedManyWithoutUsuarioInput
     movimientos?: MovimientoCajaUncheckedCreateNestedManyWithoutUsuarioInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedCreateNestedManyWithoutUsuarioInput
+    clientesCreados?: ClienteUncheckedCreateNestedManyWithoutCreatedByUsuarioInput
   }
 
   export type UsuarioCreateOrConnectWithoutJuegosRegistradosInput = {
@@ -45951,6 +51558,8 @@ export namespace Prisma {
     devoluciones?: DevolucionBoletasUpdateManyWithoutRifaVendedorNestedInput
     abonos?: AbonoVendedorUpdateManyWithoutRifaVendedorNestedInput
     boletas?: BoletaUpdateManyWithoutRifaVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUpdateManyWithoutRifaVendedorNestedInput
+    ventas?: VentaUpdateManyWithoutRifaVendedorNestedInput
   }
 
   export type RifaVendedorUncheckedUpdateWithoutJuegosInput = {
@@ -45964,6 +51573,8 @@ export namespace Prisma {
     devoluciones?: DevolucionBoletasUncheckedUpdateManyWithoutRifaVendedorNestedInput
     abonos?: AbonoVendedorUncheckedUpdateManyWithoutRifaVendedorNestedInput
     boletas?: BoletaUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    ventas?: VentaUncheckedUpdateManyWithoutRifaVendedorNestedInput
   }
 
   export type PremioUpsertWithoutJuegosInput = {
@@ -46030,8 +51641,11 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasUpdateManyWithoutUsuarioNestedInput
     devoluciones?: DevolucionBoletasUpdateManyWithoutUsuarioNestedInput
     abonosRegistrados?: AbonoVendedorUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUpdateManyWithoutUsuarioNestedInput
     gastosRegistrados?: GastoUpdateManyWithoutUsuarioNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUpdateManyWithoutCreatedByUsuarioNestedInput
   }
 
   export type UsuarioUncheckedUpdateWithoutJuegosRegistradosInput = {
@@ -46048,8 +51662,11 @@ export namespace Prisma {
     asignaciones?: AsignacionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
     devoluciones?: DevolucionBoletasUncheckedUpdateManyWithoutUsuarioNestedInput
     abonosRegistrados?: AbonoVendedorUncheckedUpdateManyWithoutUsuarioNestedInput
+    pagosClienteRegistrados?: PagoClienteUncheckedUpdateManyWithoutUsuarioNestedInput
     gastosRegistrados?: GastoUncheckedUpdateManyWithoutUsuarioNestedInput
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutUsuarioNestedInput
+    vendedorScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutUsuarioNestedInput
+    clientesCreados?: ClienteUncheckedUpdateManyWithoutCreatedByUsuarioNestedInput
   }
 
   export type GastoCreateWithoutReciboInput = {
@@ -46182,6 +51799,17 @@ export namespace Prisma {
     boletasActuales?: number
   }
 
+  export type PagoClienteCreateManyUsuarioInput = {
+    id?: string
+    ventaId: string
+    monto: Decimal | DecimalJsLike | number | string
+    fecha?: Date | string
+    metodoPago: $Enums.MetodoPago
+    estado?: $Enums.EstadoPago
+    descripcion?: string | null
+    subCajaId?: string | null
+  }
+
   export type GastoCreateManyUsuarioInput = {
     id?: string
     rifaId: string
@@ -46217,6 +51845,24 @@ export namespace Prisma {
     gastoId?: string | null
     pagoClienteId?: string | null
     abonoVendedorId?: string | null
+  }
+
+  export type UsuarioVendedorScopeCreateManyUsuarioInput = {
+    id?: string
+    vendedorId?: string | null
+    rifaVendedorId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ClienteCreateManyCreatedByUsuarioInput = {
+    id?: string
+    nombre: string
+    email?: string | null
+    telefono?: string | null
+    documento?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type RifaUpdateWithoutCreatedByInput = {
@@ -46429,6 +52075,43 @@ export namespace Prisma {
     boletasActuales?: IntFieldUpdateOperationsInput | number
   }
 
+  export type PagoClienteUpdateWithoutUsuarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    monto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+    metodoPago?: EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+    estado?: EnumEstadoPagoFieldUpdateOperationsInput | $Enums.EstadoPago
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    venta?: VentaUpdateOneRequiredWithoutPagosNestedInput
+    subCaja?: SubCajaUpdateOneWithoutPagosClienteNestedInput
+    recibo?: PagoClienteReciboUpdateOneWithoutPagoClienteNestedInput
+    movimientos?: MovimientoCajaUpdateManyWithoutPagoClienteNestedInput
+  }
+
+  export type PagoClienteUncheckedUpdateWithoutUsuarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ventaId?: StringFieldUpdateOperationsInput | string
+    monto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+    metodoPago?: EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+    estado?: EnumEstadoPagoFieldUpdateOperationsInput | $Enums.EstadoPago
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    subCajaId?: NullableStringFieldUpdateOperationsInput | string | null
+    recibo?: PagoClienteReciboUncheckedUpdateOneWithoutPagoClienteNestedInput
+    movimientos?: MovimientoCajaUncheckedUpdateManyWithoutPagoClienteNestedInput
+  }
+
+  export type PagoClienteUncheckedUpdateManyWithoutUsuarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ventaId?: StringFieldUpdateOperationsInput | string
+    monto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+    metodoPago?: EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+    estado?: EnumEstadoPagoFieldUpdateOperationsInput | $Enums.EstadoPago
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    subCajaId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type GastoUpdateWithoutUsuarioInput = {
     id?: StringFieldUpdateOperationsInput | string
     categoria?: EnumCategoriaGastoFieldUpdateOperationsInput | $Enums.CategoriaGasto
@@ -46544,10 +52227,71 @@ export namespace Prisma {
     abonoVendedorId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type UsuarioVendedorScopeUpdateWithoutUsuarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    vendedor?: VendedorUpdateOneWithoutUsuarioScopesNestedInput
+    rifaVendedor?: RifaVendedorUpdateOneWithoutUsuarioScopesNestedInput
+  }
+
+  export type UsuarioVendedorScopeUncheckedUpdateWithoutUsuarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    vendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    rifaVendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UsuarioVendedorScopeUncheckedUpdateManyWithoutUsuarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    vendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    rifaVendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ClienteUpdateWithoutCreatedByUsuarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nombre?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    telefono?: NullableStringFieldUpdateOperationsInput | string | null
+    documento?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ventas?: VentaUpdateManyWithoutClienteNestedInput
+    boletas?: BoletaUpdateManyWithoutClienteNestedInput
+    movimientos?: MovimientoCajaUpdateManyWithoutClienteNestedInput
+  }
+
+  export type ClienteUncheckedUpdateWithoutCreatedByUsuarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nombre?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    telefono?: NullableStringFieldUpdateOperationsInput | string | null
+    documento?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    ventas?: VentaUncheckedUpdateManyWithoutClienteNestedInput
+    boletas?: BoletaUncheckedUpdateManyWithoutClienteNestedInput
+    movimientos?: MovimientoCajaUncheckedUpdateManyWithoutClienteNestedInput
+  }
+
+  export type ClienteUncheckedUpdateManyWithoutCreatedByUsuarioInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    nombre?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    telefono?: NullableStringFieldUpdateOperationsInput | string | null
+    documento?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type BoletaCreateManyRifaInput = {
     id?: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -46572,6 +52316,15 @@ export namespace Prisma {
   export type VentaCreateManyRifaInput = {
     id?: string
     clienteId: string
+    rifaVendedorId?: string | null
+    canalOrigen?: string | null
+    referenciaExterna?: string | null
+    sesionExternaId?: string | null
+    linkPagoUrl?: string | null
+    linkPagoEnviadoAt?: Date | string | null
+    linkPagoAbiertoAt?: Date | string | null
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: string | null
     estado?: $Enums.EstadoVenta
     total: Decimal | DecimalJsLike | number | string
     saldoPendiente: Decimal | DecimalJsLike | number | string
@@ -46634,6 +52387,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -46654,6 +52408,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -46674,6 +52429,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -46698,6 +52454,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorUpdateManyWithoutRifaVendedorNestedInput
     boletas?: BoletaUpdateManyWithoutRifaVendedorNestedInput
     juegos?: JuegoRegistroUpdateManyWithoutRifaVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUpdateManyWithoutRifaVendedorNestedInput
+    ventas?: VentaUpdateManyWithoutRifaVendedorNestedInput
   }
 
   export type RifaVendedorUncheckedUpdateWithoutRifaInput = {
@@ -46711,6 +52469,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorUncheckedUpdateManyWithoutRifaVendedorNestedInput
     boletas?: BoletaUncheckedUpdateManyWithoutRifaVendedorNestedInput
     juegos?: JuegoRegistroUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    ventas?: VentaUncheckedUpdateManyWithoutRifaVendedorNestedInput
   }
 
   export type RifaVendedorUncheckedUpdateManyWithoutRifaInput = {
@@ -46723,6 +52483,14 @@ export namespace Prisma {
 
   export type VentaUpdateWithoutRifaInput = {
     id?: StringFieldUpdateOperationsInput | string
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -46733,6 +52501,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     cliente?: ClienteUpdateOneRequiredWithoutVentasNestedInput
+    rifaVendedor?: RifaVendedorUpdateOneWithoutVentasNestedInput
     boletas?: BoletaUpdateManyWithoutVentaNestedInput
     pagos?: PagoClienteUpdateManyWithoutVentaNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutVentaNestedInput
@@ -46741,6 +52510,15 @@ export namespace Prisma {
   export type VentaUncheckedUpdateWithoutRifaInput = {
     id?: StringFieldUpdateOperationsInput | string
     clienteId?: StringFieldUpdateOperationsInput | string
+    rifaVendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -46758,6 +52536,15 @@ export namespace Prisma {
   export type VentaUncheckedUpdateManyWithoutRifaInput = {
     id?: StringFieldUpdateOperationsInput | string
     clienteId?: StringFieldUpdateOperationsInput | string
+    rifaVendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -47059,6 +52846,14 @@ export namespace Prisma {
     usuarioId?: string | null
   }
 
+  export type UsuarioVendedorScopeCreateManyVendedorInput = {
+    id?: string
+    usuarioId: string
+    rifaVendedorId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type RifaVendedorUpdateWithoutVendedorInput = {
     id?: StringFieldUpdateOperationsInput | string
     comisionPct?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -47070,6 +52865,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorUpdateManyWithoutRifaVendedorNestedInput
     boletas?: BoletaUpdateManyWithoutRifaVendedorNestedInput
     juegos?: JuegoRegistroUpdateManyWithoutRifaVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUpdateManyWithoutRifaVendedorNestedInput
+    ventas?: VentaUpdateManyWithoutRifaVendedorNestedInput
   }
 
   export type RifaVendedorUncheckedUpdateWithoutVendedorInput = {
@@ -47083,6 +52880,8 @@ export namespace Prisma {
     abonos?: AbonoVendedorUncheckedUpdateManyWithoutRifaVendedorNestedInput
     boletas?: BoletaUncheckedUpdateManyWithoutRifaVendedorNestedInput
     juegos?: JuegoRegistroUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    usuarioScopes?: UsuarioVendedorScopeUncheckedUpdateManyWithoutRifaVendedorNestedInput
+    ventas?: VentaUncheckedUpdateManyWithoutRifaVendedorNestedInput
   }
 
   export type RifaVendedorUncheckedUpdateManyWithoutVendedorInput = {
@@ -47144,6 +52943,30 @@ export namespace Prisma {
     usuarioId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type UsuarioVendedorScopeUpdateWithoutVendedorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usuario?: UsuarioUpdateOneRequiredWithoutVendedorScopesNestedInput
+    rifaVendedor?: RifaVendedorUpdateOneWithoutUsuarioScopesNestedInput
+  }
+
+  export type UsuarioVendedorScopeUncheckedUpdateWithoutVendedorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    usuarioId?: StringFieldUpdateOperationsInput | string
+    rifaVendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UsuarioVendedorScopeUncheckedUpdateManyWithoutVendedorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    usuarioId?: StringFieldUpdateOperationsInput | string
+    rifaVendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type AsignacionBoletasCreateManyRifaVendedorInput = {
     id?: string
     cantidad: number
@@ -47179,6 +53002,7 @@ export namespace Prisma {
     rifaId: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -47197,6 +53021,37 @@ export namespace Prisma {
     usuarioId?: string | null
     fecha?: Date | string
     totalBoletas?: number
+  }
+
+  export type UsuarioVendedorScopeCreateManyRifaVendedorInput = {
+    id?: string
+    usuarioId: string
+    vendedorId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type VentaCreateManyRifaVendedorInput = {
+    id?: string
+    clienteId: string
+    rifaId: string
+    canalOrigen?: string | null
+    referenciaExterna?: string | null
+    sesionExternaId?: string | null
+    linkPagoUrl?: string | null
+    linkPagoEnviadoAt?: Date | string | null
+    linkPagoAbiertoAt?: Date | string | null
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: string | null
+    estado?: $Enums.EstadoVenta
+    total: Decimal | DecimalJsLike | number | string
+    saldoPendiente: Decimal | DecimalJsLike | number | string
+    referenciaPago?: string | null
+    pasarelaPago?: string | null
+    pasarelaEstado?: string | null
+    pasarelaTransaccionId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type AsignacionBoletasUpdateWithoutRifaVendedorInput = {
@@ -47301,6 +53156,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -47322,6 +53178,7 @@ export namespace Prisma {
     rifaId?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -47342,6 +53199,7 @@ export namespace Prisma {
     rifaId?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -47376,6 +53234,105 @@ export namespace Prisma {
     usuarioId?: NullableStringFieldUpdateOperationsInput | string | null
     fecha?: DateTimeFieldUpdateOperationsInput | Date | string
     totalBoletas?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type UsuarioVendedorScopeUpdateWithoutRifaVendedorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usuario?: UsuarioUpdateOneRequiredWithoutVendedorScopesNestedInput
+    vendedor?: VendedorUpdateOneWithoutUsuarioScopesNestedInput
+  }
+
+  export type UsuarioVendedorScopeUncheckedUpdateWithoutRifaVendedorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    usuarioId?: StringFieldUpdateOperationsInput | string
+    vendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UsuarioVendedorScopeUncheckedUpdateManyWithoutRifaVendedorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    usuarioId?: StringFieldUpdateOperationsInput | string
+    vendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type VentaUpdateWithoutRifaVendedorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    referenciaPago?: NullableStringFieldUpdateOperationsInput | string | null
+    pasarelaPago?: NullableStringFieldUpdateOperationsInput | string | null
+    pasarelaEstado?: NullableStringFieldUpdateOperationsInput | string | null
+    pasarelaTransaccionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    cliente?: ClienteUpdateOneRequiredWithoutVentasNestedInput
+    rifa?: RifaUpdateOneRequiredWithoutVentasNestedInput
+    boletas?: BoletaUpdateManyWithoutVentaNestedInput
+    pagos?: PagoClienteUpdateManyWithoutVentaNestedInput
+    movimientos?: MovimientoCajaUpdateManyWithoutVentaNestedInput
+  }
+
+  export type VentaUncheckedUpdateWithoutRifaVendedorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clienteId?: StringFieldUpdateOperationsInput | string
+    rifaId?: StringFieldUpdateOperationsInput | string
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    referenciaPago?: NullableStringFieldUpdateOperationsInput | string | null
+    pasarelaPago?: NullableStringFieldUpdateOperationsInput | string | null
+    pasarelaEstado?: NullableStringFieldUpdateOperationsInput | string | null
+    pasarelaTransaccionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    boletas?: BoletaUncheckedUpdateManyWithoutVentaNestedInput
+    pagos?: PagoClienteUncheckedUpdateManyWithoutVentaNestedInput
+    movimientos?: MovimientoCajaUncheckedUpdateManyWithoutVentaNestedInput
+  }
+
+  export type VentaUncheckedUpdateManyWithoutRifaVendedorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clienteId?: StringFieldUpdateOperationsInput | string
+    rifaId?: StringFieldUpdateOperationsInput | string
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
+    estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
+    total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    referenciaPago?: NullableStringFieldUpdateOperationsInput | string | null
+    pasarelaPago?: NullableStringFieldUpdateOperationsInput | string | null
+    pasarelaEstado?: NullableStringFieldUpdateOperationsInput | string | null
+    pasarelaTransaccionId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type AsignacionDetalleCreateManyAsignacionInput = {
@@ -47421,6 +53378,15 @@ export namespace Prisma {
   export type VentaCreateManyClienteInput = {
     id?: string
     rifaId: string
+    rifaVendedorId?: string | null
+    canalOrigen?: string | null
+    referenciaExterna?: string | null
+    sesionExternaId?: string | null
+    linkPagoUrl?: string | null
+    linkPagoEnviadoAt?: Date | string | null
+    linkPagoAbiertoAt?: Date | string | null
+    requiereSeguimientoHumano?: boolean
+    seguimientoMotivo?: string | null
     estado?: $Enums.EstadoVenta
     total: Decimal | DecimalJsLike | number | string
     saldoPendiente: Decimal | DecimalJsLike | number | string
@@ -47437,6 +53403,7 @@ export namespace Prisma {
     rifaId: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -47468,6 +53435,14 @@ export namespace Prisma {
 
   export type VentaUpdateWithoutClienteInput = {
     id?: StringFieldUpdateOperationsInput | string
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -47478,6 +53453,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rifa?: RifaUpdateOneRequiredWithoutVentasNestedInput
+    rifaVendedor?: RifaVendedorUpdateOneWithoutVentasNestedInput
     boletas?: BoletaUpdateManyWithoutVentaNestedInput
     pagos?: PagoClienteUpdateManyWithoutVentaNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutVentaNestedInput
@@ -47486,6 +53462,15 @@ export namespace Prisma {
   export type VentaUncheckedUpdateWithoutClienteInput = {
     id?: StringFieldUpdateOperationsInput | string
     rifaId?: StringFieldUpdateOperationsInput | string
+    rifaVendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -47503,6 +53488,15 @@ export namespace Prisma {
   export type VentaUncheckedUpdateManyWithoutClienteInput = {
     id?: StringFieldUpdateOperationsInput | string
     rifaId?: StringFieldUpdateOperationsInput | string
+    rifaVendedorId?: NullableStringFieldUpdateOperationsInput | string | null
+    canalOrigen?: NullableStringFieldUpdateOperationsInput | string | null
+    referenciaExterna?: NullableStringFieldUpdateOperationsInput | string | null
+    sesionExternaId?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    linkPagoEnviadoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    linkPagoAbiertoAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    requiereSeguimientoHumano?: BoolFieldUpdateOperationsInput | boolean
+    seguimientoMotivo?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoVentaFieldUpdateOperationsInput | $Enums.EstadoVenta
     total?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     saldoPendiente?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -47518,6 +53512,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -47539,6 +53534,7 @@ export namespace Prisma {
     rifaId?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -47559,6 +53555,7 @@ export namespace Prisma {
     rifaId?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -47627,6 +53624,7 @@ export namespace Prisma {
     rifaId: string
     numero: string
     codigoBarras?: string | null
+    publicToken?: string | null
     estado?: $Enums.EstadoBoleta
     juega?: boolean
     precio: Decimal | DecimalJsLike | number | string
@@ -47645,6 +53643,9 @@ export namespace Prisma {
     fecha?: Date | string
     metodoPago: $Enums.MetodoPago
     estado?: $Enums.EstadoPago
+    descripcion?: string | null
+    subCajaId?: string | null
+    usuarioId?: string | null
   }
 
   export type MovimientoCajaCreateManyVentaInput = {
@@ -47668,6 +53669,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -47689,6 +53691,7 @@ export namespace Prisma {
     rifaId?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -47709,6 +53712,7 @@ export namespace Prisma {
     rifaId?: StringFieldUpdateOperationsInput | string
     numero?: StringFieldUpdateOperationsInput | string
     codigoBarras?: NullableStringFieldUpdateOperationsInput | string | null
+    publicToken?: NullableStringFieldUpdateOperationsInput | string | null
     estado?: EnumEstadoBoletaFieldUpdateOperationsInput | $Enums.EstadoBoleta
     juega?: BoolFieldUpdateOperationsInput | boolean
     precio?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
@@ -47727,6 +53731,10 @@ export namespace Prisma {
     fecha?: DateTimeFieldUpdateOperationsInput | Date | string
     metodoPago?: EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
     estado?: EnumEstadoPagoFieldUpdateOperationsInput | $Enums.EstadoPago
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    subCaja?: SubCajaUpdateOneWithoutPagosClienteNestedInput
+    usuario?: UsuarioUpdateOneWithoutPagosClienteRegistradosNestedInput
+    recibo?: PagoClienteReciboUpdateOneWithoutPagoClienteNestedInput
     movimientos?: MovimientoCajaUpdateManyWithoutPagoClienteNestedInput
   }
 
@@ -47736,6 +53744,10 @@ export namespace Prisma {
     fecha?: DateTimeFieldUpdateOperationsInput | Date | string
     metodoPago?: EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
     estado?: EnumEstadoPagoFieldUpdateOperationsInput | $Enums.EstadoPago
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    subCajaId?: NullableStringFieldUpdateOperationsInput | string | null
+    usuarioId?: NullableStringFieldUpdateOperationsInput | string | null
+    recibo?: PagoClienteReciboUncheckedUpdateOneWithoutPagoClienteNestedInput
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutPagoClienteNestedInput
   }
 
@@ -47745,6 +53757,9 @@ export namespace Prisma {
     fecha?: DateTimeFieldUpdateOperationsInput | Date | string
     metodoPago?: EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
     estado?: EnumEstadoPagoFieldUpdateOperationsInput | $Enums.EstadoPago
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    subCajaId?: NullableStringFieldUpdateOperationsInput | string | null
+    usuarioId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type MovimientoCajaUpdateWithoutVentaInput = {
@@ -47963,6 +53978,7 @@ export namespace Prisma {
     saldo?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     movimientos?: MovimientoCajaUpdateManyWithoutSubCajaNestedInput
     abonos?: AbonoVendedorUpdateManyWithoutSubCajaNestedInput
+    pagosCliente?: PagoClienteUpdateManyWithoutSubCajaNestedInput
     gastos?: GastoUpdateManyWithoutSubCajaNestedInput
   }
 
@@ -47972,6 +53988,7 @@ export namespace Prisma {
     saldo?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     movimientos?: MovimientoCajaUncheckedUpdateManyWithoutSubCajaNestedInput
     abonos?: AbonoVendedorUncheckedUpdateManyWithoutSubCajaNestedInput
+    pagosCliente?: PagoClienteUncheckedUpdateManyWithoutSubCajaNestedInput
     gastos?: GastoUncheckedUpdateManyWithoutSubCajaNestedInput
   }
 
@@ -48063,6 +54080,17 @@ export namespace Prisma {
     saldoAnterior: Decimal | DecimalJsLike | number | string
     saldoDespues: Decimal | DecimalJsLike | number | string
     boletasActuales?: number
+  }
+
+  export type PagoClienteCreateManySubCajaInput = {
+    id?: string
+    ventaId: string
+    monto: Decimal | DecimalJsLike | number | string
+    fecha?: Date | string
+    metodoPago: $Enums.MetodoPago
+    estado?: $Enums.EstadoPago
+    descripcion?: string | null
+    usuarioId?: string | null
   }
 
   export type GastoCreateManySubCajaInput = {
@@ -48178,6 +54206,43 @@ export namespace Prisma {
     saldoAnterior?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     saldoDespues?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
     boletasActuales?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type PagoClienteUpdateWithoutSubCajaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    monto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+    metodoPago?: EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+    estado?: EnumEstadoPagoFieldUpdateOperationsInput | $Enums.EstadoPago
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    venta?: VentaUpdateOneRequiredWithoutPagosNestedInput
+    usuario?: UsuarioUpdateOneWithoutPagosClienteRegistradosNestedInput
+    recibo?: PagoClienteReciboUpdateOneWithoutPagoClienteNestedInput
+    movimientos?: MovimientoCajaUpdateManyWithoutPagoClienteNestedInput
+  }
+
+  export type PagoClienteUncheckedUpdateWithoutSubCajaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ventaId?: StringFieldUpdateOperationsInput | string
+    monto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+    metodoPago?: EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+    estado?: EnumEstadoPagoFieldUpdateOperationsInput | $Enums.EstadoPago
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    usuarioId?: NullableStringFieldUpdateOperationsInput | string | null
+    recibo?: PagoClienteReciboUncheckedUpdateOneWithoutPagoClienteNestedInput
+    movimientos?: MovimientoCajaUncheckedUpdateManyWithoutPagoClienteNestedInput
+  }
+
+  export type PagoClienteUncheckedUpdateManyWithoutSubCajaInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ventaId?: StringFieldUpdateOperationsInput | string
+    monto?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    fecha?: DateTimeFieldUpdateOperationsInput | Date | string
+    metodoPago?: EnumMetodoPagoFieldUpdateOperationsInput | $Enums.MetodoPago
+    estado?: EnumEstadoPagoFieldUpdateOperationsInput | $Enums.EstadoPago
+    descripcion?: NullableStringFieldUpdateOperationsInput | string | null
+    usuarioId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type GastoUpdateWithoutSubCajaInput = {

@@ -13,6 +13,8 @@ const publicApiRules = [
   { method: 'GET', pattern: /^\/api\/auth\/me$/ },
   { method: 'GET', pattern: /^\/api\/configuracion$/ },
   { method: 'GET', pattern: /^\/api\/boletas\/publicas$/ },
+  { method: 'GET', pattern: /^\/api\/boletas\/publicas\/ficha\/[^/]+$/ },
+  { method: 'GET', pattern: /^\/api\/rifas\/publicas$/ },
   { method: 'GET', pattern: /^\/api\/rifas\/[^/]+$/ },
   { method: 'GET', pattern: /^\/api\/checkout-publico\/reservas\/[^/]+$/ },
   { method: 'POST', pattern: /^\/api\/checkout-publico\/reservas$/ },

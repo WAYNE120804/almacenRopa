@@ -13,3 +13,4 @@ exports.usuarioRouter.use(auth_1.authenticateRequest);
 exports.usuarioRouter.get('/', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN, prisma_client_1.RolUsuario.CAJERO), auth_controller_1.getUsuarios);
 exports.usuarioRouter.post('/', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN), auth_controller_1.postUsuario);
 exports.usuarioRouter.patch('/:id/activo', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN), auth_controller_1.patchUsuarioActivo);
+exports.usuarioRouter.patch('/:id/scopes', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN), auth_controller_1.patchUsuarioScopes);

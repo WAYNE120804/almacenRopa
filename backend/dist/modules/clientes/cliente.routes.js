@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.clienteRouter = void 0;
+const express_1 = require("express");
+const prisma_client_1 = require("../../lib/prisma-client");
+const auth_1 = require("../../middlewares/auth");
+const cliente_controller_1 = require("./cliente.controller");
+exports.clienteRouter = (0, express_1.Router)();
+exports.clienteRouter.get('/', cliente_controller_1.getAllClientes);
+exports.clienteRouter.get('/:id', cliente_controller_1.getCliente);
+exports.clienteRouter.post('/', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN, prisma_client_1.RolUsuario.CAJERO, prisma_client_1.RolUsuario.VENDEDOR), cliente_controller_1.postCliente);
+exports.clienteRouter.put('/:id', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN, prisma_client_1.RolUsuario.CAJERO, prisma_client_1.RolUsuario.VENDEDOR), cliente_controller_1.putCliente);
+exports.clienteRouter.post('/:id/ventas', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN, prisma_client_1.RolUsuario.CAJERO, prisma_client_1.RolUsuario.VENDEDOR), cliente_controller_1.postClienteVenta);
+exports.clienteRouter.post('/:id/ventas/:ventaId/pagos', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN, prisma_client_1.RolUsuario.CAJERO, prisma_client_1.RolUsuario.VENDEDOR), cliente_controller_1.postClienteVentaPago);

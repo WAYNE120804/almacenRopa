@@ -6,6 +6,7 @@ import {
   getMe,
   getUsuarios,
   patchUsuarioActivo,
+  patchUsuarioScopes,
   postLogin,
   postUsuario,
 } from './auth.controller';
@@ -20,3 +21,4 @@ usuarioRouter.use(authenticateRequest);
 usuarioRouter.get('/', requireRole(RolUsuario.ADMIN, RolUsuario.CAJERO), getUsuarios);
 usuarioRouter.post('/', requireRole(RolUsuario.ADMIN), postUsuario);
 usuarioRouter.patch('/:id/activo', requireRole(RolUsuario.ADMIN), patchUsuarioActivo);
+usuarioRouter.patch('/:id/scopes', requireRole(RolUsuario.ADMIN), patchUsuarioScopes);

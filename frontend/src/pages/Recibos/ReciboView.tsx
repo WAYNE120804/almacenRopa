@@ -9,6 +9,7 @@ import Topbar from '../../components/Layout/Topbar';
 import PrintButton from '../../components/receipts/PrintButton';
 import ReceiptTicket from '../../components/receipts/ReceiptTicket';
 import { useAppConfig } from '../../context/AppConfigContext';
+import { useAuth } from '../../context/AuthContext';
 import { formatDateTime } from '../../utils/dates';
 import { formatCOP } from '../../utils/money';
 import { printReceiptTicket } from '../../utils/print';
@@ -16,6 +17,7 @@ import { printReceiptTicket } from '../../utils/print';
 const ReciboView = () => {
   const { id } = useParams();
   const { config } = useAppConfig();
+  const { user } = useAuth();
   const [receipt, setReceipt] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -118,7 +120,7 @@ const ReciboView = () => {
                 VERIFICAR
               </a>
             ) : null}
-            {!abono?.anuladoAt ? (
+            {user?.rol !== 'VENDEDOR' && !abono?.anuladoAt ? (
               <button
                 type="button"
                 onClick={() => setIsAnnulDialogOpen(true)}
@@ -246,17 +248,17 @@ const ReciboView = () => {
 
               <div className="mt-6">
                 <Link
-                  to="/abonos"
+                  to={user?.rol === 'VENDEDOR' ? '/mis-recibos' : '/abonos'}
                   className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium uppercase tracking-[0.08em] text-white"
                 >
-                  VOLVER A ABONOS
+                  {user?.rol === 'VENDEDOR' ? 'VOLVER A MIS RECIBOS' : 'VOLVER A ABONOS'}
                 </Link>
               </div>
             </section>
           </div>
         ) : null}
 
-        {isAnnulDialogOpen && receipt ? (
+        {user?.rol !== 'VENDEDOR' && isAnnulDialogOpen && receipt ? (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/40 px-4">
             <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
               <h3 className="text-2xl font-semibold uppercase text-slate-900">

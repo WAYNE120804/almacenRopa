@@ -59,9 +59,11 @@ function parseUpdateBoletaPayload(input) {
     const rifaVendedorId = typeof input.rifaVendedorId === 'string' && input.rifaVendedorId.trim().length > 0
         ? input.rifaVendedorId.trim()
         : null;
+    const juega = parseOptionalBoolean(input.juega);
     return {
         estado,
         rifaVendedorId,
+        juega,
     };
 }
 function parsePublicBoletaListFilters(input) {

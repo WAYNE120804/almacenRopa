@@ -6,8 +6,13 @@ import {
   listUsuarios,
   loginUsuario,
   toggleUsuarioActivo,
+  updateUsuarioScopes,
 } from './auth.service';
-import { parseLoginPayload, parseUsuarioPayload } from './auth.schemas';
+import {
+  parseLoginPayload,
+  parseUsuarioPayload,
+  parseUsuarioScopesPayload,
+} from './auth.schemas';
 
 function getIdParam(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value || '';
@@ -82,6 +87,23 @@ export async function patchUsuarioActivo(
   try {
     res.json(
       await toggleUsuarioActivo(getIdParam(req.params.id), parseBoolean(req.body?.activo))
+    );
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function patchUsuarioScopes(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    res.json(
+      await updateUsuarioScopes(
+        getIdParam(req.params.id),
+        parseUsuarioScopesPayload(req.body || {})
+      )
     );
   } catch (error) {
     next(error);

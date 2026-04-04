@@ -7,6 +7,8 @@ import ErrorBanner from '../../components/common/ErrorBanner';
 import Loading from '../../components/common/Loading';
 import { formatDateTimeLong } from '../../utils/dates';
 import { formatCOP } from '../../utils/money';
+import { printPublicPurchaseSummary } from '../../utils/print';
+import { useAppConfig } from '../../context/AppConfigContext';
 import PublicNavbar from './PublicNavbar';
 
 type ReservaEstadoResponse = {
@@ -15,6 +17,9 @@ type ReservaEstadoResponse = {
   estadoVenta: string;
   paymentState: string;
   paymentTransactionId: string | null;
+  paymentMethod: string | null;
+  paymentDate: string | null;
+  paymentDescription: string | null;
   expiresAt: string | null;
   isExpired: boolean;
   total: number | string;
@@ -22,18 +27,22 @@ type ReservaEstadoResponse = {
     nombre: string;
     email: string | null;
     telefono: string | null;
+    documento: string | null;
   };
+  vendedor: string;
   boletas: Array<{
     id: string;
     numero: string;
     estado: string;
     reservadaHasta: string | null;
+    publicPath: string | null;
   }>;
 };
 
 const FINAL_PAYMENT_STATES = new Set(['APPROVED', 'DECLINED', 'VOIDED', 'ERROR']);
 
 const PublicPagoRetornoPage = () => {
+  const { config } = useAppConfig();
   const [searchParams] = useSearchParams();
   const transactionId = searchParams.get('id');
   const reservaId = searchParams.get('reserva');
@@ -42,6 +51,7 @@ const PublicPagoRetornoPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [reservaEstado, setReservaEstado] = useState<ReservaEstadoResponse | null>(null);
+  const [printing, setPrinting] = useState(false);
 
   useEffect(() => {
     if (!reservaId) {
@@ -106,6 +116,42 @@ const PublicPagoRetornoPage = () => {
   const isApproved = paymentState === 'APPROVED';
   const isRejected = paymentState === 'DECLINED' || paymentState === 'VOIDED' || paymentState === 'ERROR';
 
+  const handlePrintPurchase = () => {
+    if (!reservaEstado) {
+      return;
+    }
+
+    try {
+      setPrinting(true);
+      printPublicPurchaseSummary({
+        companyName: config.nombreCasaRifera,
+        logoDataUrl: config.logoDataUrl,
+        supportText: config.publicSupportText,
+        supportPhone: config.publicContactPhone || config.responsableTelefono,
+        supportWhatsapp: config.publicContactWhatsapp,
+        supportEmail: config.publicContactEmail,
+        backgroundDataUrl: config.publicTicketBackgroundDataUrl,
+        purchase: {
+          estadoPago: reservaEstado.paymentState,
+          referencia: reservaEstado.reference,
+          transaccionId: reservaEstado.paymentTransactionId,
+          fechaPago: reservaEstado.paymentDate,
+          metodoPago: reservaEstado.paymentMethod,
+          descripcionPago: reservaEstado.paymentDescription,
+          total: reservaEstado.total,
+          cliente: reservaEstado.cliente,
+          vendedorNombre: reservaEstado.vendedor,
+          boletas: reservaEstado.boletas.map((boleta) => ({
+            numero: boleta.numero,
+            estado: boleta.estado,
+          })),
+        },
+      });
+    } finally {
+      setPrinting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <PublicNavbar showBackHome ctaHref="/publico" />
@@ -163,6 +209,9 @@ const PublicPagoRetornoPage = () => {
                 <p className="mt-4 text-sm text-slate-600">
                   Expira: {reservaEstado.expiresAt ? formatDateTimeLong(reservaEstado.expiresAt) : 'Sin fecha'}
                 </p>
+                <p className="mt-2 text-sm text-slate-600">
+                  Vendedor / canal: {reservaEstado.vendedor}
+                </p>
               </div>
 
               <div className="rounded-[1.6rem] border border-slate-200 bg-white p-6">
@@ -175,6 +224,10 @@ const PublicPagoRetornoPage = () => {
                   <div className="rounded-2xl bg-slate-50 p-4">
                     <p className="text-xs uppercase tracking-[0.18em] text-slate-500">Telefono</p>
                     <p className="mt-2 text-lg font-black text-slate-900">{reservaEstado.cliente.telefono || 'No registrado'}</p>
+                  </div>
+                  <div className="rounded-2xl bg-slate-50 p-4">
+                    <p className="text-xs uppercase tracking-[0.18em] text-slate-500">Documento</p>
+                    <p className="mt-2 text-lg font-black text-slate-900">{reservaEstado.cliente.documento || 'No registrado'}</p>
                   </div>
                   <div className="rounded-2xl bg-slate-50 p-4 md:col-span-2">
                     <p className="text-xs uppercase tracking-[0.18em] text-slate-500">Email</p>
@@ -192,6 +245,16 @@ const PublicPagoRetornoPage = () => {
                       <p className="mt-2 text-2xl font-black text-slate-900">{boleta.numero}</p>
                       <p className="mt-3 text-xs uppercase tracking-[0.18em] text-slate-500">Estado</p>
                       <p className="mt-1 text-sm font-semibold text-slate-700">{boleta.estado}</p>
+                      {boleta.publicPath ? (
+                        <a
+                          href={boleta.publicPath}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="mt-4 inline-flex rounded-full border border-slate-300 px-4 py-2 text-xs font-semibold text-slate-700"
+                        >
+                          Ver ficha
+                        </a>
+                      ) : null}
                     </div>
                   ))}
                 </div>
@@ -200,6 +263,16 @@ const PublicPagoRetornoPage = () => {
           ) : null}
 
           <div className="mt-8 flex flex-wrap gap-3">
+            {isApproved ? (
+              <button
+                type="button"
+                onClick={handlePrintPurchase}
+                disabled={printing}
+                className="rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white disabled:opacity-60"
+              >
+                {printing ? 'Preparando PDF...' : 'Descargar comprobante PDF'}
+              </button>
+            ) : null}
             {rifaId ? (
               <Link
                 to={`/publico/rifas/${rifaId}`}

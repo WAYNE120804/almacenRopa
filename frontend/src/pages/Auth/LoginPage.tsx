@@ -10,7 +10,7 @@ const LoginPage = () => {
   const { login, isAuthenticated, loading } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -25,7 +25,7 @@ const LoginPage = () => {
     setError(null);
 
     try {
-      await login(email, password);
+      await login(identifier, password);
       const nextPath = (location.state as { from?: string } | null)?.from || '/';
       navigate(nextPath, { replace: true });
     } catch (requestError) {
@@ -47,7 +47,8 @@ const LoginPage = () => {
           </h1>
           <p className="mt-4 text-base text-slate-600">
             Accede con tu usuario para administrar rifas, vendedores, caja, gastos, abonos,
-            premios y el futuro canal publico de venta.
+            premios y el futuro canal publico de venta. Los vendedores pueden ingresar con su
+            documento o con correo segun el tipo de usuario.
           </p>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -84,14 +85,16 @@ const LoginPage = () => {
             <ErrorBanner message={error} />
 
             <label className="block">
-              <span className="mb-2 block text-sm font-medium text-slate-700">Email</span>
+              <span className="mb-2 block text-sm font-medium text-slate-700">
+                Documento o correo
+              </span>
               <input
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-                type="email"
+                value={identifier}
+                onChange={(event) => setIdentifier(event.target.value)}
+                type="text"
                 autoComplete="username"
                 className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none transition focus:border-slate-500"
-                placeholder="admin@rifas.local"
+                placeholder="1234567890 o admin@rifas.local"
               />
             </label>
 

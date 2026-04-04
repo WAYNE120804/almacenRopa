@@ -6,6 +6,7 @@ import {
   getAllVendedores,
   getVendedor,
   postVendedor,
+  putVendedorAccess,
   putVendedor,
   removeVendedor,
 } from './vendedor.controller';
@@ -14,6 +15,7 @@ export const vendedorRouter = Router();
 
 vendedorRouter.get('/', getAllVendedores);
 vendedorRouter.get('/:id', getVendedor);
+vendedorRouter.put('/:id/acceso', requireRole(RolUsuario.ADMIN), putVendedorAccess);
 vendedorRouter.post('/', requireRole(RolUsuario.ADMIN), postVendedor);
 vendedorRouter.put('/:id', requireRole(RolUsuario.ADMIN), putVendedor);
 vendedorRouter.delete('/:id', requireRole(RolUsuario.ADMIN), removeVendedor);

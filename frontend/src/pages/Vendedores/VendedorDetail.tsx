@@ -125,10 +125,55 @@ const VendedorDetail = () => {
                   </p>
                 </div>
                 <div>
+                  <span className="text-xs uppercase text-slate-400">Accesos</span>
+                  <p className="text-base font-semibold">
+                    {state.vendedor._count?.usuarioScopes || 0}
+                  </p>
+                </div>
+                <div>
                   <span className="text-xs uppercase text-slate-400">Saldo acumulado</span>
                   <p className="text-base font-semibold">{formatCOP(totalDeuda)}</p>
                 </div>
               </div>
+            </div>
+
+            <div className="rounded-lg bg-white p-6 shadow-sm">
+              <h4 className="text-base font-semibold text-slate-800">Acceso al panel</h4>
+              {state.vendedor.usuarioScopes?.length ? (
+                <div className="mt-4 space-y-3">
+                  {state.vendedor.usuarioScopes.map((scope) => (
+                    <div
+                      key={scope.id}
+                      className="rounded-md border border-slate-200 px-4 py-3"
+                    >
+                      <div className="font-medium text-slate-800">{scope.usuario?.nombre}</div>
+                      <div className="text-sm text-slate-500">
+                        Login: {scope.usuario?.email || 'N/D'}
+                      </div>
+                      <div className="text-sm text-slate-500">
+                        Rol: {scope.usuario?.rol || 'N/D'}
+                      </div>
+                      <div className="text-sm text-slate-500">
+                        Estado: {scope.usuario?.activo ? 'ACTIVO' : 'INACTIVO'}
+                      </div>
+                      <div className="text-sm text-slate-500">
+                        Scope base: {scope.rifaVendedor ? 'Rifa-vendedor' : 'Vendedor'}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="mt-4">
+                  <EmptyState
+                    title="Sin usuario asociado"
+                    description={
+                      state.vendedor.nombre?.trim().toUpperCase() === 'PAGINA WEB'
+                        ? 'PAGINA WEB queda como canal especial y no genera usuario automatico.'
+                        : 'Este vendedor no tiene acceso asociado todavia.'
+                    }
+                  />
+                </div>
+              )}
             </div>
 
             <div className="rounded-lg bg-white p-6 shadow-sm">

@@ -18,6 +18,16 @@ type AuthUser = {
   email: string;
   rol: string;
   activo: boolean;
+  scopes: {
+    vendedorIds: string[];
+    rifaVendedorIds: string[];
+    items?: Array<{
+      vendedorId: string | null;
+      rifaVendedorId: string | null;
+      vendedorNombre: string | null;
+      rifaNombre: string | null;
+    }>;
+  };
 };
 
 type AuthContextValue = {
@@ -25,7 +35,7 @@ type AuthContextValue = {
   token: string | null;
   loading: boolean;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (identifier: string, password: string) => Promise<void>;
   logout: () => void;
   refreshSession: () => Promise<void>;
 };
@@ -69,8 +79,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(data);
   };
 
-  const login = async (email: string, password: string) => {
-    const { data } = await client.post(endpoints.authLogin(), { email, password });
+  const login = async (identifier: string, password: string) => {
+    const { data } = await client.post(endpoints.authLogin(), {
+      identificador: identifier,
+      password,
+    });
     storeToken(data.token);
     setToken(data.token);
     setUser(data.usuario);

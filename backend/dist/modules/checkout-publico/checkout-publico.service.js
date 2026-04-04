@@ -28,6 +28,45 @@ function buildReservaReferencia() {
     const random = Math.random().toString(36).slice(2, 8).toUpperCase();
     return `RES-${Date.now()}-${random}`;
 }
+function buildBoletaPublicToken() {
+    return node_crypto_1.default.randomBytes(24).toString('hex');
+}
+async function ensurePublicTokenForBoleta(tx, boletaId, currentToken) {
+    if (currentToken) {
+        return currentToken;
+    }
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+        const candidate = buildBoletaPublicToken();
+        try {
+            const updated = await tx.boleta.update({
+                where: {
+                    id: boletaId,
+                },
+                data: {
+                    publicToken: candidate,
+                },
+                select: {
+                    publicToken: true,
+                },
+            });
+            return updated.publicToken || candidate;
+        }
+        catch (error) {
+            if (error instanceof prisma_client_1.Prisma.PrismaClientKnownRequestError &&
+                error.code === 'P2002') {
+                continue;
+            }
+            throw error;
+        }
+    }
+    throw new app_error_1.AppError('No se pudo generar el token publico de una boleta web.', 500);
+}
+async function ensurePublicTokensForBoletas(tx, boletas) {
+    return Promise.all(boletas.map(async (boleta) => ({
+        id: boleta.id,
+        token: await ensurePublicTokenForBoleta(tx, boleta.id, boleta.publicToken),
+    })));
+}
 function decimalToAmountInCents(value) {
     return Number(value.mul(100).toFixed(0));
 }
@@ -193,6 +232,7 @@ async function releaseExpiredPublicReservations() {
                 reservadaHasta: null,
                 clienteId: null,
                 ventaId: null,
+                juega: false,
             },
         });
         if (ventaIds.length) {
@@ -263,6 +303,7 @@ async function createReservaCheckout(payload) {
             data: {
                 clienteId: cliente.id,
                 rifaId: payload.rifaId,
+                rifaVendedorId: relation.id,
                 estado: prisma_client_1.EstadoVenta.PENDIENTE,
                 total,
                 saldoPendiente: total,
@@ -286,6 +327,7 @@ async function createReservaCheckout(payload) {
                 reservadaHasta,
                 clienteId: cliente.id,
                 ventaId: venta.id,
+                juega: false,
             },
         });
         return {
@@ -417,64 +459,107 @@ async function prepareReservaWompiCheckout(reservaId) {
 async function getReservaCheckoutStatus(reservaId) {
     const prisma = prismaClient();
     const now = new Date();
-    const venta = await prisma.venta.findUnique({
-        where: {
-            id: reservaId,
-        },
-        select: {
-            id: true,
-            estado: true,
-            total: true,
-            referenciaPago: true,
-            pasarelaPago: true,
-            pasarelaEstado: true,
-            pasarelaTransaccionId: true,
-            cliente: {
-                select: {
-                    nombre: true,
-                    email: true,
-                    telefono: true,
+    return prisma.$transaction(async (tx) => {
+        const venta = await tx.venta.findUnique({
+            where: {
+                id: reservaId,
+            },
+            select: {
+                id: true,
+                estado: true,
+                total: true,
+                referenciaPago: true,
+                pasarelaPago: true,
+                pasarelaEstado: true,
+                pasarelaTransaccionId: true,
+                cliente: {
+                    select: {
+                        nombre: true,
+                        email: true,
+                        telefono: true,
+                        documento: true,
+                    },
+                },
+                rifaVendedor: {
+                    select: {
+                        vendedor: {
+                            select: {
+                                nombre: true,
+                            },
+                        },
+                    },
+                },
+                pagos: {
+                    where: {
+                        estado: prisma_client_1.EstadoPago.CONFIRMADO,
+                    },
+                    select: {
+                        id: true,
+                        monto: true,
+                        fecha: true,
+                        metodoPago: true,
+                        descripcion: true,
+                    },
+                    orderBy: {
+                        fecha: 'desc',
+                    },
+                },
+                boletas: {
+                    select: {
+                        id: true,
+                        numero: true,
+                        estado: true,
+                        reservadaHasta: true,
+                        publicToken: true,
+                    },
+                    orderBy: {
+                        numero: 'asc',
+                    },
                 },
             },
-            boletas: {
-                select: {
-                    id: true,
-                    numero: true,
-                    estado: true,
-                    reservadaHasta: true,
-                },
-                orderBy: {
-                    numero: 'asc',
-                },
-            },
-        },
-    });
-    if (!venta) {
-        throw new app_error_1.AppError('La reserva no existe.', 404);
-    }
-    const expirationTime = venta.boletas.reduce((latest, boleta) => {
-        if (!boleta.reservadaHasta) {
+        });
+        if (!venta) {
+            throw new app_error_1.AppError('La reserva no existe.', 404);
+        }
+        const expirationTime = venta.boletas.reduce((latest, boleta) => {
+            if (!boleta.reservadaHasta) {
+                return latest;
+            }
+            if (!latest || boleta.reservadaHasta < latest) {
+                return boleta.reservadaHasta;
+            }
             return latest;
-        }
-        if (!latest || boleta.reservadaHasta < latest) {
-            return boleta.reservadaHasta;
-        }
-        return latest;
-    }, null);
-    const isExpired = Boolean(expirationTime && expirationTime <= now);
-    const paymentState = venta.pasarelaEstado || 'RESERVA_TEMPORAL';
-    return {
-        id: venta.id,
-        reference: venta.referenciaPago,
-        estadoVenta: venta.estado,
-        paymentState,
-        paymentTransactionId: venta.pasarelaTransaccionId,
-        expiresAt: expirationTime?.toISOString() || null,
-        isExpired,
-        total: venta.total,
-        cliente: venta.cliente,
-        boletas: venta.boletas,
-    };
+        }, null);
+        const isExpired = Boolean(expirationTime && expirationTime <= now);
+        const paymentState = venta.pasarelaEstado || 'RESERVA_TEMPORAL';
+        const tokenMap = venta.estado === prisma_client_1.EstadoVenta.PAGADA
+            ? new Map((await ensurePublicTokensForBoletas(tx, venta.boletas.map((boleta) => ({
+                id: boleta.id,
+                publicToken: boleta.publicToken,
+            })))).map((item) => [item.id, item.token]))
+            : new Map();
+        return {
+            id: venta.id,
+            reference: venta.referenciaPago,
+            estadoVenta: venta.estado,
+            paymentState,
+            paymentTransactionId: venta.pasarelaTransaccionId,
+            paymentMethod: venta.pagos[0]?.metodoPago || venta.pasarelaPago || null,
+            paymentDate: venta.pagos[0]?.fecha || null,
+            paymentDescription: venta.pagos[0]?.descripcion || null,
+            expiresAt: expirationTime?.toISOString() || null,
+            isExpired,
+            total: venta.total,
+            cliente: venta.cliente,
+            vendedor: venta.rifaVendedor?.vendedor?.nombre || 'PAGINA WEB',
+            boletas: venta.boletas.map((boleta) => ({
+                ...boleta,
+                publicPath: tokenMap.has(boleta.id)
+                    ? `/publico/boletas/${tokenMap.get(boleta.id)}`
+                    : null,
+            })),
+        };
+    });
 }
 async function processWompiWebhookEvent(body) {
     const shouldVerifySignature = body.skipSignatureVerification !== true;
@@ -574,6 +659,7 @@ async function processWompiWebhookEvent(body) {
                         reservadaHasta: null,
                         clienteId: venta.clienteId,
                         ventaId: venta.id,
+                        juega: true,
                     },
                 });
             }
@@ -735,6 +821,7 @@ async function processWompiWebhookEvent(body) {
                         reservadaHasta: null,
                         clienteId: null,
                         ventaId: null,
+                        juega: false,
                     },
                 });
             }
