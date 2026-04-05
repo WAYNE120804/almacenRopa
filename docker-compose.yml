@@ -117,6 +117,8 @@ services:
       - postgres
       - redis
       - n8n
+    volumes:
+      - n8n_data:/home/node/.n8n
     networks:
       - rifas_net
 
