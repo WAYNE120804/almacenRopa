@@ -341,7 +341,7 @@ const RifaPremiosPage = () => {
                         <img
                           src={imagen.dataUrl}
                           alt={imagen.nombre || 'Premio'}
-                          className="h-40 w-full object-cover"
+                          className="h-56 w-full object-cover object-center"
                         />
                         <div className="space-y-3 p-3">
                           <input
@@ -458,15 +458,28 @@ const RifaPremiosPage = () => {
             {[{ title: 'Premios anticipados', data: anticipados }, { title: 'Premio mayor', data: mayores }].map(
               (section) => (
                 <div key={section.title} className="theme-section-card rounded-lg p-6 shadow-sm">
-                  <h3 className="theme-main-title theme-content-title text-base font-semibold">
-                    {section.title}
-                  </h3>
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <h3 className="theme-main-title theme-content-title text-base font-semibold">
+                      {section.title}
+                    </h3>
+                    {section.title === 'Premio mayor' && section.data[0] ? (
+                      <button
+                        type="button"
+                        className="rounded-md border border-indigo-300 px-3 py-2 text-sm font-medium text-indigo-700"
+                        onClick={() =>
+                          setState((prev) => ({ ...prev, editing: section.data[0] }))
+                        }
+                      >
+                        Modificar premio mayor
+                      </button>
+                    ) : null}
+                  </div>
                   <div className="mt-4 space-y-4">
                     {section.data.length ? (
                       section.data.map((premio) => (
                         <div key={premio.id} className="rounded-lg border border-slate-200 p-4">
-                          <div className="flex flex-wrap items-start justify-between gap-4">
-                            <div>
+                          <div className="flex flex-wrap items-start justify-between gap-4 border-b border-slate-100 pb-4">
+                            <div className="min-w-0 flex-1">
                               <div className="font-semibold text-slate-900">{premio.nombre}</div>
                               <div className="text-sm text-slate-500">
                                 {formatDateTime(premio.fecha)}
@@ -484,17 +497,17 @@ const RifaPremiosPage = () => {
                                 Boletas que juegan: {premio.boletas?.length || 0}
                               </div>
                             </div>
-                            <div className="flex gap-3 text-sm">
+                            <div className="flex shrink-0 gap-3 text-sm">
                               <button
                                 type="button"
-                                className="text-indigo-600"
+                                className="rounded-md border border-indigo-200 px-3 py-2 font-medium text-indigo-600"
                                 onClick={() => setState((prev) => ({ ...prev, editing: premio }))}
                               >
                                 Editar
                               </button>
                               <button
                                 type="button"
-                                className="text-rose-600"
+                                className="rounded-md border border-rose-200 px-3 py-2 font-medium text-rose-600"
                                 onClick={() => setState((prev) => ({ ...prev, deleteId: premio.id }))}
                               >
                                 Eliminar
@@ -513,7 +526,7 @@ const RifaPremiosPage = () => {
                                     <img
                                       src={imagen.dataUrl}
                                       alt={imagen.nombre || premio.nombre}
-                                      className="h-36 w-full object-cover"
+                                      className="h-56 w-full object-cover object-center"
                                     />
                                     <div className="space-y-1 p-3 text-sm">
                                       <div className="font-medium text-slate-800">
@@ -541,13 +554,13 @@ const RifaPremiosPage = () => {
                                 placeholder="Pega aqui los numeros que juegan para este premio."
                               />
                             </label>
-                            <div className="mt-3 flex items-center justify-between gap-4">
+                            <div className="mt-3 flex flex-wrap items-center justify-between gap-4">
                               <p className="text-xs text-slate-500">
                                 Los numeros que no aparezcan aqui quedaran como no participantes en este premio.
                               </p>
                               <button
                                 type="button"
-                                className="rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-700"
+                                className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white"
                                 onClick={() => void handleSaveBoletas(premio.id)}
                               >
                                 Guardar boletas que juegan

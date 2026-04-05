@@ -462,15 +462,15 @@ const PublicRifaPage = () => {
         <section className="border-b" style={{ borderColor: `${config.themeColors.sidebarActiveBg}22` }}>
           <div className="mx-auto max-w-7xl px-6 py-10">
             <ErrorBanner message={error} />
-            <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr]">
+            <div className="grid gap-8 lg:grid-cols-[1.22fr_0.78fr]">
               <article className="overflow-hidden rounded-[2.3rem] border bg-white shadow-sm" style={{ borderColor: `${config.themeColors.sidebarActiveBg}22` }}>
                 <div className="overflow-hidden border-b bg-slate-100" style={{ borderColor: `${config.themeColors.sidebarActiveBg}22` }}>
                   {activeImageSrc ? (
                     <button type="button" onClick={() => setIsImageModalOpen(true)} className="block w-full cursor-zoom-in" title="Ampliar imagen">
-                      <img src={activeImageSrc} alt={activeImageAlt} className="h-[460px] w-full object-cover" />
+                      <img src={activeImageSrc} alt={activeImageAlt} className="h-[620px] w-full object-cover object-top" />
                     </button>
                   ) : (
-                    <div className="flex h-[460px] items-center justify-center bg-slate-100 text-slate-500">Sin imagen principal</div>
+                    <div className="flex h-[620px] items-center justify-center bg-slate-100 text-slate-500">Sin imagen principal</div>
                   )}
                 </div>
                 {premioMayorImages.length > 1 ? (
@@ -490,36 +490,10 @@ const PublicRifaPage = () => {
 
               <article className="rounded-[2.3rem] border bg-white/95 p-8 shadow-sm" style={{ borderColor: `${config.themeColors.sidebarActiveBg}22` }}>
                 <p className="text-xs uppercase tracking-[0.32em]" style={{ color: config.themeColors.summaryLabelText }}>Premio destacado</p>
-                <div className="mt-4 grid gap-6 lg:grid-cols-[1fr_220px] lg:items-start">
+                <div className="mt-4 grid gap-6">
                   <div>
                     <h1 className="text-4xl font-black leading-tight">{premioMayor?.nombre || rifa.nombre}</h1>
                     {premioMayor?.descripcion ? <p className="mt-4 whitespace-pre-line text-lg leading-8 text-slate-700">{premioMayor.descripcion}</p> : null}
-                  </div>
-                  <div className="flex h-full min-h-[13.5rem] items-center">
-                    <a
-                      href="#comprar-boletas"
-                      onClick={(event) => {
-                        event.preventDefault();
-                        focusCompraSection();
-                      }}
-                      className="relative flex w-full flex-col items-center justify-center overflow-hidden rounded-[1.9rem] border px-6 py-7 text-center text-white shadow-xl transition hover:-translate-y-0.5"
-                      style={{
-                        borderColor: `${config.themeColors.sidebarActiveBg}55`,
-                        background: `linear-gradient(135deg, ${config.themeColors.sidebarActiveBg}, ${config.themeColors.topbarBg})`,
-                        boxShadow: `0 0 0 3px ${config.themeColors.sidebarActiveBg}18, 0 0 26px ${config.themeColors.sidebarActiveBg}66, 0 0 48px ${config.themeColors.sidebarActiveBg}44`,
-                      }}
-                    >
-                      <span className="absolute inset-0 rounded-[1.9rem] animate-pulse" style={{ boxShadow: `inset 0 0 0 2px ${config.themeColors.sidebarActiveBg}22, 0 0 34px ${config.themeColors.sidebarActiveBg}aa` }} />
-                      <span className="absolute -left-1/4 top-0 h-full w-20 -skew-x-12 animate-pulse bg-white/20 blur-lg" />
-                      <span className="absolute right-6 top-6 h-3 w-3 rounded-full bg-white/70 shadow-[0_0_18px_rgba(255,255,255,0.9)] animate-ping" />
-                      <span className="absolute left-8 bottom-8 h-2.5 w-2.5 rounded-full bg-white/70 shadow-[0_0_16px_rgba(255,255,255,0.9)] animate-ping" />
-                      <span className="relative z-10 text-xs font-black uppercase tracking-[0.28em] text-white/75">Tu numero te espera</span>
-                      <span className="relative z-10 mt-3 text-3xl font-black uppercase leading-none">Comprar boletas</span>
-                      <span className="relative z-10 mt-3 inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-2 text-sm font-semibold text-white/90 animate-pulse">
-                        Ir a seleccion
-                        <span aria-hidden="true">↓</span>
-                      </span>
-                    </a>
                   </div>
                 </div>
                 <div className="mt-6 space-y-4 rounded-[1.8rem] border p-5" style={{ borderColor: `${config.themeColors.sidebarActiveBg}20`, background: `${config.themeColors.sidebarActiveBg}08` }}>
@@ -570,8 +544,9 @@ const PublicRifaPage = () => {
                   </div>
                 ) : null}
                 <div className="mt-6">
-                  <a href="#comprar-boletas" onClick={(event) => { event.preventDefault(); focusCompraSection(); }} className="inline-flex rounded-full px-6 py-4 text-base font-semibold text-white" style={{ background: config.themeColors.sidebarActiveBg }}>
-                    Comprar boletas
+                  <a href="#comprar-boletas" onClick={(event) => { event.preventDefault(); focusCompraSection(); }} className="relative inline-flex min-h-[4.25rem] w-full items-center justify-center overflow-hidden rounded-[1.4rem] px-6 py-4 text-base font-semibold text-white shadow-xl transition hover:-translate-y-0.5" style={{ background: `linear-gradient(135deg, ${config.themeColors.sidebarActiveBg}, ${config.themeColors.topbarBg})`, boxShadow: `0 0 0 3px ${config.themeColors.sidebarActiveBg}18, 0 0 26px ${config.themeColors.sidebarActiveBg}55` }}>
+                    <span className="absolute -left-1/4 top-0 h-full w-20 -skew-x-12 bg-white/20 blur-lg" />
+                    <span className="relative z-10">Comprar boletas</span>
                   </a>
                 </div>
               </article>
