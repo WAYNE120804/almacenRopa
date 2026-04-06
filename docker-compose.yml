@@ -52,14 +52,16 @@ services:
       - rifas_net
 
   n8n:
-    image: docker.n8n.io/n8nio/n8n:1.89.2
+    image: n8nio/n8n:1.89.2
+    command: start
     restart: unless-stopped
     environment:
       N8N_HOST: ${N8N_HOST}
       N8N_PROTOCOL: ${N8N_PROTOCOL:-https}
       N8N_PORT: ${N8N_PORT:-5678}
-      N8N_EDITOR_BASE_URL: ${N8N_EDITOR_BASE_URL}
-      WEBHOOK_URL: ${WEBHOOK_URL}
+      N8N_EDITOR_BASE_URL: https://bot.rifasmejia.store
+      WEBHOOK_URL: https://bot.rifasmejia.store
+      N8N_DISABLE_UI: "false"
       N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
       N8N_BASIC_AUTH_ACTIVE: ${N8N_BASIC_AUTH_ACTIVE:-true}
       N8N_BASIC_AUTH_USER: ${N8N_BASIC_AUTH_USER}
@@ -67,11 +69,11 @@ services:
       N8N_PROXY_HOPS: ${N8N_PROXY_HOPS:-1}
       N8N_DIAGNOSTICS_ENABLED: ${N8N_DIAGNOSTICS_ENABLED:-false}
       N8N_PERSONALIZATION_ENABLED: ${N8N_PERSONALIZATION_ENABLED:-false}
-      EXECUTIONS_MODE: ${N8N_EXECUTIONS_MODE:-regular}
-      DB_TYPE: ${N8N_DB_TYPE:-postgresdb}
-      DB_POSTGRESDB_HOST: ${N8N_DB_POSTGRESDB_HOST:-postgres}
-      DB_POSTGRESDB_PORT: ${N8N_DB_POSTGRESDB_PORT:-5432}
-      DB_POSTGRESDB_DATABASE: ${N8N_DB_POSTGRESDB_DATABASE:-rifas}
+      EXECUTIONS_MODE: regular
+      DB_TYPE: postgresdb
+      DB_POSTGRESDB_HOST: postgres
+      DB_POSTGRESDB_PORT: 5432
+      DB_POSTGRESDB_DATABASE: rifas
       DB_POSTGRESDB_USER: ${N8N_DB_POSTGRESDB_USER}
       DB_POSTGRESDB_PASSWORD: ${N8N_DB_POSTGRESDB_PASSWORD}
     depends_on:
