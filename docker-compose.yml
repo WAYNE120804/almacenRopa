@@ -73,13 +73,13 @@ services:
       DB_TYPE: postgresdb
       DB_POSTGRESDB_HOST: postgres
       DB_POSTGRESDB_PORT: 5432
-      DB_POSTGRESDB_DATABASE: rifas
+      DB_POSTGRESDB_DATABASE: ${N8N_DB_POSTGRESDB_DATABASE:-n8n}
       DB_POSTGRESDB_USER: ${N8N_DB_POSTGRESDB_USER}
       DB_POSTGRESDB_PASSWORD: ${N8N_DB_POSTGRESDB_PASSWORD}
     depends_on:
       - postgres
     volumes:
-      - n8n_data:/home/node/.n8n
+      - n8n_data_clean:/home/node/.n8n
     networks:
       - rifas_net
 
@@ -146,7 +146,7 @@ services:
 volumes:
   caddy_data:
   caddy_config:
-  n8n_data:
+  n8n_data_clean:
   postgres_data:
   redis_data:
   evolution_instances:
