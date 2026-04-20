@@ -50,7 +50,7 @@ const RifaDetail = () => {
 
     try {
       await client.delete(endpoints.rifaById(id));
-      navigate('/rifas');
+      navigate('/admin/rifas');
     } catch (error) {
       setState((prev) => ({
         ...prev,
@@ -66,7 +66,7 @@ const RifaDetail = () => {
       <Topbar
         title="Detalle de rifa"
         actions={
-          <Link className="text-sm text-slate-600" to="/rifas">
+          <Link className="text-sm text-slate-600" to="/admin/rifas">
             Volver
           </Link>
         }
@@ -87,19 +87,19 @@ const RifaDetail = () => {
                   </p>
                 </div>
                 <Link
-                  to={`/rifas/${id}/editar`}
+                  to={`/admin/rifas/${id}/editar`}
                   className="rounded-md border border-slate-300 px-3 py-1 text-sm"
                 >
                   Editar rifa
                 </Link>
                 <Link
-                  to={`/asignaciones?rifaId=${id}`}
+                  to={`/rifas/${id}/asignaciones`}
                   className="rounded-md border border-slate-300 px-3 py-1 text-sm"
                 >
                   Ver asignaciones
                 </Link>
                 <Link
-                  to={`/boletas?rifaId=${id}`}
+                  to={`/rifas/${id}/boletas`}
                   className="rounded-md border border-slate-300 px-3 py-1 text-sm"
                 >
                   Ver boletas

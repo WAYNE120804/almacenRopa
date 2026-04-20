@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import client from '../../api/client';
 import { endpoints } from '../../api/endpoints';
@@ -21,13 +21,14 @@ const initialForm = {
 
 const GastoForm = () => {
   const navigate = useNavigate();
+  const { rifaId: routeRifaId } = useParams();
   const [loading, setLoading] = useState(true);
   const [loadingSubCajas, setLoadingSubCajas] = useState(false);
   const [rifas, setRifas] = useState<any[]>([]);
   const [subCajas, setSubCajas] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-  const [form, setForm] = useState(initialForm);
+  const [form, setForm] = useState({ ...initialForm, rifaId: routeRifaId || '' });
 
   useEffect(() => {
     const loadRifas = async () => {
@@ -43,6 +44,12 @@ const GastoForm = () => {
 
     void loadRifas();
   }, []);
+
+  useEffect(() => {
+    if (routeRifaId) {
+      setForm((prev) => ({ ...prev, rifaId: routeRifaId }));
+    }
+  }, [routeRifaId]);
 
   const rifaOptions = useMemo(
     () =>
@@ -118,7 +125,7 @@ const GastoForm = () => {
         title="Registrar gasto"
         actions={
           <Link
-            to="/gastos"
+            to={routeRifaId ? `/rifas/${routeRifaId}/gastos` : '/gastos'}
             className="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700"
           >
             VER HISTORIAL
@@ -142,16 +149,22 @@ const GastoForm = () => {
               <div className="grid gap-4 lg:grid-cols-2">
                 <div className="block text-sm">
                   <span className="text-slate-600">Rifa</span>
-                  <div className="mt-1">
-                    <SearchableSelect
-                      options={rifaOptions}
-                      value={form.rifaId}
-                      onChange={(value) => setForm((prev) => ({ ...prev, rifaId: value }))}
-                      placeholder="Buscar rifa..."
-                      clearable
-                      clearLabel="Quitar seleccion"
-                    />
-                  </div>
+                  {routeRifaId ? (
+                    <p className="mt-1 rounded-md border border-slate-200 bg-slate-50 px-3 py-2">
+                      {rifaOptions.find((item) => item.value === routeRifaId)?.label || 'Rifa actual'}
+                    </p>
+                  ) : (
+                    <div className="mt-1">
+                      <SearchableSelect
+                        options={rifaOptions}
+                        value={form.rifaId}
+                        onChange={(value) => setForm((prev) => ({ ...prev, rifaId: value }))}
+                        placeholder="Buscar rifa..."
+                        clearable
+                        clearLabel="Quitar seleccion"
+                      />
+                    </div>
+                  )}
                 </div>
                 <label className="block text-sm">
                   <span className="text-slate-600">Categoria</span>

@@ -84,7 +84,7 @@ const RifaForm = () => {
         await client.post(endpoints.rifas(), payload);
       }
 
-      navigate('/rifas');
+      navigate('/admin/rifas');
     } catch (requestError) {
       setError(requestError.message);
     }
@@ -188,7 +188,7 @@ const RifaForm = () => {
               <button
                 type="button"
                 className="rounded-md border border-slate-300 px-4 py-2 text-sm text-slate-700"
-                onClick={() => navigate('/rifas')}
+                onClick={() => navigate('/admin/rifas')}
               >
                 Cancelar
               </button>

@@ -6,6 +6,7 @@ import {
   getAllRifas,
   getAllPublicRifas,
   getRifa,
+  getRifaCierre,
   postRifa,
   putRifa,
   removeRifa,
@@ -15,6 +16,7 @@ export const rifaRouter = Router();
 
 rifaRouter.get('/publicas', getAllPublicRifas);
 rifaRouter.get('/', getAllRifas);
+rifaRouter.get('/:id/cierre-vendedores', requireRole(RolUsuario.ADMIN, RolUsuario.CAJERO), getRifaCierre);
 rifaRouter.get('/:id', getRifa);
 rifaRouter.post('/', requireRole(RolUsuario.ADMIN), postRifa);
 rifaRouter.put('/:id', requireRole(RolUsuario.ADMIN), putRifa);

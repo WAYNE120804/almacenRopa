@@ -1,21 +1,26 @@
 import { NavLink } from 'react-router-dom';
 import { useAppConfig } from '../../context/AppConfigContext';
 import { useAuth } from '../../context/AuthContext';
+import { useRifaContext } from '../../hooks/useRifaContext';
 
 const adminNavItems = [
-  { to: '/', label: 'Dashboard', adminOnly: true },
-  { to: '/rifas', label: 'Rifas' },
-  { to: '/boletas', label: 'Boletas' },
-  { to: '/juego', label: 'Juego' },
-  { to: '/vendedores', label: 'Vendedores' },
-  { to: '/asignaciones', label: 'Asignaciones' },
-  { to: '/devoluciones', label: 'Devoluciones' },
-  { to: '/abonos', label: 'Abonos' },
-  { to: '/gastos', label: 'Gastos', adminOnly: true },
-  { to: '/caja', label: 'Caja', adminOnly: true },
-  { to: '/usuarios', label: 'Usuarios', adminOnly: true },
-  { to: '/configuracion', label: 'Configuracion', adminOnly: true },
-  { to: '/configuracion-web', label: 'Configuracion pagina web', adminOnly: true },
+  { to: '/admin/rifas', label: 'Rifas' },
+  { to: '/admin/vendedores', label: 'Vendedores globales' },
+  { to: '/admin/usuarios', label: 'Usuarios', adminOnly: true },
+  { to: '/admin/configuracion', label: 'Configuracion', adminOnly: true },
+  { to: '/admin/configuracion-web', label: 'Configuracion pagina web', adminOnly: true },
+];
+
+const getRifaNavItems = (rifaId: string) => [
+  { to: `/rifas/${rifaId}`, label: 'Rifa', end: true },
+  { to: `/rifas/${rifaId}/boletas`, label: 'Boletas' },
+  { to: `/rifas/${rifaId}/juego`, label: 'Juego' },
+  { to: `/rifas/${rifaId}/vendedores`, label: 'Vendedores' },
+  { to: `/rifas/${rifaId}/asignaciones`, label: 'Asignaciones' },
+  { to: `/rifas/${rifaId}/devoluciones`, label: 'Devoluciones' },
+  { to: `/rifas/${rifaId}/abonos`, label: 'Abonos' },
+  { to: `/rifas/${rifaId}/gastos`, label: 'Gastos', adminOnly: true },
+  { to: `/rifas/${rifaId}/caja`, label: 'Caja', adminOnly: true },
 ];
 
 const vendedorNavItems = [
@@ -31,6 +36,7 @@ const vendedorNavItems = [
 const Sidebar = () => {
   const { config } = useAppConfig();
   const { user, logout } = useAuth();
+  const { rifaId, rifa, isRifaScope } = useRifaContext();
   const specialScopeName =
     user?.rol === 'VENDEDOR'
       ? user.scopes.items?.find((item) => {
@@ -44,7 +50,9 @@ const Sidebar = () => {
           ...vendedorNavItems,
           ...(specialScopeName ? [{ to: '/supervision-canal', label: 'Supervision canal' }] : []),
         ]
-      : adminNavItems.filter((item) => !item.adminOnly || user?.rol === 'ADMIN');
+      : (isRifaScope && rifaId ? getRifaNavItems(rifaId) : adminNavItems).filter(
+          (item) => !item.adminOnly || user?.rol === 'ADMIN'
+        );
 
   return (
     <aside className="theme-sidebar flex h-screen w-60 flex-col border-r border-slate-200 p-6">
@@ -69,7 +77,9 @@ const Sidebar = () => {
               ? specialScopeName
                 ? `Panel ${specialScopeName.toLowerCase()}`
                 : 'Panel vendedor'
-              : 'Administrador de rifas'}
+              : isRifaScope
+                ? rifa?.nombre || 'Panel de rifa'
+                : 'Panel administrativo'}
           </p>
         </div>
       </div>
@@ -78,6 +88,7 @@ const Sidebar = () => {
           <NavLink
             key={item.to}
             to={item.to}
+            end={item.end}
             className={({ isActive }) =>
               `theme-nav-label rounded-md px-3 py-2 transition-colors ${
                 isActive ? 'theme-sidebar-link-active' : 'theme-sidebar-link'

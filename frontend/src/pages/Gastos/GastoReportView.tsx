@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 
 import client from '../../api/client';
 import { endpoints } from '../../api/endpoints';
@@ -16,7 +16,8 @@ import { getGastoCategoryLabel } from './gastoCategories';
 const GastoReportView = () => {
   const { config } = useAppConfig();
   const [searchParams] = useSearchParams();
-  const rifaId = searchParams.get('rifaId') || '';
+  const { rifaId: routeRifaId } = useParams();
+  const rifaId = routeRifaId || searchParams.get('rifaId') || '';
   const [gastos, setGastos] = useState<any[]>([]);
   const [rifa, setRifa] = useState<any>(null);
   const [loading, setLoading] = useState(true);

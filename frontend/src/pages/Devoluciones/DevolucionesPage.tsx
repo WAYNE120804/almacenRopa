@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import client from '../../api/client';
 import { endpoints } from '../../api/endpoints';
@@ -10,6 +11,7 @@ import SearchableSelect from '../../components/common/SearchableSelect';
 import Toast from '../../components/common/Toast';
 import Topbar from '../../components/Layout/Topbar';
 import { formatDateTime } from '../../utils/dates';
+import { formatCOP } from '../../utils/money';
 
 const initialReturnForm = {
   rifaVendedorId: '',
@@ -41,12 +43,15 @@ function extractPreviewNumbers(rawValue: string, numeroCifras?: number) {
 }
 
 const DevolucionesPage = () => {
+  const { rifaId: routeRifaId } = useParams();
   const [state, setState] = useState({
     loading: true,
     loadingHistory: false,
+    loadingCierre: false,
     relaciones: [],
     usuarios: [],
     returnHistory: [],
+    cierreRows: [],
     error: null,
     success: '',
   });
@@ -54,19 +59,24 @@ const DevolucionesPage = () => {
   const [selectedUsuarioId, setSelectedUsuarioId] = useState('');
   const [partialReturnConflict, setPartialReturnConflict] = useState(null);
   const [returnConfirm, setReturnConfirm] = useState(null);
+  const [selectedAbono, setSelectedAbono] = useState(null);
 
   useEffect(() => {
     const loadRelations = async () => {
       try {
-        const [relationsRes, usuariosRes] = await Promise.all([
+        const [relationsRes, usuariosRes, cierreRes] = await Promise.all([
           client.get(endpoints.rifaVendedores()),
           client.get(endpoints.usuarios()),
+          routeRifaId
+            ? client.get(endpoints.rifaCierreVendedores(routeRifaId))
+            : Promise.resolve({ data: [] }),
         ]);
         setState((prev) => ({
           ...prev,
           loading: false,
           relaciones: relationsRes.data,
           usuarios: usuariosRes.data,
+          cierreRows: cierreRes.data,
           error: null,
         }));
       } catch (error) {
@@ -74,6 +84,7 @@ const DevolucionesPage = () => {
           ...prev,
           loading: false,
           relaciones: [],
+          cierreRows: [],
           error: error.message,
         }));
       }
@@ -129,17 +140,47 @@ const DevolucionesPage = () => {
 
   const relationOptions = useMemo(
     () =>
-      state.relaciones.map((item) => ({
-        value: item.id,
-        label: `${item.vendedor?.nombre || 'Sin vendedor'} - ${item.rifa?.nombre || 'Sin rifa'}`,
-      })),
-    [state.relaciones]
+      state.relaciones
+        .filter((item) => (routeRifaId ? item.rifaId === routeRifaId : true))
+        .map((item) => ({
+          value: item.id,
+          label: routeRifaId
+            ? item.vendedor?.nombre || 'Sin vendedor'
+            : `${item.vendedor?.nombre || 'Sin vendedor'} - ${item.rifa?.nombre || 'Sin rifa'}`,
+        })),
+    [routeRifaId, state.relaciones]
   );
+
+  useEffect(() => {
+    if (!routeRifaId || state.loading) {
+      return;
+    }
+
+    const selectedStillValid = relationOptions.some(
+      (item) => item.value === returnForm.rifaVendedorId
+    );
+
+    if (!selectedStillValid) {
+      setReturnForm((prev) => ({
+        ...prev,
+        rifaVendedorId: relationOptions[0]?.value || '',
+      }));
+    }
+  }, [relationOptions, returnForm.rifaVendedorId, routeRifaId, state.loading]);
 
   const selectedReturnRelation = useMemo(
     () =>
       state.relaciones.find((item) => item.id === returnForm.rifaVendedorId) || null,
     [state.relaciones, returnForm.rifaVendedorId]
+  );
+
+  const maxAbonos = useMemo(
+    () =>
+      Math.max(
+        0,
+        ...state.cierreRows.map((item) => item.abonos?.length || 0)
+      ),
+    [state.cierreRows]
   );
 
   const userOptions = useMemo(
@@ -176,15 +217,19 @@ const DevolucionesPage = () => {
         payload
       );
 
-      const [relationsRes, returnHistoryRes] = await Promise.all([
+      const [relationsRes, returnHistoryRes, cierreRes] = await Promise.all([
         client.get(endpoints.rifaVendedores()),
         client.get(endpoints.devolucionesHistory(returnForm.rifaVendedorId)),
+        routeRifaId
+          ? client.get(endpoints.rifaCierreVendedores(routeRifaId))
+          : Promise.resolve({ data: [] }),
       ]);
 
       setState((prev) => ({
         ...prev,
         relaciones: relationsRes.data,
         returnHistory: returnHistoryRes.data,
+        cierreRows: cierreRes.data,
         success: `Devolucion registrada correctamente con ${data.detalle.length} boletas.`,
         error: null,
       }));
@@ -281,10 +326,141 @@ const DevolucionesPage = () => {
     },
   ];
 
+  const renderCierreTable = () => {
+    if (!routeRifaId) {
+      return null;
+    }
+
+    if (state.loadingCierre) {
+      return <Loading />;
+    }
+
+    if (!state.cierreRows.length) {
+      return (
+        <EmptyState
+          title="Sin vendedores para cierre"
+          description="Todavia no hay vendedores vinculados con movimiento para esta rifa."
+        />
+      );
+    }
+
+    const rowHeightClass = 'h-[78px]';
+    const headerClass =
+      'h-14 bg-cyan-800 px-3 py-2 text-left text-xs font-semibold uppercase tracking-[0.08em] text-white';
+
+    return (
+      <div className="max-w-full overflow-hidden rounded-lg border border-slate-200 bg-white">
+        <div className="flex w-full min-w-0 max-w-full">
+          <div className="shrink-0 border-r border-slate-300">
+            <table className="border-collapse text-sm">
+              <thead>
+                <tr>
+                  <th className={`${headerClass} w-[190px] border-b border-r border-cyan-900`}>Vendedor</th>
+                  <th className={`${headerClass} w-[92px] border-b border-r border-cyan-900`}>Total boletas</th>
+                  <th className={`${headerClass} w-[110px] border-b border-r border-cyan-900`}>Devolucion</th>
+                  <th className={`${headerClass} w-[108px] border-b border-cyan-900`}>Boletas actuales</th>
+                </tr>
+              </thead>
+              <tbody>
+                {state.cierreRows.map((row) => (
+                  <tr key={`${row.rifaVendedorId}-left`} className="hover:bg-slate-50">
+                    <td className={`${rowHeightClass} w-[190px] border-b border-r border-slate-300 px-3 py-2 align-top font-semibold text-slate-900`}>
+                      <div>{row.vendedorNombre}</div>
+                      <div className="mt-1 text-xs font-normal text-slate-500">
+                        {row.comisionPct}% | {formatCOP(row.precioCasa)} por boleta
+                      </div>
+                    </td>
+                    <td className={`${rowHeightClass} w-[92px] border-b border-r border-slate-300 px-3 py-2 align-middle`}>
+                      {row.totalBoletas}
+                    </td>
+                    <td className={`${rowHeightClass} w-[110px] border-b border-r border-slate-300 px-3 py-2 align-middle font-semibold text-orange-700`}>
+                      {row.devolucion}
+                    </td>
+                    <td className={`${rowHeightClass} w-[108px] border-b border-slate-300 px-3 py-2 align-middle font-semibold`}>
+                      {row.boletasActuales}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="min-w-0 flex-1 overflow-x-auto overflow-y-hidden">
+            <table className="min-w-max border-collapse text-sm">
+              <thead>
+                <tr>
+                  {Array.from({ length: maxAbonos }, (_, index) => (
+                    <th
+                      key={`abono-${index + 1}`}
+                      className={`${headerClass} w-24 min-w-24 border-b border-l border-cyan-900`}
+                    >
+                      Abono {index + 1}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {state.cierreRows.map((row) => (
+                  <tr key={`${row.rifaVendedorId}-middle`} className="hover:bg-slate-50">
+                    {Array.from({ length: maxAbonos }, (_, index) => {
+                      const abono = row.abonos?.[index] || null;
+
+                      return (
+                        <td
+                          key={`${row.rifaVendedorId}-abono-${index + 1}`}
+                          className={`${rowHeightClass} w-24 min-w-24 border-b border-l border-slate-300 px-2 py-2 align-top`}
+                        >
+                          {abono ? (
+                            <button
+                              type="button"
+                              className="w-full rounded-sm border border-slate-300 bg-slate-50 px-1.5 py-1 text-left text-[11px] hover:bg-slate-100"
+                              onClick={() => setSelectedAbono({ ...abono, vendedorNombre: row.vendedorNombre })}
+                            >
+                              {formatCOP(abono.valor)}
+                            </button>
+                          ) : (
+                            <span className="text-slate-300">-</span>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="shrink-0 border-l border-slate-300">
+            <table className="border-collapse text-sm">
+              <thead>
+                <tr>
+                  <th className={`${headerClass} w-[132px] border-b border-r border-cyan-900`}>Deuda total</th>
+                  <th className={`${headerClass} w-[132px] border-b border-l border-cyan-900`}>Deuda actual</th>
+                </tr>
+              </thead>
+              <tbody>
+                {state.cierreRows.map((row) => (
+                  <tr key={`${row.rifaVendedorId}-right`} className="hover:bg-slate-50">
+                    <td className={`${rowHeightClass} w-[132px] border-b border-r border-slate-300 px-3 py-2 align-middle font-semibold text-slate-900`}>
+                      {formatCOP(row.deudaTotal)}
+                    </td>
+                    <td className={`${rowHeightClass} w-[132px] border-b border-l border-slate-300 px-3 py-2 align-middle font-semibold text-rose-700`}>
+                      {formatCOP(row.deudaActual)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <div>
+    <div className="max-w-full overflow-x-hidden">
       <Topbar title="Devoluciones" />
-      <div className="space-y-6 px-6 py-6">
+      <div className="max-w-full space-y-6 overflow-x-hidden px-6 py-6">
         <ErrorBanner message={state.error} />
         {state.success ? <Toast message={state.success} /> : null}
 
@@ -292,6 +468,20 @@ const DevolucionesPage = () => {
           <Loading />
         ) : (
           <>
+            <div className="theme-section-card max-w-full overflow-hidden rounded-lg p-6 shadow-sm">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <h3 className="theme-main-title theme-content-title text-base font-semibold">
+                    Cierre por vendedores
+                  </h3>
+                  <p className="theme-content-subtitle text-sm">
+                    Vista tipo Excel para revisar total de boletas, devolucion, abonos y deuda real por vendedor.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-6">{renderCierreTable()}</div>
+            </div>
+
             <form
               onSubmit={handleReturn}
               className="theme-section-card space-y-4 rounded-lg p-6 shadow-sm"
@@ -596,6 +786,55 @@ o:
               >
                 Devolver las que si pertenecen
               </button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {selectedAbono ? (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/50 px-4">
+          <div className="w-full max-w-lg rounded-lg bg-white p-6 shadow-lg">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h3 className="text-lg font-semibold text-slate-900">Detalle del abono</h3>
+                <p className="mt-1 text-sm text-slate-500">{selectedAbono.vendedorNombre}</p>
+              </div>
+              <button
+                type="button"
+                className="text-sm text-slate-500"
+                onClick={() => setSelectedAbono(null)}
+              >
+                Cerrar
+              </button>
+            </div>
+
+            <div className="mt-6 grid gap-4">
+              <div className="rounded-md border border-slate-200 bg-slate-50 p-4">
+                <p className="text-xs uppercase tracking-[0.12em] text-slate-500">Valor</p>
+                <p className="mt-2 text-xl font-semibold text-slate-900">{formatCOP(selectedAbono.valor)}</p>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2">
+                <div className="rounded-md border border-slate-200 p-4">
+                  <p className="text-xs uppercase tracking-[0.12em] text-slate-500">Fecha y hora</p>
+                  <p className="mt-2 font-semibold text-slate-900">{formatDateTime(selectedAbono.fecha)}</p>
+                </div>
+                <div className="rounded-md border border-slate-200 p-4">
+                  <p className="text-xs uppercase tracking-[0.12em] text-slate-500">Metodo</p>
+                  <p className="mt-2 font-semibold text-slate-900">{selectedAbono.metodoPago || 'N/D'}</p>
+                </div>
+                <div className="rounded-md border border-slate-200 p-4">
+                  <p className="text-xs uppercase tracking-[0.12em] text-slate-500">Estado</p>
+                  <p className="mt-2 font-semibold text-slate-900">{selectedAbono.estado || 'N/D'}</p>
+                </div>
+                <div className="rounded-md border border-slate-200 p-4">
+                  <p className="text-xs uppercase tracking-[0.12em] text-slate-500">Usuario</p>
+                  <p className="mt-2 font-semibold text-slate-900">{selectedAbono.usuario?.nombre || 'Sistema'}</p>
+                </div>
+              </div>
+              <div className="rounded-md border border-slate-200 p-4">
+                <p className="text-xs uppercase tracking-[0.12em] text-slate-500">Descripcion</p>
+                <p className="mt-2 text-slate-800">{selectedAbono.descripcion || 'Sin descripcion'}</p>
+              </div>
             </div>
           </div>
         </div>

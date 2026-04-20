@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import client from '../../api/client';
 import { endpoints } from '../../api/endpoints';
@@ -18,6 +18,7 @@ import { printAbonosSummaryTicket } from '../../utils/print';
 const HistorialAbonos = () => {
   const { config } = useAppConfig();
   const { user } = useAuth();
+  const { rifaId: routeRifaId } = useParams();
   const [rifaVendedores, setRifaVendedores] = useState<any[]>([]);
   const [usuarios, setUsuarios] = useState<any[]>([]);
   const [selected, setSelected] = useState('');
@@ -76,12 +77,27 @@ const HistorialAbonos = () => {
 
   const options = useMemo(
     () =>
-      rifaVendedores.map((item) => ({
-        value: item.id,
-        label: `${item.rifa?.nombre || 'Sin rifa'} - ${item.vendedor?.nombre || 'Sin vendedor'}`,
-      })),
-    [rifaVendedores]
+      rifaVendedores
+        .filter((item) => (routeRifaId ? item.rifaId === routeRifaId : true))
+        .map((item) => ({
+          value: item.id,
+          label: routeRifaId
+            ? item.vendedor?.nombre || 'Sin vendedor'
+            : `${item.rifa?.nombre || 'Sin rifa'} - ${item.vendedor?.nombre || 'Sin vendedor'}`,
+        })),
+    [rifaVendedores, routeRifaId]
   );
+
+  useEffect(() => {
+    if (!routeRifaId || loading) {
+      return;
+    }
+
+    const selectedStillValid = options.some((item) => item.value === selected);
+    if (!selectedStillValid) {
+      setSelected(options[0]?.value || '');
+    }
+  }, [loading, options, routeRifaId, selected]);
 
   const selectedRelation = useMemo(
     () => rifaVendedores.find((item) => item.id === selected) || null,
@@ -166,7 +182,10 @@ const HistorialAbonos = () => {
       render: (row: any) => (
         <div className="flex flex-col gap-1">
           {row.recibo?.id ? (
-            <Link className="text-slate-900 underline" to={`/recibos/${row.recibo.id}`}>
+            <Link
+              className="text-slate-900 underline"
+              to={routeRifaId ? `/rifas/${routeRifaId}/recibos/${row.recibo.id}` : `/recibos/${row.recibo.id}`}
+            >
               VER RECIBO
             </Link>
           ) : (
@@ -175,7 +194,10 @@ const HistorialAbonos = () => {
           {row.anuladoAt ? (
             <span className="text-xs font-semibold text-rose-600">ANULADO</span>
           ) : row.recibo?.id ? (
-            <Link className="text-xs text-rose-600 underline" to={`/recibos/${row.recibo.id}`}>
+            <Link
+              className="text-xs text-rose-600 underline"
+              to={routeRifaId ? `/rifas/${routeRifaId}/recibos/${row.recibo.id}` : `/recibos/${row.recibo.id}`}
+            >
               ANULAR
             </Link>
           ) : null}
@@ -247,7 +269,15 @@ const HistorialAbonos = () => {
             </div>
             {user?.rol !== 'VENDEDOR' ? (
               <Link
-                to={selected ? `/abonos/crear?rifaVendedor=${selected}` : '/abonos/crear'}
+                to={
+                  routeRifaId
+                    ? selected
+                      ? `/rifas/${routeRifaId}/abonos/crear?rifaVendedor=${selected}`
+                      : `/rifas/${routeRifaId}/abonos/crear`
+                    : selected
+                      ? `/abonos/crear?rifaVendedor=${selected}`
+                      : '/abonos/crear'
+                }
                 className="rounded-md border border-slate-300 px-4 py-3 text-center text-sm font-medium text-slate-700"
               >
                 REGISTRAR ABONO

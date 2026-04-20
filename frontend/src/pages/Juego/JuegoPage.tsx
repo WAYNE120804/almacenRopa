@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import client from '../../api/client';
 import { endpoints } from '../../api/endpoints';
@@ -67,6 +67,7 @@ function parseNumbers(rawValue: string) {
 
 const JuegoPage = () => {
   const { config } = useAppConfig();
+  const { rifaId: routeRifaId } = useParams();
   const [state, setState] = useState({
     rifas: [] as any[],
     premios: [] as any[],
@@ -79,7 +80,7 @@ const JuegoPage = () => {
     success: '',
   });
   const [filters, setFilters] = useState({
-    rifaId: '',
+    rifaId: routeRifaId || '',
     premioId: '',
     rifaVendedorId: '',
     numero: '',
@@ -112,6 +113,12 @@ const JuegoPage = () => {
 
     void loadSetup();
   }, []);
+
+  useEffect(() => {
+    if (routeRifaId) {
+      setFilters((prev) => ({ ...prev, rifaId: routeRifaId }));
+    }
+  }, [routeRifaId]);
 
   useEffect(() => {
     if (!filters.rifaId) {
@@ -392,14 +399,14 @@ const JuegoPage = () => {
                     Filtros del juego
                   </h3>
                   <p className="theme-content-subtitle text-sm">
-                    Selecciona rifa y premio para revisar las boletas que si juegan por vendedor.
+                    Selecciona premio para revisar las boletas que si juegan por vendedor.
                   </p>
                 </div>
                 <button
                   type="button"
                   className="text-sm text-slate-600"
                   onClick={() => {
-                    setFilters({ rifaId: '', premioId: '', rifaVendedorId: '', numero: '' });
+                    setFilters({ rifaId: routeRifaId || '', premioId: '', rifaVendedorId: '', numero: '' });
                     setForm(initialForm);
                   }}
                 >
@@ -408,22 +415,24 @@ const JuegoPage = () => {
               </div>
 
               <div className="mt-4 grid gap-4 md:grid-cols-4">
-                <div>
-                  <span className="text-sm text-slate-600">Rifa</span>
-                  <div className="mt-1">
-                    <SearchableSelect
-                      options={rifaOptions}
-                      value={filters.rifaId}
-                      onChange={(value) => {
-                        setFilters({ rifaId: value, premioId: '', rifaVendedorId: '', numero: '' });
-                        setForm(initialForm);
-                      }}
-                      placeholder="Buscar rifa..."
-                      clearable
-                      clearLabel="Quitar filtro de rifa"
-                    />
+                {!routeRifaId ? (
+                  <div>
+                    <span className="text-sm text-slate-600">Rifa</span>
+                    <div className="mt-1">
+                      <SearchableSelect
+                        options={rifaOptions}
+                        value={filters.rifaId}
+                        onChange={(value) => {
+                          setFilters({ rifaId: value, premioId: '', rifaVendedorId: '', numero: '' });
+                          setForm(initialForm);
+                        }}
+                        placeholder="Buscar rifa..."
+                        clearable
+                        clearLabel="Quitar filtro de rifa"
+                      />
+                    </div>
                   </div>
-                </div>
+                ) : null}
                 <div>
                   <span className="text-sm text-slate-600">Premio</span>
                   <div className="mt-1">

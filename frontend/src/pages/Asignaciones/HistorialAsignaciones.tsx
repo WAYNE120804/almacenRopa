@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import client from '../../api/client';
 import { endpoints } from '../../api/endpoints';
@@ -15,6 +16,7 @@ import { printBoletaSheet } from '../../utils/print';
 
 const HistorialAsignaciones = () => {
   const { config } = useAppConfig();
+  const { rifaId: routeRifaId } = useParams();
   const [state, setState] = useState({
     loading: true,
     loadingHistory: false,
@@ -86,11 +88,26 @@ const HistorialAsignaciones = () => {
   }, [state.selected, state.selectedUsuarioId]);
 
   const relationOptions = useMemo(() => {
-    return state.relaciones.map((item) => ({
-      value: item.id,
-      label: `${item.vendedor?.nombre || 'Sin vendedor'} - ${item.rifa?.nombre || 'Sin rifa'}`,
-    }));
-  }, [state.relaciones]);
+    return state.relaciones
+      .filter((item) => (routeRifaId ? item.rifaId === routeRifaId : true))
+      .map((item) => ({
+        value: item.id,
+        label: routeRifaId
+          ? item.vendedor?.nombre || 'Sin vendedor'
+          : `${item.vendedor?.nombre || 'Sin vendedor'} - ${item.rifa?.nombre || 'Sin rifa'}`,
+      }));
+  }, [routeRifaId, state.relaciones]);
+
+  useEffect(() => {
+    if (!routeRifaId || state.loading) {
+      return;
+    }
+
+    const selectedStillValid = relationOptions.some((item) => item.value === state.selected);
+    if (!selectedStillValid) {
+      setState((prev) => ({ ...prev, selected: relationOptions[0]?.value || '' }));
+    }
+  }, [relationOptions, routeRifaId, state.loading, state.selected]);
 
   const selectedRelation = useMemo(
     () => state.relaciones.find((item) => item.id === state.selected) || null,
@@ -130,6 +147,8 @@ const HistorialAsignaciones = () => {
         vendedorNombre: selectedRelation.vendedor?.nombre || 'N/A',
         vendedorTelefono: selectedRelation.vendedor?.telefono || 'N/A',
         vendedorDireccion: selectedRelation.vendedor?.direccion || 'N/A',
+        comisionPct: selectedRelation.comisionPct,
+        precioCasa: selectedRelation.precioCasa,
         boletas: row.detalle.map((item) => item.boleta?.numero).filter(Boolean),
         assignmentSummary: state.history.map((item) => ({
           fecha: item.fecha,

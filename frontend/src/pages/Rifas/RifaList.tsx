@@ -126,9 +126,9 @@ const RifaList = () => {
       render: (row) => (
         <div className="flex gap-2">
           <Link className="text-indigo-600" to={`/rifas/${row.id}`}>
-            Detalle
+            Entrar
           </Link>
-          <Link className="text-slate-600" to={`/rifas/${row.id}/editar`}>
+          <Link className="text-slate-600" to={`/admin/rifas/${row.id}/editar`}>
             Editar
           </Link>
           <button
@@ -151,7 +151,7 @@ const RifaList = () => {
         title="Rifas"
         actions={
           <Link
-            to="/rifas/crear"
+            to="/admin/rifas/crear"
             className="rounded-md bg-slate-900 px-4 py-2 text-sm text-white"
           >
             Crear rifa

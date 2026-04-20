@@ -15,7 +15,7 @@ import { formatCOP } from '../../utils/money';
 import { printReceiptTicket } from '../../utils/print';
 
 const ReciboView = () => {
-  const { id } = useParams();
+  const { id, rifaId: routeRifaId } = useParams();
   const { config } = useAppConfig();
   const { user } = useAuth();
   const [receipt, setReceipt] = useState<any>(null);
@@ -248,7 +248,13 @@ const ReciboView = () => {
 
               <div className="mt-6">
                 <Link
-                  to={user?.rol === 'VENDEDOR' ? '/mis-recibos' : '/abonos'}
+                  to={
+                    user?.rol === 'VENDEDOR'
+                      ? '/mis-recibos'
+                      : routeRifaId
+                        ? `/rifas/${routeRifaId}/abonos`
+                        : '/abonos'
+                  }
                   className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium uppercase tracking-[0.08em] text-white"
                 >
                   {user?.rol === 'VENDEDOR' ? 'VOLVER A MIS RECIBOS' : 'VOLVER A ABONOS'}

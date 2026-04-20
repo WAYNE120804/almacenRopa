@@ -8,6 +8,7 @@ import { resolveVendorAccessScope } from '../auth/auth.scope';
 import { releaseExpiredPublicReservations } from '../checkout-publico/checkout-publico.service';
 import type {
   BoletaListFilters,
+  BoletaEstadoFilter,
   PublicBoletaListFilters,
   UpdateBoletaPayload,
 } from './boleta.schemas';
@@ -102,7 +103,103 @@ const boletaInclude = {
       },
     },
   },
+  asignaciones: {
+    select: {
+      asignacion: {
+        select: {
+          id: true,
+          fecha: true,
+        },
+      },
+    },
+    orderBy: {
+      asignacion: {
+        fecha: 'desc',
+      },
+    },
+    take: 1,
+  },
 } satisfies Prisma.BoletaInclude;
+
+const boletaListSelect = {
+  id: true,
+  rifaId: true,
+  numero: true,
+  estado: true,
+  juega: true,
+  precio: true,
+  rifaVendedorId: true,
+  clienteId: true,
+  ventaId: true,
+  devueltaPorVendedorNombre: true,
+  devueltaObservacion: true,
+  rifa: {
+    select: {
+      id: true,
+      nombre: true,
+      numeroCifras: true,
+      precioBoleta: true,
+      estado: true,
+    },
+  },
+  rifaVendedor: {
+    select: {
+      id: true,
+      comisionPct: true,
+      precioCasa: true,
+      vendedor: {
+        select: {
+          id: true,
+          nombre: true,
+          documento: true,
+          telefono: true,
+          direccion: true,
+        },
+      },
+    },
+  },
+  cliente: {
+    select: {
+      id: true,
+      nombre: true,
+      documento: true,
+      telefono: true,
+      email: true,
+    },
+  },
+  venta: {
+    select: {
+      id: true,
+      estado: true,
+      total: true,
+      saldoPendiente: true,
+      cliente: {
+        select: {
+          id: true,
+          nombre: true,
+          documento: true,
+          telefono: true,
+        },
+      },
+    },
+  },
+  asignaciones: {
+    select: {
+      asignacion: {
+        select: {
+          id: true,
+          fecha: true,
+        },
+      },
+    },
+    orderBy: {
+      asignacion: {
+        fecha: 'desc',
+      },
+    },
+    take: 1,
+  },
+} satisfies Prisma.BoletaSelect;
 
 function prismaClient() {
   const prisma = getPrisma();
@@ -170,6 +267,154 @@ function getPublicVisualState(boleta: {
   return boleta.estado;
 }
 
+function buildBoletaEditState(boleta: {
+  estado: EstadoBoleta;
+  clienteId?: string | null;
+  ventaId?: string | null;
+  venta?: { estado: EstadoVenta; saldoPendiente: Prisma.Decimal | number | string } | null;
+}) {
+  const hasClientOwnership = Boolean(boleta.clienteId || boleta.ventaId);
+  const visualState = getPublicVisualState(boleta);
+  const isLockedState = ['RESERVADA', 'ABONANDO', 'VENDIDA', 'PAGADA'].includes(visualState);
+  const canEditAdministrativeFields = !hasClientOwnership && !isLockedState;
+
+  return {
+    visualState,
+    fechaEntrega: null as Date | null,
+    editable: {
+      estado: canEditAdministrativeFields,
+      vendedor: canEditAdministrativeFields,
+      juega: !hasClientOwnership && visualState !== 'PAGADA',
+    },
+    bloqueadaMotivo: canEditAdministrativeFields
+      ? null
+      : hasClientOwnership
+        ? 'La boleta ya tiene cliente o venta asociada.'
+        : `La boleta esta en estado ${visualState}.`,
+  };
+}
+
+function withBoletaComputedFields<T extends Record<string, any>>(boleta: T) {
+  const latestAssignment = boleta.asignaciones?.[0]?.asignacion || null;
+  const editState = buildBoletaEditState(boleta as any);
+
+  return {
+    ...boleta,
+    fechaEntrega: latestAssignment?.fecha || null,
+    visualState: editState.visualState,
+    editable: editState.editable,
+    bloqueadaMotivo: editState.bloqueadaMotivo,
+  };
+}
+
+function buildBoletaWhere(
+  filters: Omit<BoletaListFilters, 'page' | 'pageSize'>,
+  scope: Awaited<ReturnType<typeof resolveVendorAccessScope>>
+): Prisma.BoletaWhereInput {
+  const vendedorNombre = filters.vendedorNombre?.trim();
+  const estado = filters.estado;
+  const numero = filters.numero?.trim();
+  const numeroFilter = numero
+    ? {
+        ...(filters.rifaId && numero.length >= 2
+          ? { startsWith: numero }
+          : { contains: numero }),
+      }
+    : undefined;
+
+  const andClauses: Prisma.BoletaWhereInput[] = [];
+
+  if (scope.restricted) {
+    andClauses.push({
+      OR: [
+        {
+          rifaVendedorId: {
+            in: scope.rifaVendedorIds.length > 0 ? scope.rifaVendedorIds : [''],
+          },
+        },
+        ...(scope.vendedorNombres.length > 0
+          ? [
+              {
+                devueltaPorVendedorNombre: {
+                  in: scope.vendedorNombres,
+                },
+              },
+            ]
+          : []),
+      ],
+    });
+  }
+
+  if (filters.rifaId) {
+    andClauses.push({ rifaId: filters.rifaId });
+  }
+
+  if (filters.rifaVendedorId) {
+    andClauses.push({ rifaVendedorId: filters.rifaVendedorId });
+  }
+
+  if (estado && estado !== 'ABONANDO') {
+    andClauses.push({ estado });
+  }
+
+  if (numeroFilter) {
+    andClauses.push({ numero: numeroFilter });
+  }
+
+  if (typeof filters.juega === 'boolean') {
+    andClauses.push({ juega: filters.juega });
+  }
+
+  if (vendedorNombre) {
+    andClauses.push({
+      OR: [
+        {
+          rifaVendedor: {
+            vendedor: {
+              nombre: {
+                contains: vendedorNombre,
+                mode: 'insensitive',
+              },
+            },
+          },
+        },
+        {
+          devueltaPorVendedorNombre: {
+            contains: vendedorNombre,
+            mode: 'insensitive',
+          },
+        },
+      ],
+    });
+  }
+
+  if (estado === 'ABONANDO') {
+    andClauses.push({
+      OR: [
+        {
+          venta: {
+            is: {
+              estado: EstadoVenta.ABONANDO,
+            },
+          },
+        },
+        {
+          estado: EstadoBoleta.VENDIDA,
+          venta: {
+            is: {
+              saldoPendiente: {
+                gt: 0,
+              },
+            },
+          },
+        },
+      ],
+    });
+  }
+
+  return andClauses.length > 0 ? { AND: andClauses } : {};
+}
+
 async function ensureBoletaPublicToken(id: string) {
   const prisma = prismaClient();
   const current = await prisma.boleta.findUnique({
@@ -222,62 +467,32 @@ export async function listBoletas(
   filters: BoletaListFilters,
   authUser?: Express.Request['authUser']
 ) {
-  const vendedorNombre = filters.vendedorNombre?.trim();
   const scope = await resolveVendorAccessScope(authUser);
-
-  return prismaClient().boleta.findMany({
-    where: {
-      ...(scope.restricted
-        ? {
-            OR: [
-              {
-                rifaVendedorId: {
-                  in: scope.rifaVendedorIds.length > 0 ? scope.rifaVendedorIds : [''],
-                },
-              },
-              ...(scope.vendedorNombres.length > 0
-                ? [
-                    {
-                      devueltaPorVendedorNombre: {
-                        in: scope.vendedorNombres,
-                      },
-                    },
-                  ]
-                : []),
-            ],
-          }
-        : {}),
-      ...(filters.rifaId ? { rifaId: filters.rifaId } : {}),
-      ...(filters.rifaVendedorId ? { rifaVendedorId: filters.rifaVendedorId } : {}),
-      ...(filters.estado ? { estado: filters.estado } : {}),
-      ...(filters.numero ? { numero: { contains: filters.numero } } : {}),
-      ...(typeof filters.juega === 'boolean' ? { juega: filters.juega } : {}),
-      ...(vendedorNombre
-        ? {
-            OR: [
-              {
-                rifaVendedor: {
-                  vendedor: {
-                    nombre: {
-                      contains: vendedorNombre,
-                      mode: 'insensitive',
-                    },
-                  },
-                },
-              },
-              {
-                devueltaPorVendedorNombre: {
-                  contains: vendedorNombre,
-                  mode: 'insensitive',
-                },
-              },
-            ],
-          }
-        : {}),
-    },
-    include: boletaInclude,
+  const prisma = prismaClient();
+  const where = buildBoletaWhere(filters, scope);
+  const totalItems = await prisma.boleta.count({ where });
+  const totalPages = Math.max(1, Math.ceil(totalItems / filters.pageSize));
+  const currentPage = Math.min(filters.page, totalPages);
+  const skip = (currentPage - 1) * filters.pageSize;
+  const boletas = await prisma.boleta.findMany({
+    where,
+    select: boletaListSelect,
     orderBy: [{ numero: 'asc' }],
+    skip,
+    take: filters.pageSize,
   });
+
+  return {
+    items: boletas.map(withBoletaComputedFields),
+    pagination: {
+      page: currentPage,
+      pageSize: filters.pageSize,
+      totalItems,
+      totalPages,
+      hasPrev: currentPage > 1,
+      hasNext: currentPage < totalPages,
+    },
+  };
 }
 
 export async function listPublicBoletas(filters: PublicBoletaListFilters) {
@@ -364,7 +579,7 @@ export async function getBoletaById(id: string, authUser?: Express.Request['auth
     }
   }
 
-  return boleta;
+  return withBoletaComputedFields(boleta);
 }
 
 export async function getOrCreateBoletaPublicLink(
@@ -517,7 +732,7 @@ export async function updateBoleta(id: string, payload: UpdateBoletaPayload) {
         },
       });
 
-      return tx.boleta.update({
+      const updated = await tx.boleta.update({
         where: { id },
         data: {
           estado: EstadoBoleta.DISPONIBLE,
@@ -528,6 +743,8 @@ export async function updateBoleta(id: string, payload: UpdateBoletaPayload) {
         },
         include: boletaInclude,
       });
+
+      return withBoletaComputedFields(updated);
     });
   }
 
@@ -573,7 +790,7 @@ export async function updateBoleta(id: string, payload: UpdateBoletaPayload) {
       });
     }
 
-    return tx.boleta.update({
+    const updated = await tx.boleta.update({
       where: { id },
       data: {
         estado: payload.estado,
@@ -603,6 +820,8 @@ export async function updateBoleta(id: string, payload: UpdateBoletaPayload) {
       },
       include: boletaInclude,
     });
+
+    return withBoletaComputedFields(updated);
   });
 }
 
@@ -713,9 +932,11 @@ export async function releaseBoletaFromCliente(
       });
     }
 
-    return tx.boleta.findUniqueOrThrow({
+    const updated = await tx.boleta.findUniqueOrThrow({
       where: { id: boleta.id },
       include: boletaInclude,
     });
+
+    return withBoletaComputedFields(updated);
   });
 }

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import client from '../../api/client';
 import { endpoints } from '../../api/endpoints';
@@ -24,6 +24,7 @@ const initialForm = {
 
 const CrearAbono = () => {
   const navigate = useNavigate();
+  const { rifaId: routeRifaId } = useParams();
   const query = useQuery();
   const [loading, setLoading] = useState(true);
   const [loadingSubCajas, setLoadingSubCajas] = useState(false);
@@ -54,12 +55,27 @@ const CrearAbono = () => {
 
   const relationOptions = useMemo(
     () =>
-      rifaVendedores.map((item) => ({
-        value: item.id,
-        label: `${item.rifa?.nombre || 'Sin rifa'} - ${item.vendedor?.nombre || 'Sin vendedor'}`,
-      })),
-    [rifaVendedores]
+      rifaVendedores
+        .filter((item) => (routeRifaId ? item.rifaId === routeRifaId : true))
+        .map((item) => ({
+          value: item.id,
+          label: routeRifaId
+            ? item.vendedor?.nombre || 'Sin vendedor'
+            : `${item.rifa?.nombre || 'Sin rifa'} - ${item.vendedor?.nombre || 'Sin vendedor'}`,
+        })),
+    [rifaVendedores, routeRifaId]
   );
+
+  useEffect(() => {
+    if (!routeRifaId || loading) {
+      return;
+    }
+
+    const selectedStillValid = relationOptions.some((item) => item.value === form.rifaVendedorId);
+    if (!selectedStillValid) {
+      setForm((prev) => ({ ...prev, rifaVendedorId: relationOptions[0]?.value || '' }));
+    }
+  }, [form.rifaVendedorId, loading, relationOptions, routeRifaId]);
 
   const selectedRelation = useMemo(
     () => rifaVendedores.find((item) => item.id === form.rifaVendedorId) || null,
@@ -120,7 +136,7 @@ const CrearAbono = () => {
 
       const { data } = await client.post(endpoints.crearAbono(form.rifaVendedorId), payload);
       setSuccess('ABONO REGISTRADO CORRECTAMENTE.');
-      navigate(`/recibos/${data.id}`);
+      navigate(routeRifaId ? `/rifas/${routeRifaId}/recibos/${data.id}` : `/recibos/${data.id}`);
     } catch (requestError) {
       setError((requestError as Error).message);
     } finally {
@@ -134,7 +150,7 @@ const CrearAbono = () => {
         title="Registrar abono"
         actions={
           <Link
-            to="/abonos"
+            to={routeRifaId ? `/rifas/${routeRifaId}/abonos` : '/abonos'}
             className="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700"
           >
             VER HISTORIAL

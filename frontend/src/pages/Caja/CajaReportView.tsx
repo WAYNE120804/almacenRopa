@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 
 import client from '../../api/client';
 import { endpoints } from '../../api/endpoints';
@@ -15,7 +15,8 @@ import { getGastoCategoryLabel } from '../Gastos/gastoCategories';
 const CajaReportView = () => {
   const { config } = useAppConfig();
   const [searchParams] = useSearchParams();
-  const rifaId = searchParams.get('rifaId') || '';
+  const { rifaId: routeRifaId } = useParams();
+  const rifaId = routeRifaId || searchParams.get('rifaId') || '';
   const [summary, setSummary] = useState<any | null>(null);
   const [gastos, setGastos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);

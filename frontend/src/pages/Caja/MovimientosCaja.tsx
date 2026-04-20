@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import client from '../../api/client';
 import { endpoints } from '../../api/endpoints';
@@ -12,8 +13,9 @@ import { formatDateTime } from '../../utils/dates';
 import { formatCOP } from '../../utils/money';
 
 const MovimientosCaja = () => {
+  const { rifaId: routeRifaId } = useParams();
   const [rifas, setRifas] = useState<any[]>([]);
-  const [selectedRifaId, setSelectedRifaId] = useState('');
+  const [selectedRifaId, setSelectedRifaId] = useState(routeRifaId || '');
   const [summary, setSummary] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadingSummary, setLoadingSummary] = useState(false);
@@ -24,7 +26,7 @@ const MovimientosCaja = () => {
       try {
         const { data } = await client.get(endpoints.rifas());
         setRifas(data);
-        if (data[0]?.id) {
+        if (!routeRifaId && data[0]?.id) {
           setSelectedRifaId(data[0].id);
         }
       } catch (requestError) {
@@ -35,7 +37,13 @@ const MovimientosCaja = () => {
     };
 
     void loadRifas();
-  }, []);
+  }, [routeRifaId]);
+
+  useEffect(() => {
+    if (routeRifaId) {
+      setSelectedRifaId(routeRifaId);
+    }
+  }, [routeRifaId]);
 
   useEffect(() => {
     const loadSummary = async () => {
@@ -107,14 +115,14 @@ const MovimientosCaja = () => {
             Movimientos por rifa
           </h3>
           <p className="theme-content-subtitle mt-2 text-sm">
-            Selecciona la rifa para ver ingresos y egresos recientes de caja.
+            Consulta ingresos y egresos recientes de caja de la rifa.
           </p>
 
           {loading ? (
             <div className="mt-6">
               <Loading label="Cargando rifas..." />
             </div>
-          ) : (
+          ) : !routeRifaId ? (
             <div className="mt-6 max-w-3xl">
               <SearchableSelect
                 options={rifaOptions}
@@ -123,7 +131,7 @@ const MovimientosCaja = () => {
                 placeholder="Selecciona una rifa..."
               />
             </div>
-          )}
+          ) : null}
         </section>
 
         {loadingSummary ? (

@@ -61,7 +61,7 @@ const VendedorForm = () => {
         await client.post(endpoints.vendedores(), form);
       }
 
-      navigate('/vendedores');
+      navigate('/admin/vendedores');
     } catch (requestError) {
       setError(requestError.message);
     }
@@ -132,7 +132,7 @@ const VendedorForm = () => {
               <button
                 type="button"
                 className="rounded-md border border-slate-300 px-4 py-2 text-sm text-slate-700"
-                onClick={() => navigate('/vendedores')}
+                onClick={() => navigate('/admin/vendedores')}
               >
                 Cancelar
               </button>

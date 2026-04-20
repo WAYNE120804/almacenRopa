@@ -151,6 +151,192 @@ export async function getRifaById(id: string, authUser?: Express.Request['authUs
   return rifa;
 }
 
+export async function getRifaCierreVendedores(
+  id: string,
+  authUser?: Express.Request['authUser']
+) {
+  await assertVendorCanAccessRifa(authUser, id);
+
+  const rifa = await prismaClient().rifa.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      nombre: true,
+      precioBoleta: true,
+    },
+  });
+
+  if (!rifa) {
+    throw new AppError('Rifa no encontrada.', 404);
+  }
+
+  const relaciones = await prismaClient().rifaVendedor.findMany({
+    where: { rifaId: id },
+    include: {
+      vendedor: {
+        select: {
+          id: true,
+          nombre: true,
+          documento: true,
+          telefono: true,
+          direccion: true,
+        },
+      },
+      asignaciones: {
+        select: {
+          id: true,
+          cantidad: true,
+          fecha: true,
+          detalle: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      },
+      devoluciones: {
+        select: {
+          id: true,
+          destino: true,
+          fecha: true,
+          detalle: {
+            select: {
+              id: true,
+            },
+          },
+        },
+      },
+      abonos: {
+        where: {
+          estado: 'CONFIRMADO',
+          anuladoAt: null,
+        },
+        select: {
+          id: true,
+          valor: true,
+          fecha: true,
+          descripcion: true,
+          metodoPago: true,
+          estado: true,
+          saldoAnterior: true,
+          saldoDespues: true,
+          boletasActuales: true,
+          usuario: {
+            select: {
+              id: true,
+              nombre: true,
+              email: true,
+            },
+          },
+          subCaja: {
+            select: {
+              id: true,
+              nombre: true,
+            },
+          },
+          recibo: {
+            select: {
+              id: true,
+              consecutivo: true,
+              codigoUnico: true,
+            },
+          },
+        },
+        orderBy: {
+          fecha: 'asc',
+        },
+      },
+      boletas: {
+        select: {
+          id: true,
+          numero: true,
+          estado: true,
+        },
+        orderBy: {
+          numero: 'asc',
+        },
+      },
+    },
+    orderBy: {
+      vendedor: {
+        nombre: 'asc',
+      },
+    },
+  });
+
+  return relaciones.map((relacion) => {
+    const totalBoletas = relacion.asignaciones.reduce(
+      (sum, asignacion) => sum + (asignacion.detalle.length || asignacion.cantidad || 0),
+      0
+    );
+    const devolucion = relacion.devoluciones.reduce(
+      (sum, devolucionItem) => sum + devolucionItem.detalle.length,
+      0
+    );
+    const boletasActuales = Math.max(0, totalBoletas - devolucion);
+    const precioCasa = Number(relacion.precioCasa || 0);
+    const deudaTotal = Number((boletasActuales * precioCasa).toFixed(2));
+    const totalAbonos = Number(
+      relacion.abonos
+        .reduce((sum, abono) => sum + Number(abono.valor || 0), 0)
+        .toFixed(2)
+    );
+    const deudaActual = Number((deudaTotal - totalAbonos).toFixed(2));
+
+    return {
+      rifa: {
+        id: rifa.id,
+        nombre: rifa.nombre,
+        precioBoleta: Number(rifa.precioBoleta || 0),
+      },
+      rifaVendedorId: relacion.id,
+      vendedorId: relacion.vendedorId,
+      vendedor: relacion.vendedor,
+      vendedorNombre: relacion.vendedor?.nombre || 'Sin vendedor',
+      comisionPct: Number(relacion.comisionPct || 0),
+      precioCasa,
+      totalBoletas,
+      devolucion,
+      boletasActuales,
+      boletasActualesSistema: relacion.boletas.length,
+      deudaTotal,
+      totalAbonos,
+      deudaActual,
+      boletas: relacion.boletas.map((boleta) => ({
+        id: boleta.id,
+        numero: boleta.numero,
+        estado: boleta.estado,
+      })),
+      abonos: relacion.abonos.map((abono, index) => ({
+        id: abono.id,
+        numero: index + 1,
+        valor: Number(abono.valor || 0),
+        fecha: abono.fecha,
+        descripcion: abono.descripcion,
+        metodoPago: abono.metodoPago,
+        estado: abono.estado,
+        saldoAnterior: Number(abono.saldoAnterior || 0),
+        saldoDespues: Number(abono.saldoDespues || 0),
+        boletasActuales: abono.boletasActuales,
+        usuario: abono.usuario,
+        subCaja: abono.subCaja,
+        recibo: abono.recibo,
+      })),
+      asignaciones: relacion.asignaciones.map((asignacion) => ({
+        id: asignacion.id,
+        fecha: asignacion.fecha,
+        cantidad: asignacion.detalle.length || asignacion.cantidad,
+      })),
+      devoluciones: relacion.devoluciones.map((devolucionItem) => ({
+        id: devolucionItem.id,
+        fecha: devolucionItem.fecha,
+        destino: devolucionItem.destino,
+        cantidad: devolucionItem.detalle.length,
+      })),
+    };
+  });
+}
+
 export async function createRifa(payload: RifaPayload) {
   const prisma = prismaClient();
 

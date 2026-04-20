@@ -437,19 +437,46 @@ export async function updateRifaVendedor(
   id: string,
   payload: UpdateRifaVendedorPayload
 ) {
+  const prisma = prismaClient();
   const relation = await getRifaVendedorById(id);
-  const precioCasa = calculatePrecioCasa(
-    relation.rifa.precioBoleta,
-    payload.comisionPct
-  );
+  const precioCasa = calculatePrecioCasa(relation.rifa.precioBoleta, payload.comisionPct);
 
-  return prismaClient().rifaVendedor.update({
-    where: { id },
-    data: {
-      comisionPct: payload.comisionPct,
-      precioCasa,
-    },
-    include: rifaVendedorInclude,
+  return prisma.$transaction(async (tx) => {
+    const [boletasActivas, abonosConfirmados] = await Promise.all([
+      tx.boleta.count({
+        where: {
+          rifaVendedorId: id,
+        },
+      }),
+      tx.abonoVendedor.findMany({
+        where: {
+          rifaVendedorId: id,
+          estado: 'CONFIRMADO',
+          anuladoAt: null,
+        },
+        select: {
+          valor: true,
+        },
+      }),
+    ]);
+
+    const totalAbonos = abonosConfirmados.reduce(
+      (sum, item) => sum + Number(item.valor || 0),
+      0
+    );
+    const saldoActual = Number((boletasActivas * precioCasa - totalAbonos).toFixed(2));
+
+    const updated = await tx.rifaVendedor.update({
+      where: { id },
+      data: {
+        comisionPct: payload.comisionPct,
+        precioCasa,
+        saldoActual,
+      },
+      include: rifaVendedorInclude,
+    });
+
+    return withTotalAbonado(updated);
   });
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 import client from '../../api/client';
 import { endpoints } from '../../api/endpoints';
@@ -64,8 +64,9 @@ function extractPreviewNumbers(rawValue, numeroCifras) {
 
 const AsignarBoletas = () => {
   const { config } = useAppConfig();
+  const { rifaId: routeRifaId } = useParams();
   const query = useQuery();
-  const preselectedRifaId = query.get('rifaId') || '';
+  const preselectedRifaId = routeRifaId || query.get('rifaId') || '';
 
   const [state, setState] = useState({
     rifas: [],
@@ -102,6 +103,15 @@ const AsignarBoletas = () => {
   const [partialConflict, setPartialConflict] = useState(null);
   const [partialReturnConflict, setPartialReturnConflict] = useState(null);
   const [returnConfirm, setReturnConfirm] = useState(null);
+
+  useEffect(() => {
+    if (!routeRifaId) {
+      return;
+    }
+
+    setForm((prev) => ({ ...prev, rifaId: routeRifaId }));
+    setFilters((prev) => ({ ...prev, rifaId: routeRifaId }));
+  }, [routeRifaId]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -602,6 +612,8 @@ const AsignarBoletas = () => {
         vendedorNombre: selectedRelation.vendedor?.nombre || 'N/A',
         vendedorTelefono: selectedRelation.vendedor?.telefono || 'N/A',
         vendedorDireccion: selectedRelation.vendedor?.direccion || 'N/A',
+        comisionPct: selectedRelation.comisionPct,
+        precioCasa: selectedRelation.precioCasa,
         boletas: row.detalle.map((item) => item.boleta?.numero).filter(Boolean),
         assignmentSummary: state.assignmentHistory.map((item) => ({
           fecha: item.fecha,
@@ -778,23 +790,26 @@ const AsignarBoletas = () => {
           <Loading />
         ) : (
           <>
+            {!routeRifaId ? (
             <form
               onSubmit={handleVincular}
               className="theme-section-card space-y-4 rounded-lg p-6 shadow-sm"
             >
               <h3 className="theme-main-title theme-content-title text-base font-semibold">Vincular vendedor a rifa</h3>
               <div className="grid gap-4 md:grid-cols-2">
-                <div>
-                  <span className="text-sm text-slate-600">Rifa</span>
-                  <div className="mt-1">
-                    <SearchableSelect
-                      options={rifaOptions}
-                      value={form.rifaId}
-                      onChange={(value) => setForm((prev) => ({ ...prev, rifaId: value }))}
-                      placeholder="Buscar rifa..."
-                    />
+                {!routeRifaId ? (
+                  <div>
+                    <span className="text-sm text-slate-600">Rifa</span>
+                    <div className="mt-1">
+                      <SearchableSelect
+                        options={rifaOptions}
+                        value={form.rifaId}
+                        onChange={(value) => setForm((prev) => ({ ...prev, rifaId: value }))}
+                        placeholder="Buscar rifa..."
+                      />
+                    </div>
                   </div>
-                </div>
+                ) : null}
 
                 <div>
                   <span className="text-sm text-slate-600">Vendedor</span>
@@ -843,35 +858,39 @@ const AsignarBoletas = () => {
                 Vincular
               </button>
             </form>
+            ) : null}
 
+            {!routeRifaId ? (
             <div className="theme-section-card rounded-lg p-6 shadow-sm">
               <div className="flex flex-wrap items-center justify-between gap-4">
                 <h3 className="theme-main-title theme-content-title text-base font-semibold">Relaciones rifa-vendedor</h3>
                 <button
                   type="button"
                   className="text-sm text-slate-600"
-                  onClick={() => setFilters({ rifaId: '', vendedorId: '' })}
+                  onClick={() => setFilters({ rifaId: routeRifaId || '', vendedorId: '' })}
                 >
                   Limpiar filtros
                 </button>
               </div>
 
               <div className="mt-4 grid gap-4 md:grid-cols-2">
-                <div>
-                  <span className="text-sm text-slate-600">Buscar por rifa</span>
-                  <div className="mt-1">
-                    <SearchableSelect
-                      options={rifaOptions}
-                      value={filters.rifaId}
-                      onChange={(value) =>
-                        setFilters((prev) => ({ ...prev, rifaId: value }))
-                      }
-                      placeholder="Filtrar por rifa..."
-                      clearable
-                      clearLabel="Quitar filtro de rifa"
-                    />
+                {!routeRifaId ? (
+                  <div>
+                    <span className="text-sm text-slate-600">Buscar por rifa</span>
+                    <div className="mt-1">
+                      <SearchableSelect
+                        options={rifaOptions}
+                        value={filters.rifaId}
+                        onChange={(value) =>
+                          setFilters((prev) => ({ ...prev, rifaId: value }))
+                        }
+                        placeholder="Filtrar por rifa..."
+                        clearable
+                        clearLabel="Quitar filtro de rifa"
+                      />
+                    </div>
                   </div>
-                </div>
+                ) : null}
 
                 <div>
                   <span className="text-sm text-slate-600">Buscar por vendedor</span>
@@ -901,6 +920,7 @@ const AsignarBoletas = () => {
                 )}
               </div>
             </div>
+            ) : null}
 
             <form
               onSubmit={handleAssign}
@@ -914,7 +934,7 @@ const AsignarBoletas = () => {
                   </p>
                 </div>
                 <Link
-                  to="/asignaciones/historial"
+                  to={routeRifaId ? `/rifas/${routeRifaId}/asignaciones/historial` : '/asignaciones/historial'}
                   className="rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-700"
                 >
                   Ver historial completo

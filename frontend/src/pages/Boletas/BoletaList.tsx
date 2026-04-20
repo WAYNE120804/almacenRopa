@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 import client from '../../api/client';
 import { endpoints } from '../../api/endpoints';
@@ -10,6 +10,7 @@ import Loading from '../../components/common/Loading';
 import SearchableSelect from '../../components/common/SearchableSelect';
 import Toast from '../../components/common/Toast';
 import Topbar from '../../components/Layout/Topbar';
+import { formatDate } from '../../utils/dates';
 import { formatCOP } from '../../utils/money';
 import { printBoletaSheet, printPublicBoletaFicha } from '../../utils/print';
 import { useAppConfig } from '../../context/AppConfigContext';
@@ -38,6 +39,21 @@ const statusClasses = {
   ANULADA: 'border-rose-200 bg-rose-50 text-rose-700',
 };
 
+const statusRowClasses = {
+  DISPONIBLE: 'bg-emerald-100/80 hover:bg-emerald-100',
+  ASIGNADA: 'bg-sky-100/80 hover:bg-sky-100',
+  RESERVADA: 'bg-amber-100/80 hover:bg-amber-100',
+  ABONANDO: 'bg-fuchsia-100/80 hover:bg-fuchsia-100',
+  VENDIDA: 'bg-blue-100/80 hover:bg-blue-100',
+  PAGADA: 'bg-indigo-100/80 hover:bg-indigo-100',
+  DEVUELTA: 'bg-orange-100/80 hover:bg-orange-100',
+  ANULADA: 'bg-rose-100/80 hover:bg-rose-100',
+};
+
+const editableEstadoOptions = estadoOptions.filter((option) =>
+  ['DISPONIBLE', 'ASIGNADA', 'DEVUELTA', 'ANULADA'].includes(option.value)
+);
+
 const getInitialRifaId = () => {
   const params = new URLSearchParams(window.location.search);
   return params.get('rifaId') || '';
@@ -56,14 +72,25 @@ const initialQuickClientForm = {
   email: '',
 };
 
+const BOLETAS_PAGE_SIZE = 200;
+
 const BoletaList = () => {
   const { config } = useAppConfig();
   const { user } = useAuth();
   const location = useLocation();
+  const { rifaId: routeRifaId } = useParams();
   const [state, setState] = useState({
     rifas: [],
     rifaVendedores: [],
     boletas: [],
+    pagination: {
+      page: 1,
+      pageSize: BOLETAS_PAGE_SIZE,
+      totalItems: 0,
+      totalPages: 1,
+      hasPrev: false,
+      hasNext: false,
+    },
     clientes: [],
     loadingSetup: true,
     loadingBoletas: false,
@@ -75,7 +102,7 @@ const BoletaList = () => {
   });
 
   const [filters, setFilters] = useState({
-    rifaId: getInitialRifaId(),
+    rifaId: routeRifaId || getInitialRifaId(),
     rifaVendedorId: '',
     estado: '',
     numero: '',
@@ -95,13 +122,42 @@ const BoletaList = () => {
   const [releasingClient, setReleasingClient] = useState(false);
   const [sharingPublicLink, setSharingPublicLink] = useState(false);
   const [printingPublicFicha, setPrintingPublicFicha] = useState(false);
+  const [savingCell, setSavingCell] = useState(null);
+  const [page, setPage] = useState(1);
+  const [debouncedNumero, setDebouncedNumero] = useState(filters.numero);
+  const [debouncedVendedorNombre, setDebouncedVendedorNombre] = useState(filters.vendedorNombre);
+  const boletasPageCache = useRef(new Map());
 
   useEffect(() => {
     setFilters((prev) => ({
       ...prev,
-      rifaId: new URLSearchParams(location.search).get('rifaId') || prev.rifaId,
+      rifaId: routeRifaId || new URLSearchParams(location.search).get('rifaId') || prev.rifaId,
     }));
-  }, [location.search]);
+  }, [location.search, routeRifaId]);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setDebouncedNumero(filters.numero);
+    }, 300);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [filters.numero]);
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      setDebouncedVendedorNombre(filters.vendedorNombre);
+    }, 300);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [filters.vendedorNombre]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [filters.rifaId, filters.rifaVendedorId, filters.estado, debouncedNumero, debouncedVendedorNombre]);
+
+  useEffect(() => {
+    boletasPageCache.current.clear();
+  }, [filters.rifaId, filters.rifaVendedorId, filters.estado, debouncedNumero, debouncedVendedorNombre]);
 
   useEffect(() => {
     const loadSetup = async () => {
@@ -175,56 +231,116 @@ const BoletaList = () => {
 
   useEffect(() => {
     if (!filters.rifaId) {
-      setState((prev) => ({ ...prev, boletas: [], loadingBoletas: false }));
+      setState((prev) => ({
+        ...prev,
+        boletas: [],
+        loadingBoletas: false,
+        pagination: {
+          page: 1,
+          pageSize: BOLETAS_PAGE_SIZE,
+          totalItems: 0,
+          totalPages: 1,
+          hasPrev: false,
+          hasNext: false,
+        },
+      }));
       return;
     }
 
     const devolucionPorVendedor =
-      filters.estado === 'DEVUELTA' && filters.rifaVendedorId && !filters.vendedorNombre
+      filters.estado === 'DEVUELTA' && filters.rifaVendedorId && !debouncedVendedorNombre
         ? state.rifaVendedores.find((item) => item.id === filters.rifaVendedorId)?.vendedor?.nombre || ''
         : '';
+
+    const cacheKey = JSON.stringify({
+      rifaId: filters.rifaId,
+      rifaVendedorId: filters.estado === 'DEVUELTA' ? '' : filters.rifaVendedorId || '',
+      estado: filters.estado || '',
+      numero: debouncedNumero || '',
+      vendedorNombre: debouncedVendedorNombre || devolucionPorVendedor || '',
+      page,
+      pageSize: BOLETAS_PAGE_SIZE,
+    });
+
+    const fetchBoletasPage = async (targetPage, { allowCache = true, prefetch = false } = {}) => {
+      const targetKey = JSON.stringify({
+        rifaId: filters.rifaId,
+        rifaVendedorId: filters.estado === 'DEVUELTA' ? '' : filters.rifaVendedorId || '',
+        estado: filters.estado || '',
+        numero: debouncedNumero || '',
+        vendedorNombre: debouncedVendedorNombre || devolucionPorVendedor || '',
+        page: targetPage,
+        pageSize: BOLETAS_PAGE_SIZE,
+      });
+
+      if (allowCache && boletasPageCache.current.has(targetKey)) {
+        return boletasPageCache.current.get(targetKey);
+      }
+
+      const { data } = await client.get(endpoints.boletas(), {
+        params: {
+          rifaId: filters.rifaId,
+          rifaVendedorId:
+            filters.estado === 'DEVUELTA'
+              ? undefined
+              : filters.rifaVendedorId || undefined,
+          estado: filters.estado || undefined,
+          numero: debouncedNumero || undefined,
+          vendedorNombre: debouncedVendedorNombre || devolucionPorVendedor || undefined,
+          page: targetPage,
+          pageSize: BOLETAS_PAGE_SIZE,
+        },
+      });
+
+      boletasPageCache.current.set(targetKey, data);
+
+      if (!prefetch && data.pagination?.hasNext) {
+        const nextPage = data.pagination.page + 1;
+        const nextKey = JSON.stringify({
+          rifaId: filters.rifaId,
+          rifaVendedorId: filters.estado === 'DEVUELTA' ? '' : filters.rifaVendedorId || '',
+          estado: filters.estado || '',
+          numero: debouncedNumero || '',
+          vendedorNombre: debouncedVendedorNombre || devolucionPorVendedor || '',
+          page: nextPage,
+          pageSize: BOLETAS_PAGE_SIZE,
+        });
+
+        if (!boletasPageCache.current.has(nextKey)) {
+          void fetchBoletasPage(nextPage, { allowCache: true, prefetch: true }).catch(() => {});
+        }
+      }
+
+      return data;
+    };
 
     const loadBoletas = async () => {
       try {
         setState((prev) => ({ ...prev, loadingBoletas: true, error: null }));
-
-        const { data } = await client.get(endpoints.boletas(), {
-          params: {
-            rifaId: filters.rifaId,
-            rifaVendedorId:
-              filters.estado === 'DEVUELTA'
-                ? undefined
-                : filters.rifaVendedorId || undefined,
-            estado:
-              filters.estado && filters.estado !== 'ABONANDO'
-                ? filters.estado
-                : undefined,
-            numero: filters.numero || undefined,
-            vendedorNombre: filters.vendedorNombre || devolucionPorVendedor || undefined,
-          },
-        });
-
-        const normalizedData =
-          filters.estado === 'ABONANDO'
-            ? data.filter(
-                (item) =>
-                  item.venta?.estado === 'ABONANDO' ||
-                  (item.estado === 'VENDIDA' && Number(item.venta?.saldoPendiente || 0) > 0)
-              )
-            : data;
+        const data = await fetchBoletasPage(page);
 
         setState((prev) => ({
           ...prev,
-          boletas: normalizedData,
+          boletas: data.items || [],
+          pagination: data.pagination || prev.pagination,
           loadingBoletas: false,
         }));
+        setPage(data.pagination?.page || 1);
         setSelectedBoletaIds((prev) =>
-          prev.filter((id) => normalizedData.some((item) => item.id === id))
+          prev.filter((id) => (data.items || []).some((item) => item.id === id))
         );
       } catch (error) {
         setState((prev) => ({
           ...prev,
           boletas: [],
+          pagination: {
+            page: 1,
+            pageSize: BOLETAS_PAGE_SIZE,
+            totalItems: 0,
+            totalPages: 1,
+            hasPrev: false,
+            hasNext: false,
+          },
           loadingBoletas: false,
           error: error.message,
         }));
@@ -232,7 +348,7 @@ const BoletaList = () => {
     };
 
     loadBoletas();
-  }, [filters.rifaId, filters.rifaVendedorId, filters.estado, filters.numero, filters.vendedorNombre, state.rifaVendedores]);
+  }, [filters.rifaId, filters.rifaVendedorId, filters.estado, debouncedNumero, debouncedVendedorNombre, state.rifaVendedores, page]);
 
   useEffect(() => {
     if (state.editing) {
@@ -375,6 +491,146 @@ const BoletaList = () => {
     return boleta.estado;
   };
 
+  const buildLocalEditState = (boleta) => {
+    const hasClientOwnership = Boolean(boleta.cliente?.id || boleta.clienteId || boleta.venta?.id || boleta.ventaId);
+    const visualState = getBoletaVisualState(boleta);
+    const isLockedState = ['RESERVADA', 'ABONANDO', 'VENDIDA', 'PAGADA'].includes(visualState);
+    const canEditAdministrativeFields = !hasClientOwnership && !isLockedState;
+
+    return {
+      visualState,
+      editable: {
+        estado: canEditAdministrativeFields,
+        vendedor: canEditAdministrativeFields,
+        juega: !hasClientOwnership && visualState !== 'PAGADA',
+      },
+      bloqueadaMotivo: canEditAdministrativeFields
+        ? null
+        : hasClientOwnership
+          ? 'La boleta ya tiene cliente o venta asociada.'
+          : `La boleta esta en estado ${visualState}.`,
+    };
+  };
+
+  const buildOptimisticBoleta = (boleta, payload) => {
+    const nextEstado = payload.estado ?? boleta.estado;
+    const nextRifaVendedorId =
+      nextEstado === 'DISPONIBLE' || nextEstado === 'DEVUELTA'
+        ? null
+        : payload.rifaVendedorId ?? boleta.rifaVendedor?.id ?? null;
+    const nextRelation = nextRifaVendedorId
+      ? state.rifaVendedores.find((item) => item.id === nextRifaVendedorId) || null
+      : null;
+    const nextBoleta = {
+      ...boleta,
+      estado: nextEstado,
+      juega: Boolean(payload.juega ?? boleta.juega),
+      rifaVendedorId: nextRifaVendedorId,
+      rifaVendedor: nextRelation,
+      devueltaPorVendedorNombre:
+        nextEstado === 'DEVUELTA'
+          ? boleta.rifaVendedor?.vendedor?.nombre || boleta.devueltaPorVendedorNombre || null
+          : null,
+      devueltaObservacion:
+        nextEstado === 'DEVUELTA'
+          ? boleta.devueltaObservacion || 'Boleta devuelta'
+          : null,
+    };
+    const editState = buildLocalEditState(nextBoleta);
+
+    return {
+      ...nextBoleta,
+      visualState: editState.visualState,
+      editable: editState.editable,
+      bloqueadaMotivo: editState.bloqueadaMotivo,
+    };
+  };
+
+  const boletaMatchesCurrentFilters = (boleta) => {
+    if (filters.rifaId && boleta.rifa?.id !== filters.rifaId && boleta.rifaId !== filters.rifaId) {
+      return false;
+    }
+
+    if (filters.rifaVendedorId && filters.estado !== 'DEVUELTA') {
+      if ((boleta.rifaVendedor?.id || boleta.rifaVendedorId || '') !== filters.rifaVendedorId) {
+        return false;
+      }
+    }
+
+    if (filters.estado) {
+      const visualState = boleta.visualState || getBoletaVisualState(boleta);
+
+      if (filters.estado === 'ABONANDO') {
+        if (visualState !== 'ABONANDO') {
+          return false;
+        }
+      } else if (boleta.estado !== filters.estado) {
+        return false;
+      }
+    }
+
+    if (debouncedNumero) {
+      const normalizedNumero = debouncedNumero.trim();
+
+      if (normalizedNumero) {
+        const matchesNumero =
+          filters.rifaId && normalizedNumero.length >= 2
+            ? String(boleta.numero).startsWith(normalizedNumero)
+            : String(boleta.numero).includes(normalizedNumero);
+
+        if (!matchesNumero) {
+          return false;
+        }
+      }
+    }
+
+    if (debouncedVendedorNombre) {
+      const searchTerm = debouncedVendedorNombre.trim().toLowerCase();
+      const vendedorTexto = [
+        boleta.rifaVendedor?.vendedor?.nombre,
+        boleta.devueltaPorVendedorNombre,
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase();
+
+      if (!vendedorTexto.includes(searchTerm)) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  const applyBoletaToCurrentPage = (updatedBoleta, fallbackBoleta) => {
+    setState((prev) => {
+      const previousBoleta =
+        prev.boletas.find((item) => item.id === updatedBoleta.id) || fallbackBoleta;
+      const previousWasVisible = previousBoleta ? boletaMatchesCurrentFilters(previousBoleta) : false;
+      const nextIsVisible = boletaMatchesCurrentFilters(updatedBoleta);
+      let totalItems = prev.pagination.totalItems;
+
+      if (previousWasVisible && !nextIsVisible) {
+        totalItems = Math.max(0, totalItems - 1);
+      } else if (!previousWasVisible && nextIsVisible) {
+        totalItems += 1;
+      }
+
+      const boletas = nextIsVisible
+        ? prev.boletas.map((item) => (item.id === updatedBoleta.id ? updatedBoleta : item))
+        : prev.boletas.filter((item) => item.id !== updatedBoleta.id);
+
+      return {
+        ...prev,
+        boletas,
+        pagination: {
+          ...prev.pagination,
+          totalItems,
+        },
+      };
+    });
+  };
+
   const loadBoletaDetail = async (boletaId) => {
     try {
       setLoadingDetail(true);
@@ -419,9 +675,19 @@ const BoletaList = () => {
 
   const refreshBoletas = async () => {
     const devolucionPorVendedor =
-      filters.estado === 'DEVUELTA' && filters.rifaVendedorId && !filters.vendedorNombre
+      filters.estado === 'DEVUELTA' && filters.rifaVendedorId && !debouncedVendedorNombre
         ? state.rifaVendedores.find((item) => item.id === filters.rifaVendedorId)?.vendedor?.nombre || ''
         : '';
+    const cacheKey = JSON.stringify({
+      rifaId: filters.rifaId || '',
+      rifaVendedorId: filters.estado === 'DEVUELTA' ? '' : filters.rifaVendedorId || '',
+      estado: filters.estado || '',
+      numero: debouncedNumero || '',
+      vendedorNombre: debouncedVendedorNombre || devolucionPorVendedor || '',
+      page,
+      pageSize: BOLETAS_PAGE_SIZE,
+    });
+    boletasPageCache.current.delete(cacheKey);
 
     const { data } = await client.get(endpoints.boletas(), {
       params: {
@@ -430,26 +696,23 @@ const BoletaList = () => {
           filters.estado === 'DEVUELTA'
             ? undefined
             : filters.rifaVendedorId || undefined,
-        estado:
-          filters.estado && filters.estado !== 'ABONANDO'
-            ? filters.estado
-            : undefined,
-        numero: filters.numero || undefined,
-        vendedorNombre: filters.vendedorNombre || devolucionPorVendedor || undefined,
+        estado: filters.estado || undefined,
+        numero: debouncedNumero || undefined,
+        vendedorNombre: debouncedVendedorNombre || devolucionPorVendedor || undefined,
+        page,
+        pageSize: BOLETAS_PAGE_SIZE,
       },
     });
 
-    const normalizedData =
-      filters.estado === 'ABONANDO'
-        ? data.filter(
-            (item) =>
-              item.venta?.estado === 'ABONANDO' ||
-              (item.estado === 'VENDIDA' && Number(item.venta?.saldoPendiente || 0) > 0)
-          )
-        : data;
-
-    setState((prev) => ({ ...prev, boletas: normalizedData }));
-    return normalizedData;
+    const items = data.items || [];
+    boletasPageCache.current.set(cacheKey, data);
+    setState((prev) => ({
+      ...prev,
+      boletas: items,
+      pagination: data.pagination || prev.pagination,
+    }));
+    setPage(data.pagination?.page || 1);
+    return items;
   };
 
   const refreshClientes = async () => {
@@ -470,7 +733,7 @@ const BoletaList = () => {
     await refreshClientes();
     setSelectedClientId(data.id);
     setQuickClientForm(initialQuickClientForm);
-    return data.id;
+    return data;
   };
 
   const handleAssignSelectedBoletasToClient = async () => {
@@ -483,9 +746,12 @@ const BoletaList = () => {
     }
 
     let clientId = selectedClientId;
+    let selectedClient =
+      state.clientes.find((item) => item.id === selectedClientId) || null;
 
     if (!clientId && quickClientForm.nombre.trim()) {
-      clientId = await createQuickClient();
+      selectedClient = await createQuickClient();
+      clientId = selectedClient.id;
     }
 
     if (!clientId) {
@@ -505,12 +771,62 @@ const BoletaList = () => {
         boletaIds: assignableSelectedBoletas.map((item) => item.id),
       });
 
-      const data = await refreshBoletas();
-
       setState((prev) => ({
         ...prev,
-        boletas: data,
         success: `${assignableSelectedBoletas.length} boletas reservadas al cliente correctamente.`,
+        boletas: prev.boletas
+          .map((item) => {
+            if (!assignableSelectedBoletas.some((selected) => selected.id === item.id)) {
+              return item;
+            }
+
+            const nextBoleta = {
+              ...item,
+              estado: 'RESERVADA',
+              clienteId: clientId,
+              cliente: selectedClient
+                ? {
+                    id: selectedClient.id,
+                    nombre: selectedClient.nombre,
+                    documento: selectedClient.documento,
+                    telefono: selectedClient.telefono,
+                    email: selectedClient.email,
+                  }
+                : item.cliente,
+              ventaId: `pending-${item.id}`,
+              venta: {
+                id: `pending-${item.id}`,
+                estado: 'PENDIENTE',
+                total: item.precio,
+                saldoPendiente: item.precio,
+                cliente: selectedClient
+                  ? {
+                      id: selectedClient.id,
+                      nombre: selectedClient.nombre,
+                      documento: selectedClient.documento,
+                      telefono: selectedClient.telefono,
+                    }
+                  : null,
+              },
+              juega: false,
+            };
+            const editState = buildLocalEditState(nextBoleta);
+
+            return {
+              ...nextBoleta,
+              visualState: editState.visualState,
+              editable: editState.editable,
+              bloqueadaMotivo: editState.bloqueadaMotivo,
+            };
+          })
+          .filter((item) => boletaMatchesCurrentFilters(item)),
+        pagination: {
+          ...prev.pagination,
+          totalItems:
+            filters.estado === 'ASIGNADA'
+              ? Math.max(0, prev.pagination.totalItems - assignableSelectedBoletas.length)
+              : prev.pagination.totalItems,
+        },
       }));
       setSelectedBoletaIds([]);
       closeAssignClientDialog();
@@ -558,6 +874,57 @@ const BoletaList = () => {
     }
   };
 
+  const handleInlineBoletaUpdate = async (boleta, changes, cellKey) => {
+    if (!boleta?.id) {
+      return;
+    }
+
+    const currentEstado = boleta.estado;
+    const currentRifaVendedorId = boleta.rifaVendedor?.id || '';
+    const nextEstado = changes.estado ?? currentEstado;
+    const nextRifaVendedorId =
+      Object.prototype.hasOwnProperty.call(changes, 'rifaVendedorId')
+        ? changes.rifaVendedorId
+        : currentRifaVendedorId;
+
+    if (nextEstado === 'ASIGNADA' && !nextRifaVendedorId) {
+      setState((prev) => ({
+        ...prev,
+        error: 'Para marcar una boleta como asignada debes escoger un vendedor.',
+        success: '',
+      }));
+      return;
+    }
+
+    const payload = {
+      estado: nextEstado,
+      rifaVendedorId: nextEstado === 'DISPONIBLE' ? null : nextRifaVendedorId || null,
+      juega: Boolean(changes.juega ?? boleta.juega),
+    };
+
+    try {
+      setSavingCell(`${boleta.id}:${cellKey}`);
+      const optimisticBoleta = buildOptimisticBoleta(boleta, payload);
+      applyBoletaToCurrentPage(optimisticBoleta, boleta);
+      const { data } = await client.put(endpoints.boletaById(boleta.id), payload);
+      applyBoletaToCurrentPage(data, boleta);
+      setState((prev) => ({
+        ...prev,
+        success: `Boleta ${data.numero} actualizada.`,
+        error: null,
+      }));
+    } catch (error) {
+      applyBoletaToCurrentPage(boleta, boleta);
+      setState((prev) => ({
+        ...prev,
+        error: error.message,
+        success: '',
+      }));
+    } finally {
+      setSavingCell(null);
+    }
+  };
+
   const handleReleaseClient = async () => {
     const targetBoletaId = detailBoleta?.id || state.editing?.id;
 
@@ -568,11 +935,10 @@ const BoletaList = () => {
     try {
       setReleasingClient(true);
       const { data } = await client.post(endpoints.boletaLiberarCliente(targetBoletaId));
-      await refreshBoletas();
       setDetailBoleta(data);
+      applyBoletaToCurrentPage(data, detailBoleta || state.editing);
       setState((prev) => ({
         ...prev,
-        boletas: prev.boletas.map((item) => (item.id === data.id ? data : item)),
         success: `La boleta ${data.numero} volvio a quedar asignada al vendedor y se libero del cliente.`,
         error: null,
       }));
@@ -751,15 +1117,17 @@ const BoletaList = () => {
         responsableDepartamento: config.responsableDepartamento,
         numeroResolucionAutorizacion: config.numeroResolucionAutorizacion,
         entidadAutoriza: config.entidadAutoriza,
-        rifaNombre: selectedRelation.rifa?.nombre || selectedRifa?.nombre || 'Sin rifa',
-        vendedorNombre: selectedRelation.vendedor?.nombre || 'N/A',
-        vendedorTelefono: selectedRelation.vendedor?.telefono || 'N/A',
-        vendedorDireccion: selectedRelation.vendedor?.direccion || 'N/A',
-        boletas: state.boletas.map((boleta) => boleta.numero),
-        assignmentSummary: assignmentHistory.map((item) => ({
-          fecha: item.fecha,
-          cantidad: item.cantidad,
-        })),
+          rifaNombre: selectedRelation.rifa?.nombre || selectedRifa?.nombre || 'Sin rifa',
+          vendedorNombre: selectedRelation.vendedor?.nombre || 'N/A',
+          vendedorTelefono: selectedRelation.vendedor?.telefono || 'N/A',
+          vendedorDireccion: selectedRelation.vendedor?.direccion || 'N/A',
+          comisionPct: selectedRelation.comisionPct,
+          precioCasa: selectedRelation.precioCasa,
+          boletas: state.boletas.map((boleta) => boleta.numero),
+          assignmentSummary: assignmentHistory.map((item) => ({
+            fecha: item.fecha,
+            cantidad: item.cantidad,
+          })),
       });
     } catch (error) {
       setState((prev) => ({
@@ -944,6 +1312,155 @@ const BoletaList = () => {
     );
   };
 
+  const renderAdminExcelBoletas = () => {
+    if (state.loadingBoletas) {
+      return <Loading />;
+    }
+
+    if (!state.boletas.length) {
+      return (
+        <EmptyState
+          title="Sin boletas para mostrar"
+          description="Ajusta los filtros para encontrar la boleta o el grupo de boletas que necesitas."
+        />
+      );
+    }
+
+    return (
+      <div className="overflow-x-auto rounded-md border border-slate-300 bg-white">
+        <table className="min-w-[1120px] w-full border-collapse text-sm">
+          <thead>
+            <tr className="bg-cyan-800 text-left text-xs font-semibold uppercase tracking-[0.08em] text-white">
+              <th className="w-32 border border-cyan-900 px-3 py-2">Numero</th>
+              <th className="w-72 border border-cyan-900 px-3 py-2">Vendedor</th>
+              <th className="w-48 border border-cyan-900 px-3 py-2">Estado</th>
+              <th className="w-44 border border-cyan-900 px-3 py-2">Fecha entrega</th>
+              <th className="w-56 border border-cyan-900 px-3 py-2">Cliente</th>
+              <th className="w-40 border border-cyan-900 px-3 py-2">Saldo</th>
+              <th className="w-64 border border-cyan-900 px-3 py-2">Detalle</th>
+            </tr>
+          </thead>
+          <tbody>
+            {state.boletas.map((boleta) => {
+              const visualState = boleta.visualState || getBoletaVisualState(boleta);
+              const rowClass = statusRowClasses[visualState] || 'bg-white hover:bg-slate-50';
+              const canEditEstado = Boolean(boleta.editable?.estado);
+              const canEditVendedor = Boolean(boleta.editable?.vendedor);
+              const savingEstado = savingCell === `${boleta.id}:estado`;
+              const savingVendedor = savingCell === `${boleta.id}:vendedor`;
+              const vendedorLabel =
+                boleta.rifaVendedor?.vendedor?.nombre ||
+                boleta.devueltaPorVendedorNombre ||
+                'Sin vendedor';
+
+              return (
+                <tr key={boleta.id} className={`${rowClass} align-middle`}>
+                  <td className="border border-slate-300 px-3 py-2 font-semibold tabular-nums text-slate-950">
+                    <button
+                      type="button"
+                      className="cursor-pointer font-semibold text-slate-950 underline-offset-2 transition hover:text-cyan-800 hover:underline"
+                      onClick={() => void openDetail(boleta)}
+                      title={`Ver detalle de la boleta ${boleta.numero}`}
+                    >
+                      {boleta.numero}
+                    </button>
+                  </td>
+                  <td className="border border-slate-300 px-2 py-1">
+                    {canEditVendedor ? (
+                      <div className="min-w-64">
+                        <SearchableSelect
+                          options={relationOptions}
+                          value={boleta.rifaVendedor?.id || ''}
+                          onChange={(value) =>
+                            handleInlineBoletaUpdate(
+                              boleta,
+                              {
+                                rifaVendedorId: value || null,
+                                estado: value ? (boleta.estado === 'DISPONIBLE' ? 'ASIGNADA' : boleta.estado) : 'DISPONIBLE',
+                              },
+                              'vendedor'
+                            )
+                          }
+                          placeholder="Buscar vendedor..."
+                          clearable
+                          clearLabel="Quitar vendedor"
+                        />
+                        {savingVendedor ? <p className="mt-1 text-xs text-slate-500">Guardando...</p> : null}
+                      </div>
+                    ) : (
+                      <span title={boleta.bloqueadaMotivo || ''}>{vendedorLabel}</span>
+                    )}
+                  </td>
+                  <td className="border border-slate-300 px-2 py-1">
+                    {canEditEstado ? (
+                      <div>
+                        <select
+                          className="w-full rounded-sm border border-slate-300 bg-white px-2 py-2 text-sm"
+                          value={boleta.estado}
+                          onChange={(event) =>
+                            handleInlineBoletaUpdate(
+                              boleta,
+                              {
+                                estado: event.target.value,
+                                rifaVendedorId:
+                                  event.target.value === 'DISPONIBLE'
+                                    ? null
+                                    : boleta.rifaVendedor?.id || '',
+                              },
+                              'estado'
+                            )
+                          }
+                        >
+                          {editableEstadoOptions.map((option) => (
+                            <option key={option.value} value={option.value}>
+                              {option.label}
+                            </option>
+                          ))}
+                        </select>
+                        {savingEstado ? <p className="mt-1 text-xs text-slate-500">Guardando...</p> : null}
+                      </div>
+                    ) : (
+                      <span
+                        className={`inline-flex rounded-full border px-2 py-1 text-xs font-semibold ${
+                          statusClasses[visualState] || 'border-slate-200 bg-slate-50 text-slate-700'
+                        }`}
+                        title={boleta.bloqueadaMotivo || ''}
+                      >
+                        {visualState}
+                      </span>
+                    )}
+                  </td>
+                  <td className="border border-slate-300 px-3 py-2 text-slate-800">
+                    {boleta.fechaEntrega ? formatDate(boleta.fechaEntrega) : 'Sin entrega'}
+                  </td>
+                  <td className="border border-slate-300 px-3 py-2 text-slate-800">
+                    {boleta.cliente?.nombre || 'Sin cliente'}
+                  </td>
+                  <td className="border border-slate-300 px-3 py-2 text-slate-800">
+                    {boleta.venta?.saldoPendiente ? formatCOP(boleta.venta.saldoPendiente) : '-'}
+                  </td>
+                  <td className="border border-slate-300 px-3 py-2 text-slate-700">
+                    <div className="flex items-center justify-between gap-3">
+                      <span>{boleta.bloqueadaMotivo || 'Editable'}</span>
+                      <button
+                        type="button"
+                        className="rounded-sm border border-slate-300 bg-white px-2 py-1 text-xs font-medium text-slate-700 transition hover:bg-slate-50 hover:text-cyan-800"
+                        onClick={() => void openDetail(boleta)}
+                        title={`Ver detalle de la boleta ${boleta.numero}`}
+                      >
+                        Ver detalle
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
   return (
     <div>
       <Topbar
@@ -973,7 +1490,7 @@ const BoletaList = () => {
                     Filtros de boletas
                   </h3>
                   <p className="theme-content-subtitle text-sm">
-                    Selecciona una rifa y luego filtra por estado, vendedor o numero.
+                    Filtra por estado, vendedor o numero dentro de la rifa seleccionada.
                   </p>
                 </div>
                 <button
@@ -981,7 +1498,7 @@ const BoletaList = () => {
                   className="text-sm text-slate-600"
                   onClick={() =>
                     setFilters({
-                      rifaId: '',
+                      rifaId: routeRifaId || '',
                       rifaVendedorId: '',
                       estado: '',
                       numero: '',
@@ -994,27 +1511,29 @@ const BoletaList = () => {
               </div>
 
               <div className="mt-4 grid gap-4 lg:grid-cols-4">
-                <div>
-                  <span className="text-sm text-slate-600">Rifa</span>
-                  <div className="mt-1">
-                    <SearchableSelect
-                      options={rifaOptions}
-                      value={filters.rifaId}
-                      onChange={(value) =>
-                        setFilters({
-                          rifaId: value,
-                          rifaVendedorId: '',
-                          estado: '',
-                          numero: '',
-                          vendedorNombre: '',
-                        })
-                      }
-                      placeholder="Buscar rifa..."
-                      clearable
-                      clearLabel="Quitar filtro de rifa"
-                    />
+                {!routeRifaId ? (
+                  <div>
+                    <span className="text-sm text-slate-600">Rifa</span>
+                    <div className="mt-1">
+                      <SearchableSelect
+                        options={rifaOptions}
+                        value={filters.rifaId}
+                        onChange={(value) =>
+                          setFilters({
+                            rifaId: value,
+                            rifaVendedorId: '',
+                            estado: '',
+                            numero: '',
+                            vendedorNombre: '',
+                          })
+                        }
+                        placeholder="Buscar rifa..."
+                        clearable
+                        clearLabel="Quitar filtro de rifa"
+                      />
+                    </div>
                   </div>
-                </div>
+                ) : null}
 
                 <div>
                   <span className="text-sm text-slate-600">
@@ -1081,6 +1600,16 @@ const BoletaList = () => {
                     <p className="theme-summary-value mt-2 text-2xl font-semibold">
                       {resumen.total}
                     </p>
+                    <p className="text-sm text-slate-500">
+                      Pagina {state.pagination.page} de {state.pagination.totalPages}
+                    </p>
+                  </div>
+                  <div className="theme-summary-card rounded-lg p-5 shadow-sm">
+                    <p className="theme-summary-label">Total encontrados</p>
+                    <p className="mt-2 text-2xl font-semibold text-slate-900">
+                      {state.pagination.totalItems}
+                    </p>
+                    <p className="text-sm text-slate-500">200 por pagina</p>
                   </div>
                   <div className="theme-summary-card rounded-lg p-5 shadow-sm">
                     <p className="theme-summary-label">Disponibles</p>
@@ -1105,7 +1634,7 @@ const BoletaList = () => {
                       <p className="theme-content-subtitle text-sm">
                         {isVendorView
                           ? 'Vista restringida a las boletas dentro de tu alcance. Haz clic sobre boletas asignadas para seleccionarlas y reservarlas a un cliente. Las boletas con cliente muestran su hoja de vida.'
-                          : 'Haz clic en cualquier cuadro para editar esa boleta.'}
+                          : 'Edita vendedor y estado directamente en la tabla. Las boletas con cliente, reserva, abono o pago quedan bloqueadas.'}
                       </p>
                     </div>
                     <div className="flex items-center gap-3">
@@ -1218,7 +1747,9 @@ const BoletaList = () => {
                   </div>
 
                   <div className="mt-6">
-                    {state.loadingBoletas ? (
+                    {!isVendorView ? (
+                      renderAdminExcelBoletas()
+                    ) : state.loadingBoletas ? (
                       <Loading />
                     ) : state.boletas.length ? (
                       <div className="grid grid-cols-4 gap-3 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 xl:grid-cols-12">
@@ -1270,6 +1801,52 @@ const BoletaList = () => {
                       />
                     )}
                   </div>
+
+                  {filters.rifaId && state.pagination.totalPages > 1 ? (
+                    <div className="mt-6 flex flex-wrap items-center justify-between gap-3 rounded-md border border-slate-200 bg-slate-50 px-4 py-3 text-sm">
+                      <div className="text-slate-600">
+                        Mostrando{' '}
+                        <strong>
+                          {state.pagination.totalItems === 0
+                            ? 0
+                            : (state.pagination.page - 1) * state.pagination.pageSize + 1}
+                        </strong>{' '}
+                        -{' '}
+                        <strong>
+                          {Math.min(
+                            state.pagination.page * state.pagination.pageSize,
+                            state.pagination.totalItems
+                          )}
+                        </strong>{' '}
+                        de <strong>{state.pagination.totalItems}</strong> boletas
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          className="rounded-md border border-slate-300 px-3 py-2 disabled:opacity-50"
+                          onClick={() => setPage((current) => Math.max(1, current - 1))}
+                          disabled={state.loadingBoletas || !state.pagination.hasPrev}
+                        >
+                          Anterior
+                        </button>
+                        <span className="px-2 text-slate-700">
+                          Pagina {state.pagination.page} de {state.pagination.totalPages}
+                        </span>
+                        <button
+                          type="button"
+                          className="rounded-md border border-slate-300 px-3 py-2 disabled:opacity-50"
+                          onClick={() =>
+                            setPage((current) =>
+                              Math.min(state.pagination.totalPages, current + 1)
+                            )
+                          }
+                          disabled={state.loadingBoletas || !state.pagination.hasNext}
+                        >
+                          Siguiente
+                        </button>
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
               </>
             )}
@@ -1536,7 +2113,7 @@ const BoletaList = () => {
         </div>
       ) : null}
 
-      {isVendorView && detailOpen ? (
+      {detailOpen ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4">
           <div className="w-full max-w-5xl rounded-2xl bg-white p-6 shadow-xl">
             <div className="flex items-start justify-between gap-4">

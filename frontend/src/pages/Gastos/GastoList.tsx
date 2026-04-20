@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import client from '../../api/client';
 import { endpoints } from '../../api/endpoints';
@@ -17,11 +17,12 @@ import { gastoCategoryOptions, getGastoCategoryLabel } from './gastoCategories';
 
 const GastoList = () => {
   const navigate = useNavigate();
+  const { rifaId: routeRifaId } = useParams();
   const { config } = useAppConfig();
   const [gastos, setGastos] = useState<any[]>([]);
   const [rifas, setRifas] = useState<any[]>([]);
   const [usuarios, setUsuarios] = useState<any[]>([]);
-  const [selectedRifaId, setSelectedRifaId] = useState('');
+  const [selectedRifaId, setSelectedRifaId] = useState(routeRifaId || '');
   const [selectedCategoria, setSelectedCategoria] = useState('');
   const [selectedUsuarioId, setSelectedUsuarioId] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
@@ -49,6 +50,12 @@ const GastoList = () => {
 
     void loadData();
   }, []);
+
+  useEffect(() => {
+    if (routeRifaId) {
+      setSelectedRifaId(routeRifaId);
+    }
+  }, [routeRifaId]);
 
   const rifaOptions = useMemo(
     () =>
@@ -220,7 +227,11 @@ const GastoList = () => {
       return;
     }
 
-    navigate(`/gastos/informe?rifaId=${encodeURIComponent(selectedRifaId)}`);
+    navigate(
+      routeRifaId
+        ? `/rifas/${routeRifaId}/gastos/informe`
+        : `/gastos/informe?rifaId=${encodeURIComponent(selectedRifaId)}`
+    );
   };
 
   return (
@@ -234,20 +245,22 @@ const GastoList = () => {
             Historial de gastos
           </h3>
           <p className="theme-content-subtitle mt-2 text-sm">
-            Filtra por rifa o categoria y luego busca por descripcion, codigo unico o consecutivo del recibo.
+            Filtra por categoria, trabajador o texto para encontrar los gastos de la rifa.
           </p>
 
           <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,280px)_minmax(0,240px)_minmax(0,280px)_auto]">
-            <div>
-              <SearchableSelect
-                options={rifaOptions}
-                value={selectedRifaId}
-                onChange={setSelectedRifaId}
-                placeholder="Filtrar por rifa..."
-                clearable
-                clearLabel="Quitar seleccion"
-              />
-            </div>
+            {!routeRifaId ? (
+              <div>
+                <SearchableSelect
+                  options={rifaOptions}
+                  value={selectedRifaId}
+                  onChange={setSelectedRifaId}
+                  placeholder="Filtrar por rifa..."
+                  clearable
+                  clearLabel="Quitar seleccion"
+                />
+              </div>
+            ) : null}
             <label className="block text-sm">
               <span className="text-slate-600">Categoria</span>
               <select
@@ -295,7 +308,7 @@ const GastoList = () => {
                   VER INFORME
                 </button>
                 <Link
-                  to="/gastos/crear"
+                  to={routeRifaId ? `/rifas/${routeRifaId}/gastos/crear` : '/gastos/crear'}
                   className="rounded-md border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700"
                 >
                   REGISTRAR GASTO

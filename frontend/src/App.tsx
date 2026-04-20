@@ -47,10 +47,14 @@ const HomeRoute = () => {
   const { user } = useAuth();
 
   if (user?.rol === 'CAJERO') {
-    return <Navigate to="/abonos" replace />;
+    return <Navigate to="/admin/rifas" replace />;
   }
 
-  return <Dashboard />;
+  if (user?.rol === 'VENDEDOR') {
+    return <Dashboard />;
+  }
+
+  return <Navigate to="/admin/rifas" replace />;
 };
 
 const App = () => {
@@ -71,9 +75,105 @@ const App = () => {
               <AppLayout>
                 <Routes>
                   <Route path="/" element={<HomeRoute />} />
+                  <Route
+                    path="/admin/rifas"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <RifaList />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/rifas/crear"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <RifaForm />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/rifas/:id/editar"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <RifaForm />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/vendedores"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <VendedorList />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/vendedores/crear"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <VendedorForm />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/vendedores/:id/editar"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <VendedorForm />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/vendedores/:id"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <VendedorDetail />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/usuarios"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN']}>
+                        <UsuariosPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/configuracion"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN']}>
+                        <ConfiguracionPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin/configuracion-web"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN']}>
+                        <ConfiguracionWebPage />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route path="/boletas" element={<BoletaList />} />
                   <Route
+                    path="/rifas/:rifaId/boletas"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <BoletaList />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
                     path="/juego"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <JuegoPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/rifas/:rifaId/juego"
                     element={
                       <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
                         <JuegoPage />
@@ -129,6 +229,14 @@ const App = () => {
                     }
                   />
                   <Route
+                    path="/rifas/:rifaId/vendedores"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <VendedorList />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
                     path="/vendedores/crear"
                     element={
                       <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
@@ -161,7 +269,23 @@ const App = () => {
                     }
                   />
                   <Route
+                    path="/rifas/:rifaId/asignaciones"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <AsignarBoletas />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
                     path="/asignaciones/historial"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <HistorialAsignaciones />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/rifas/:rifaId/asignaciones/historial"
                     element={
                       <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
                         <HistorialAsignaciones />
@@ -176,7 +300,23 @@ const App = () => {
                       </ProtectedRoute>
                     }
                   />
+                  <Route
+                    path="/rifas/:rifaId/devoluciones"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <DevolucionesPage />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route path="/abonos" element={<HistorialAbonos />} />
+                  <Route
+                    path="/rifas/:rifaId/abonos"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <HistorialAbonos />
+                      </ProtectedRoute>
+                    }
+                  />
                   <Route
                     path="/mis-clientes"
                     element={
@@ -226,7 +366,23 @@ const App = () => {
                     }
                   />
                   <Route
+                    path="/rifas/:rifaId/abonos/crear"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN', 'CAJERO']}>
+                        <CrearAbono />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
                     path="/gastos"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN']}>
+                        <GastoList />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/rifas/:rifaId/gastos"
                     element={
                       <ProtectedRoute allowedRoles={['ADMIN']}>
                         <GastoList />
@@ -242,7 +398,23 @@ const App = () => {
                     }
                   />
                   <Route
+                    path="/rifas/:rifaId/gastos/crear"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN']}>
+                        <GastoForm />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
                     path="/gastos/informe"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN']}>
+                        <GastoReportView />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/rifas/:rifaId/gastos/informe"
                     element={
                       <ProtectedRoute allowedRoles={['ADMIN']}>
                         <GastoReportView />
@@ -266,6 +438,14 @@ const App = () => {
                     }
                   />
                   <Route
+                    path="/rifas/:rifaId/caja"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN']}>
+                        <CajaDashboard />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
                     path="/caja/informe"
                     element={
                       <ProtectedRoute allowedRoles={['ADMIN']}>
@@ -274,7 +454,23 @@ const App = () => {
                     }
                   />
                   <Route
+                    path="/rifas/:rifaId/caja/informe"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN']}>
+                        <CajaReportView />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
                     path="/caja/movimientos"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN']}>
+                        <MovimientosCaja />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/rifas/:rifaId/caja/movimientos"
                     element={
                       <ProtectedRoute allowedRoles={['ADMIN']}>
                         <MovimientosCaja />
@@ -306,6 +502,7 @@ const App = () => {
                     }
                   />
                   <Route path="/recibos/:id" element={<ReciboView />} />
+                  <Route path="/rifas/:rifaId/recibos/:id" element={<ReciboView />} />
                   <Route path="/cliente-recibos/:id" element={<ClienteReciboView />} />
                 </Routes>
               </AppLayout>

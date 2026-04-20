@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import client from '../../api/client';
 import { endpoints } from '../../api/endpoints';
@@ -13,8 +13,9 @@ import { formatCOP } from '../../utils/money';
 
 const CajaDashboard = () => {
   const navigate = useNavigate();
+  const { rifaId: routeRifaId } = useParams();
   const [rifas, setRifas] = useState<any[]>([]);
-  const [selectedRifaId, setSelectedRifaId] = useState('');
+  const [selectedRifaId, setSelectedRifaId] = useState(routeRifaId || '');
   const [summary, setSummary] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [loadingSummary, setLoadingSummary] = useState(false);
@@ -28,7 +29,7 @@ const CajaDashboard = () => {
       try {
         const { data } = await client.get(endpoints.rifas());
         setRifas(data);
-        if (data[0]?.id) {
+        if (!routeRifaId && data[0]?.id) {
           setSelectedRifaId(data[0].id);
         }
       } catch (requestError) {
@@ -39,7 +40,13 @@ const CajaDashboard = () => {
     };
 
     void loadRifas();
-  }, []);
+  }, [routeRifaId]);
+
+  useEffect(() => {
+    if (routeRifaId) {
+      setSelectedRifaId(routeRifaId);
+    }
+  }, [routeRifaId]);
 
   useEffect(() => {
     const loadSummary = async () => {
@@ -124,7 +131,11 @@ const CajaDashboard = () => {
       return;
     }
 
-    navigate(`/caja/informe?rifaId=${encodeURIComponent(selectedRifaId)}`);
+    navigate(
+      routeRifaId
+        ? `/rifas/${routeRifaId}/caja/informe`
+        : `/caja/informe?rifaId=${encodeURIComponent(selectedRifaId)}`
+    );
   };
 
   const refreshSummary = async () => {
@@ -183,7 +194,7 @@ const CajaDashboard = () => {
             Caja por rifa
           </h3>
           <p className="theme-content-subtitle mt-2 text-sm">
-            Selecciona la rifa para revisar caja general, subcajas y estado de recaudo.
+            Revisa caja general, subcajas y estado de recaudo de la rifa.
           </p>
 
           {loading ? (
@@ -191,14 +202,16 @@ const CajaDashboard = () => {
               <Loading label="Cargando rifas..." />
             </div>
           ) : (
-            <div className="mt-6 max-w-3xl">
-              <SearchableSelect
-                options={rifaOptions}
-                value={selectedRifaId}
-                onChange={setSelectedRifaId}
-                placeholder="Selecciona una rifa..."
-              />
-            </div>
+            !routeRifaId ? (
+              <div className="mt-6 max-w-3xl">
+                <SearchableSelect
+                  options={rifaOptions}
+                  value={selectedRifaId}
+                  onChange={setSelectedRifaId}
+                  placeholder="Selecciona una rifa..."
+                />
+              </div>
+            ) : null
           )}
         </section>
 

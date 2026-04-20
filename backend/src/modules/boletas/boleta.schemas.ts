@@ -9,7 +9,11 @@ type BoletaListQueryInput = {
   numero?: unknown;
   vendedorNombre?: unknown;
   juega?: unknown;
+  page?: unknown;
+  pageSize?: unknown;
 };
+
+export type BoletaEstadoFilter = EstadoBoleta | 'ABONANDO';
 
 type PublicBoletaListQueryInput = {
   rifaId?: unknown;
@@ -24,10 +28,12 @@ type UpdateBoletaInput = {
 export type BoletaListFilters = {
   rifaId?: string;
   rifaVendedorId?: string;
-  estado?: EstadoBoleta;
+  estado?: BoletaEstadoFilter;
   numero?: string;
   vendedorNombre?: string;
   juega?: boolean;
+  page: number;
+  pageSize: number;
 };
 
 export type UpdateBoletaPayload = {
@@ -56,11 +62,25 @@ function parseEstado(value: unknown) {
     return undefined;
   }
 
+  if (stringValue === 'ABONANDO') {
+    return stringValue as BoletaEstadoFilter;
+  }
+
   if (!(stringValue in EstadoBoleta)) {
     throw new AppError('El estado de la boleta no es valido.');
   }
 
-  return stringValue as EstadoBoleta;
+  return stringValue as BoletaEstadoFilter;
+}
+
+function parseEstadoBoleta(value: unknown) {
+  const estado = parseEstado(value);
+
+  if (estado === 'ABONANDO') {
+    throw new AppError('El estado de la boleta no es valido para esta operacion.');
+  }
+
+  return estado;
 }
 
 function parseOptionalBoolean(value: unknown) {
@@ -89,6 +109,29 @@ function parseOptionalBoolean(value: unknown) {
   throw new AppError('El filtro "juega" no es valido.', 400);
 }
 
+function parsePositiveInteger(
+  value: unknown,
+  fieldName: string,
+  fallback: number,
+  max?: number
+) {
+  if (value === undefined || value === null || value === '') {
+    return fallback;
+  }
+
+  const numberValue = Number(value);
+
+  if (!Number.isInteger(numberValue) || numberValue <= 0) {
+    throw new AppError(`El campo "${fieldName}" debe ser un entero positivo.`, 400);
+  }
+
+  if (max && numberValue > max) {
+    return max;
+  }
+
+  return numberValue;
+}
+
 export function parseBoletaListFilters(
   input: BoletaListQueryInput
 ): BoletaListFilters {
@@ -99,13 +142,15 @@ export function parseBoletaListFilters(
     numero: parseOptionalString(input.numero),
     vendedorNombre: parseOptionalString(input.vendedorNombre),
     juega: parseOptionalBoolean(input.juega),
+    page: parsePositiveInteger(input.page, 'page', 1),
+    pageSize: parsePositiveInteger(input.pageSize, 'pageSize', 200, 200),
   };
 }
 
 export function parseUpdateBoletaPayload(
   input: UpdateBoletaInput
 ): UpdateBoletaPayload {
-  const estado = parseEstado(input.estado);
+  const estado = parseEstadoBoleta(input.estado);
 
   if (!estado) {
     throw new AppError('El campo "estado" es obligatorio.');

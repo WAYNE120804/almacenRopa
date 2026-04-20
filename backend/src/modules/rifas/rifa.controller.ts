@@ -4,6 +4,7 @@ import {
   createRifa,
   deleteRifa,
   getRifaById,
+  getRifaCierreVendedores,
   listPublicRifas,
   listRifas,
   updateRifa,
@@ -45,6 +46,18 @@ export async function getRifa(
 ) {
   try {
     res.json(await getRifaById(getIdParam(req.params.id), req.authUser));
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function getRifaCierre(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    res.json(await getRifaCierreVendedores(getIdParam(req.params.id), req.authUser));
   } catch (error) {
     next(error);
   }

@@ -8,6 +8,7 @@ const rifa_controller_1 = require("./rifa.controller");
 exports.rifaRouter = (0, express_1.Router)();
 exports.rifaRouter.get('/publicas', rifa_controller_1.getAllPublicRifas);
 exports.rifaRouter.get('/', rifa_controller_1.getAllRifas);
+exports.rifaRouter.get('/:id/cierre-vendedores', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN, prisma_client_1.RolUsuario.CAJERO), rifa_controller_1.getRifaCierre);
 exports.rifaRouter.get('/:id', rifa_controller_1.getRifa);
 exports.rifaRouter.post('/', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN), rifa_controller_1.postRifa);
 exports.rifaRouter.put('/:id', (0, auth_1.requireRole)(prisma_client_1.RolUsuario.ADMIN), rifa_controller_1.putRifa);

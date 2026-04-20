@@ -244,6 +244,9 @@ model Boleta {
 
   @@unique([rifaId, numero])
   @@index([estado])
+  @@index([rifaId, estado])
+  @@index([rifaId, rifaVendedorId])
+  @@index([rifaId, rifaVendedorId, estado])
 }
 
 //////////////////////////////////////

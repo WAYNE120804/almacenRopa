@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getAllRifas = getAllRifas;
 exports.getAllPublicRifas = getAllPublicRifas;
 exports.getRifa = getRifa;
+exports.getRifaCierre = getRifaCierre;
 exports.postRifa = postRifa;
 exports.putRifa = putRifa;
 exports.removeRifa = removeRifa;
@@ -30,6 +31,14 @@ async function getAllPublicRifas(_req, res, next) {
 async function getRifa(req, res, next) {
     try {
         res.json(await (0, rifa_service_1.getRifaById)(getIdParam(req.params.id), req.authUser));
+    }
+    catch (error) {
+        next(error);
+    }
+}
+async function getRifaCierre(req, res, next) {
+    try {
+        res.json(await (0, rifa_service_1.getRifaCierreVendedores)(getIdParam(req.params.id), req.authUser));
     }
     catch (error) {
         next(error);

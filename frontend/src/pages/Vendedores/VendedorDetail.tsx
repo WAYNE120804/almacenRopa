@@ -52,7 +52,7 @@ const VendedorDetail = () => {
 
     try {
       await client.delete(endpoints.vendedorById(id));
-      navigate('/vendedores');
+      navigate('/admin/vendedores');
     } catch (error) {
       setState((prev) => ({
         ...prev,
@@ -67,7 +67,7 @@ const VendedorDetail = () => {
       <Topbar
         title="Detalle del vendedor"
         actions={
-          <Link className="text-sm text-slate-600" to="/vendedores">
+          <Link className="text-sm text-slate-600" to="/admin/vendedores">
             Volver
           </Link>
         }
@@ -95,7 +95,7 @@ const VendedorDetail = () => {
                 </div>
                 <div className="flex gap-2">
                   <Link
-                    to={`/vendedores/${id}/editar`}
+                    to={`/admin/vendedores/${id}/editar`}
                     className="rounded-md border border-slate-300 px-3 py-1 text-sm"
                   >
                     Editar

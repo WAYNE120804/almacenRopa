@@ -26,6 +26,7 @@ export const endpoints = {
   rifas: () => '/rifas',
   rifasPublicas: () => '/rifas/publicas',
   rifaById: (id) => `/rifas/${id}`,
+  rifaCierreVendedores: (id) => `/rifas/${id}/cierre-vendedores`,
   vendedores: () => '/vendedores',
   vendedorById: (id) => `/vendedores/${id}`,
   vendedorAcceso: (id) => `/vendedores/${id}/acceso`,

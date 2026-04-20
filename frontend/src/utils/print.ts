@@ -14,6 +14,8 @@ type PrintableBoletaSheetInput = {
   vendedorNombre: string;
   vendedorTelefono?: string | null;
   vendedorDireccion?: string | null;
+  comisionPct?: number | string | null;
+  precioCasa?: number | string | null;
   boletas: string[];
   assignmentSummary?: Array<{
     fecha: string;
@@ -328,7 +330,8 @@ type PrintablePublicPurchaseSummaryInput = {
   };
 };
 
-const ROWS_PER_PAGE = 35;
+const FIRST_PAGE_ROWS = 55;
+const CONTINUED_PAGE_ROWS = 68;
 const COLUMN_KEYS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 function escapeHtml(value: string) {
@@ -395,6 +398,28 @@ function formatAssignmentSummary(
 
     return `${formattedDate}: ${item.cantidad} boletas`;
   });
+}
+
+function paginateBoletaRows(maxRows: number) {
+  if (maxRows <= 0) {
+    return [{ startRow: 0, rowCount: 0, firstPage: true }];
+  }
+
+  const pages: Array<{ startRow: number; rowCount: number; firstPage: boolean }> = [];
+  let startRow = 0;
+  let remaining = maxRows;
+  let firstPage = true;
+
+  while (remaining > 0) {
+    const limit = firstPage ? FIRST_PAGE_ROWS : CONTINUED_PAGE_ROWS;
+    const rowCount = Math.min(limit, remaining);
+    pages.push({ startRow, rowCount, firstPage });
+    startRow += rowCount;
+    remaining -= rowCount;
+    firstPage = false;
+  }
+
+  return pages;
 }
 
 function formatReceiptMoney(value: string | number) {
@@ -513,6 +538,8 @@ export function printBoletaSheet({
   vendedorNombre,
   vendedorTelefono,
   vendedorDireccion,
+  comisionPct,
+  precioCasa,
   boletas,
   assignmentSummary = [],
 }: PrintableBoletaSheetInput) {
@@ -522,98 +549,118 @@ export function printBoletaSheet({
 
   const columnMap = buildColumnMap(boletas);
   const maxRows = Math.max(...COLUMN_KEYS.map((key) => columnMap.get(key)?.length || 0));
-  const totalPages = Math.max(1, Math.ceil(maxRows / ROWS_PER_PAGE));
+  const pages = paginateBoletaRows(maxRows);
+  const totalPages = pages.length;
   const printedAt = formatPrintDateTime(new Date());
   const summaryLines = formatAssignmentSummary(assignmentSummary);
 
-  const pagesHtml = Array.from({ length: totalPages }, (_, pageIndex) => {
-    const startRow = pageIndex * ROWS_PER_PAGE;
-    const rowIndexes = Array.from(
-      { length: Math.min(ROWS_PER_PAGE, Math.max(maxRows - startRow, 0)) },
-      (_, index) => startRow + index
-    );
+  const pagesHtml = pages
+    .map(({ startRow, rowCount, firstPage }, pageIndex) => {
+      const rowIndexes = Array.from({ length: rowCount }, (_, index) => startRow + index);
+      const rowsHtml = rowIndexes
+        .map((rowIndex) => {
+          const cellsHtml = COLUMN_KEYS.map((columnKey) => {
+            const value = columnMap.get(columnKey)?.[rowIndex] || '';
+            return `<td>${escapeHtml(value)}</td>`;
+          }).join('');
 
-    const rowsHtml = rowIndexes
-      .map((rowIndex) => {
-        const cellsHtml = COLUMN_KEYS.map((columnKey) => {
-          const value = columnMap.get(columnKey)?.[rowIndex] || '';
-          return `<td>${escapeHtml(value)}</td>`;
-        }).join('');
+          return `<tr>${cellsHtml}</tr>`;
+        })
+        .join('');
 
-        return `<tr>${cellsHtml}</tr>`;
-      })
-      .join('');
-
-    return `
-      <section class="sheet">
-        <table class="sheet-table">
-          <thead>
-            <tr>
-              <th colspan="2" class="logo-cell">
-                ${
-                  logoDataUrl
-                    ? `<img src="${logoDataUrl}" alt="${escapeHtml(companyName)}" class="logo" />`
-                    : `<div class="logo-fallback">${escapeHtml(companyName.slice(0, 2).toUpperCase())}</div>`
-                }
-              </th>
-              <th colspan="8" class="title-cell">${escapeHtml(
-                `${companyName} - ${rifaNombre}`.toUpperCase()
-              )}</th>
-            </tr>
-            <tr>
-              <th colspan="2" class="vendor-label">VENDEDOR</th>
-              <th colspan="3" class="vendor-value">${escapeHtml(vendedorNombre || 'N/A')}</th>
-              <th colspan="2" class="vendor-label">TELEFONO</th>
-              <th colspan="3" class="vendor-value">${escapeHtml(vendedorTelefono || 'N/A')}</th>
-            </tr>
-            <tr>
-              <th colspan="2" class="vendor-label">DIRECCION</th>
-              <th colspan="3" class="vendor-value">${escapeHtml(vendedorDireccion || 'N/A')}</th>
-              <th colspan="2" class="total-label">TOTAL BOLETAS</th>
-              <th colspan="3" class="total-value">${boletas.length}</th>
-            </tr>
-            <tr>
-              <th colspan="2" class="responsable-label">RESPONSABLE</th>
-              <th colspan="3" class="responsable-value">${escapeHtml(responsableNombre || 'N/A')}</th>
-              <th colspan="2" class="responsable-label">TEL. RESPONSABLE</th>
-              <th colspan="3" class="responsable-value">${escapeHtml(responsableTelefono || 'N/A')}</th>
-            </tr>
-            <tr>
-              <th colspan="2" class="responsable-label">UBICACION</th>
-              <th colspan="3" class="responsable-value">${escapeHtml(
-                [responsableDireccion, responsableCiudad, responsableDepartamento]
-                  .filter(Boolean)
-                  .join(' - ') || 'N/A'
-              )}</th>
-              <th colspan="2" class="responsable-label">AUTORIZA</th>
-              <th colspan="3" class="responsable-value">${escapeHtml(entidadAutoriza || 'N/A')}</th>
-            </tr>
-            <tr>
-              <th colspan="2" class="responsable-label">RESOLUCION</th>
-              <th colspan="8" class="responsable-value">${escapeHtml(numeroResolucionAutorizacion || 'N/A')}</th>
-            </tr>
-            <tr class="numbers-head">
-              ${COLUMN_KEYS.map((key) => `<th>${key}</th>`).join('')}
-            </tr>
-          </thead>
-          <tbody>${rowsHtml}</tbody>
-        </table>
-        <div class="sheet-footer">
-          <div class="print-meta">Impreso: ${escapeHtml(printedAt)}</div>
-          <div class="assignment-meta">
+      return `
+        <section class="sheet">
+          <table class="sheet-table">
+            <thead>
+              ${
+                firstPage
+                  ? `
+                    <tr>
+                      <th colspan="2" class="logo-cell">
+                        ${
+                          logoDataUrl
+                            ? `<img src="${logoDataUrl}" alt="${escapeHtml(companyName)}" class="logo" />`
+                            : `<div class="logo-fallback">${escapeHtml(companyName.slice(0, 2).toUpperCase())}</div>`
+                        }
+                      </th>
+                      <th colspan="8" class="title-cell">
+                        <div class="title-eyebrow">PLANILLA DE BOLETAS</div>
+                        <div class="title-main">${escapeHtml(rifaNombre.toUpperCase())}</div>
+                        <div class="title-sub">${escapeHtml(companyName)}</div>
+                      </th>
+                    </tr>
+                    <tr>
+                      <th colspan="2" class="vendor-label">VENDEDOR</th>
+                      <th colspan="3" class="vendor-value">${escapeHtml(vendedorNombre || 'N/A')}</th>
+                      <th colspan="2" class="vendor-label">TELEFONO</th>
+                      <th colspan="3" class="vendor-value">${escapeHtml(vendedorTelefono || 'N/A')}</th>
+                    </tr>
+                    <tr>
+                      <th colspan="2" class="vendor-label">DIRECCION</th>
+                      <th colspan="3" class="vendor-value">${escapeHtml(vendedorDireccion || 'N/A')}</th>
+                      <th colspan="2" class="total-label">TOTAL BOLETAS</th>
+                      <th colspan="3" class="total-value">${boletas.length}</th>
+                    </tr>
+                    <tr>
+                      <th colspan="2" class="vendor-label">COMISION</th>
+                      <th colspan="3" class="vendor-value">${escapeHtml(
+                        comisionPct === undefined || comisionPct === null ? 'N/A' : `${comisionPct}%`
+                      )}</th>
+                      <th colspan="2" class="total-label">PAGA POR BOLETA</th>
+                      <th colspan="3" class="total-value">${escapeHtml(
+                        precioCasa === undefined || precioCasa === null ? 'N/A' : formatReceiptMoney(precioCasa)
+                      )}</th>
+                    </tr>
+                    <tr>
+                      <th colspan="2" class="responsable-label">RESPONSABLE</th>
+                      <th colspan="3" class="responsable-value">${escapeHtml(responsableNombre || 'N/A')}</th>
+                      <th colspan="2" class="responsable-label">TEL. RESPONSABLE</th>
+                      <th colspan="3" class="responsable-value">${escapeHtml(responsableTelefono || 'N/A')}</th>
+                    </tr>
+                    <tr>
+                      <th colspan="2" class="responsable-label">UBICACION</th>
+                      <th colspan="3" class="responsable-value">${escapeHtml(
+                        [responsableDireccion, responsableCiudad, responsableDepartamento]
+                          .filter(Boolean)
+                          .join(' - ') || 'N/A'
+                      )}</th>
+                      <th colspan="2" class="responsable-label">AUTORIZA</th>
+                      <th colspan="3" class="responsable-value">${escapeHtml(entidadAutoriza || 'N/A')}</th>
+                    </tr>
+                    <tr>
+                      <th colspan="2" class="responsable-label">RESOLUCION</th>
+                      <th colspan="8" class="responsable-value">${escapeHtml(numeroResolucionAutorizacion || 'N/A')}</th>
+                    </tr>
+                  `
+                  : ''
+              }
+              <tr class="numbers-head">
+                ${COLUMN_KEYS.map((key) => `<th>${key}</th>`).join('')}
+              </tr>
+            </thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+          <div class="sheet-footer ${firstPage ? '' : 'sheet-footer-compact'}">
             ${
-              summaryLines.length
-                ? summaryLines
-                    .map((line) => `<div>${escapeHtml(line)}</div>`)
-                    .join('')
-                : '<div>Sin resumen de asignaciones disponible.</div>'
+              firstPage
+                ? `
+                  <div class="print-meta">Impreso: ${escapeHtml(printedAt)}</div>
+                  <div class="assignment-meta">
+                    ${
+                      summaryLines.length
+                        ? summaryLines.map((line) => `<div>${escapeHtml(line)}</div>`).join('')
+                        : '<div>Sin resumen de asignaciones disponible.</div>'
+                    }
+                  </div>
+                `
+                : '<div></div><div></div>'
             }
+            <div class="page-indicator">Pagina ${pageIndex + 1}/${totalPages}</div>
           </div>
-          <div class="page-indicator">Pagina ${pageIndex + 1}/${totalPages}</div>
-        </div>
-      </section>
-    `;
-  }).join('');
+        </section>
+      `;
+    })
+    .join('');
   printHtmlDocument(
     `${companyName} - ${rifaNombre}`,
     `
@@ -622,8 +669,8 @@ export function printBoletaSheet({
         <title>${escapeHtml(`${companyName} - ${rifaNombre}`)}</title>
         <style>
           @page {
-            size: landscape;
-            margin: 10mm;
+            size: letter portrait;
+            margin: 6mm;
           }
 
           * {
@@ -658,10 +705,10 @@ export function printBoletaSheet({
           .sheet-table td {
             border: 1px solid #000;
             text-align: center;
-            padding: 4px 3px;
-            font-size: 12px;
-            line-height: 1.1;
-            height: 24px;
+            padding: 1px 1px;
+            font-size: 9px;
+            line-height: 1.05;
+            height: 14px;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
           }
@@ -690,62 +737,97 @@ export function printBoletaSheet({
           }
 
           .title-cell {
-            font-size: 18px !important;
-            letter-spacing: 0.02em;
+            text-align: left !important;
+            padding: 6px 8px !important;
+          }
+
+          .title-eyebrow {
+            font-size: 8px;
+            font-weight: 700;
+            letter-spacing: .14em;
+            color: #64748b;
+            margin-bottom: 3px;
+          }
+
+          .title-main {
+            font-size: 18px;
+            line-height: 1.02;
+            font-weight: 800;
+            color: #000;
+          }
+
+          .title-sub {
+            margin-top: 2px;
+            font-size: 10px;
+            color: #475569;
           }
 
           .logo-cell {
-            width: 180px;
-            padding: 0;
+            width: 92px;
+            padding: 4px 0 !important;
           }
 
           .logo {
-            max-height: 58px;
-            max-width: 160px;
+            max-height: 48px;
+            max-width: 72px;
             object-fit: contain;
           }
 
           .logo-fallback {
             margin: 0 auto;
-            width: 54px;
-            height: 54px;
-            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
             background: #111827;
             color: #fff;
             font-weight: 700;
-            font-size: 18px;
+            font-size: 13px;
           }
 
           tbody td {
-            font-size: 18px;
-            height: 30px;
+            font-size: 11px;
+            height: 14px;
+            font-weight: 600;
           }
 
           .sheet-footer {
-            margin-top: 10px;
+            margin-top: 4px;
             display: grid;
             grid-template-columns: 1fr 2fr auto;
             gap: 12px;
             align-items: end;
           }
 
+          .sheet-footer-compact {
+            margin-top: 1px;
+            grid-template-columns: 1fr auto;
+            min-height: 10px;
+          }
+
+          .sheet-footer-compact > :first-child,
+          .sheet-footer-compact > :nth-child(2) {
+            display: none;
+          }
+
           .print-meta {
-            font-size: 11px;
+            font-size: 9px;
             color: #475569;
           }
 
           .assignment-meta {
-            font-size: 10px;
+            font-size: 8px;
             color: #64748b;
             line-height: 1.35;
           }
 
           .page-indicator {
             text-align: right;
-            font-size: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            line-height: 1;
           }
         </style>
       </head>
