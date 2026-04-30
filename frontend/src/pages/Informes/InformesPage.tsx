@@ -29,11 +29,21 @@ const formatFullDate = (value) => {
   return `${label.charAt(0).toUpperCase()}${label.slice(1)}`;
 };
 
-const StatCard = ({ label, value, detail = '' }) => (
-  <div className="rounded-lg border border-slate-200 bg-white p-5 shadow-sm">
-    <p className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">{label}</p>
-    <p className="mt-3 text-2xl font-semibold text-slate-900">{value}</p>
-    {detail ? <p className="mt-2 text-sm text-slate-500">{detail}</p> : null}
+const statTones = {
+  cash: 'border-emerald-200 bg-emerald-50 text-emerald-700',
+  bank: 'border-sky-200 bg-sky-50 text-sky-700',
+  fund: 'border-violet-200 bg-violet-50 text-violet-700',
+  cost: 'border-slate-200 bg-slate-50 text-slate-700',
+  sale: 'border-blue-200 bg-blue-50 text-blue-700',
+  profit: 'border-teal-200 bg-teal-50 text-teal-700',
+  warning: 'border-amber-200 bg-amber-50 text-amber-700',
+};
+
+const StatCard = ({ label, value, detail = '', tone = 'cost' }) => (
+  <div className={`rounded-lg border p-5 shadow-sm ${statTones[tone] || statTones.cost}`}>
+    <p className="text-xs font-semibold uppercase tracking-[0.08em] opacity-80">{label}</p>
+    <p className="mt-3 text-2xl font-semibold text-slate-950">{value}</p>
+    {detail ? <p className="mt-2 text-sm text-slate-600">{detail}</p> : null}
   </div>
 );
 
@@ -47,7 +57,12 @@ const Section = ({ title, description = '', children }) => (
   </section>
 );
 
-const HorizontalBars = ({ items, labelKey, valueKey, valueFormatter = formatCOP }) => {
+const chartPalettes = {
+  gastos: ['#dc2626', '#ea580c', '#d97706', '#ca8a04', '#be123c', '#b45309', '#9333ea', '#64748b'],
+  productos: ['#2563eb', '#0891b2', '#0d9488', '#16a34a', '#4f46e5', '#7c3aed', '#0284c7', '#059669'],
+};
+
+const HorizontalBars = ({ items, labelKey, valueKey, valueFormatter = formatCOP, palette = chartPalettes.productos }) => {
   const maxValue = Math.max(...items.map((item) => Number(item[valueKey] || 0)), 0);
 
   if (!items.length || maxValue <= 0) {
@@ -56,18 +71,24 @@ const HorizontalBars = ({ items, labelKey, valueKey, valueFormatter = formatCOP 
 
   return (
     <div className="space-y-3 rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
-      {items.map((item) => {
+      {items.map((item, index) => {
         const value = Number(item[valueKey] || 0);
         const width = Math.max((value / maxValue) * 100, 4);
+        const color = palette[index % palette.length];
 
         return (
           <div key={`${item[labelKey]}-${value}`} className="space-y-1">
             <div className="flex items-center justify-between gap-3 text-sm">
-              <span className="font-medium text-slate-700">{item[labelKey]}</span>
-              <span className="shrink-0 font-semibold text-slate-900">{valueFormatter(value)}</span>
+              <span className="flex items-center gap-2 font-medium text-slate-700">
+                <span className="h-3 w-3 rounded-full" style={{ backgroundColor: color }} />
+                {item[labelKey]}
+              </span>
+              <span className="shrink-0 rounded-md bg-slate-100 px-2 py-1 font-semibold text-slate-900">
+                {valueFormatter(value)}
+              </span>
             </div>
-            <div className="h-3 rounded-full bg-slate-100">
-              <div className="h-3 rounded-full bg-indigo-600" style={{ width: `${width}%` }} />
+            <div className="h-4 rounded-full bg-slate-100">
+              <div className="h-4 rounded-full" style={{ width: `${width}%`, backgroundColor: color }} />
             </div>
           </div>
         );
@@ -98,16 +119,19 @@ const UtilityChart = ({ items }) => {
             <p className="text-sm font-semibold text-emerald-700">{formatCOP(item.utilidad)} utilidad</p>
           </div>
           {[
-            { label: 'Costo', value: Number(item.costo || 0), className: 'bg-slate-500' },
-            { label: 'Vendido', value: Number(item.ventas || 0), className: 'bg-indigo-600' },
-            { label: 'Quedo', value: Number(item.utilidad || 0), className: 'bg-emerald-600' },
+            { label: 'Costo', value: Number(item.costo || 0), color: '#64748b' },
+            { label: 'Vendido', value: Number(item.ventas || 0), color: '#2563eb' },
+            { label: 'Quedo', value: Number(item.utilidad || 0), color: '#0f766e' },
           ].map((bar) => (
             <div key={bar.label} className="grid grid-cols-[72px_1fr_96px] items-center gap-3 text-xs">
-              <span className="font-medium text-slate-600">{bar.label}</span>
+              <span className="flex items-center gap-2 font-medium text-slate-600">
+                <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: bar.color }} />
+                {bar.label}
+              </span>
               <div className="h-3 rounded-full bg-slate-100">
                 <div
-                  className={`h-3 rounded-full ${bar.className}`}
-                  style={{ width: `${Math.max((bar.value / maxValue) * 100, 3)}%` }}
+                  className="h-3 rounded-full"
+                  style={{ width: `${Math.max((bar.value / maxValue) * 100, 3)}%`, backgroundColor: bar.color }}
                 />
               </div>
               <span className="text-right font-semibold text-slate-800">{formatCOP(bar.value)}</span>
@@ -254,24 +278,27 @@ const InformesPage = () => {
                   label="Caja diaria"
                   value={formatCOP(cajaDiaria?.saldoActual || 0)}
                   detail={cajaDiaria ? `${cajaDiaria.nombre} - ${formatFullDate(cajaDiaria.fecha)}` : 'Sin caja diaria en el periodo'}
+                  tone="cash"
                 />
                 <StatCard
                   label="Caja general"
                   value={formatCOP(cajaGeneral?.saldoActual || 0)}
                   detail={`${formatCOP(cajaGeneral?.ingresos || 0)} entradas / ${formatCOP(cajaGeneral?.egresos || 0)} salidas`}
+                  tone="bank"
                 />
               </div>
             </Section>
 
             <Section title="Fondos">
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-                <StatCard label="Total en fondos" value={formatCOP(totalFondos)} detail={`${fondos.length} fondos/metas`} />
-                {fondos.slice(0, 3).map((fondo) => (
+                <StatCard label="Total en fondos" value={formatCOP(totalFondos)} detail={`${fondos.length} fondos/metas`} tone="fund" />
+                {fondos.slice(0, 3).map((fondo, index) => (
                   <StatCard
                     key={fondo.id}
                     label={fondo.nombre}
                     value={formatCOP(fondo.acumulado)}
                     detail={`Meta ${formatCOP(fondo.metaTotal)} - ${fondo.avance}%`}
+                    tone={index % 2 === 0 ? 'warning' : 'fund'}
                   />
                 ))}
               </div>
@@ -282,6 +309,7 @@ const InformesPage = () => {
                 items={(data.gastos?.categorias || []).slice(0, 8)}
                 labelKey="categoria"
                 valueKey="total"
+                palette={chartPalettes.gastos}
               />
             </Section>
 
@@ -307,6 +335,7 @@ const InformesPage = () => {
                     label="Mas vendido"
                     value={topProducto.producto}
                     detail={`${formatCOPNumber(topProducto.unidades)} unidades - ${formatCOP(topProducto.ventas)}`}
+                    tone="sale"
                   />
                 ) : null}
               </div>
@@ -315,20 +344,22 @@ const InformesPage = () => {
                 labelKey="producto"
                 valueKey="unidades"
                 valueFormatter={formatCOPNumber}
+                palette={chartPalettes.productos}
               />
             </Section>
 
             <Section title="Utilidades por producto" description="Cuanto vale, en cuanto se vendio y cuanto quedo.">
               <div className="grid gap-4 md:grid-cols-3">
-                <StatCard label="Costo total" value={formatCOP(utilidadProductos.reduce((sum, item) => sum + Number(item.costo || 0), 0))} />
-                <StatCard label="Vendido total" value={formatCOP(utilidadProductos.reduce((sum, item) => sum + Number(item.ventas || 0), 0))} />
-                <StatCard label="Utilidad total" value={formatCOP(utilidadProductos.reduce((sum, item) => sum + Number(item.utilidad || 0), 0))} />
+                <StatCard label="Costo total" value={formatCOP(utilidadProductos.reduce((sum, item) => sum + Number(item.costo || 0), 0))} tone="cost" />
+                <StatCard label="Vendido total" value={formatCOP(utilidadProductos.reduce((sum, item) => sum + Number(item.ventas || 0), 0))} tone="sale" />
+                <StatCard label="Utilidad total" value={formatCOP(utilidadProductos.reduce((sum, item) => sum + Number(item.utilidad || 0), 0))} tone="profit" />
               </div>
               {topUtilidad ? (
                 <StatCard
                   label="Producto con mayor utilidad"
                   value={topUtilidad.producto}
                   detail={`${formatCOP(topUtilidad.costo)} costo / ${formatCOP(topUtilidad.ventas)} vendido / ${formatCOP(topUtilidad.utilidad)} quedo`}
+                  tone="profit"
                 />
               ) : null}
               <UtilityChart items={utilidadProductos.slice(0, 8)} />

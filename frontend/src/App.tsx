@@ -9,11 +9,17 @@ import CajaGeneralPage from './pages/Caja/CajaGeneralPage';
 import CategoriasPage from './pages/Categorias/CategoriasPage';
 import ClientesPage from './pages/Clientes/ClientesPage';
 import ConfiguracionPage from './pages/Configuracion/ConfiguracionPage';
+import CreditoPagoTicketPage from './pages/Creditos/CreditoPagoTicketPage';
+import CreditoTicketPage from './pages/Creditos/CreditoTicketPage';
+import CreditosPage from './pages/Creditos/CreditosPage';
 import FondosPage from './pages/Fondos/FondosPage';
 import GastoTicketPage from './pages/Gastos/GastoTicketPage';
 import GastosPage from './pages/Gastos/GastosPage';
 import InformesPage from './pages/Informes/InformesPage';
 import ProductosPage from './pages/Productos/ProductosPage';
+import SalidasPage from './pages/Salidas/SalidasPage';
+import SeparadoTicketPage from './pages/Separados/SeparadoTicketPage';
+import SeparadosPage from './pages/Separados/SeparadosPage';
 import UsuariosPage from './pages/Usuarios/UsuariosPage';
 import VentaTicketPage from './pages/Ventas/VentaTicketPage';
 import VentasPage from './pages/Ventas/VentasPage';
@@ -49,6 +55,12 @@ const App = () => {
                   <Route path="/clientes" element={<ClientesPage />} />
                   <Route path="/ventas" element={<VentasPage />} />
                   <Route path="/ventas/:id/tirilla" element={<VentaTicketPage />} />
+                  <Route path="/separados" element={<SeparadosPage />} />
+                  <Route path="/separados/:id/tirilla" element={<SeparadoTicketPage />} />
+                  <Route path="/creditos" element={<CreditosPage />} />
+                  <Route path="/creditos/:id/tirilla" element={<CreditoTicketPage />} />
+                  <Route path="/creditos/:id/pagos/:pagoId/tirilla" element={<CreditoPagoTicketPage />} />
+                  <Route path="/salidas" element={<SalidasPage />} />
                   <Route
                     path="/caja"
                     element={
