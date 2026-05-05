@@ -3,7 +3,6 @@ import { useAppConfig } from '../../context/AppConfigContext';
 import { useAuth } from '../../context/AuthContext';
 
 const adminNavItems = [
-  { to: '/', label: 'Resumen' },
   { to: '/categorias', label: 'Categorias', adminOnly: true },
   { to: '/productos', label: 'Productos', adminOnly: true },
   { to: '/clientes', label: 'Clientes' },

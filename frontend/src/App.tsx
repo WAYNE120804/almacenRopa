@@ -2,7 +2,6 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import AppLayout from './components/Layout/AppLayout';
 import ProtectedRoute from './components/auth/ProtectedRoute';
-import Dashboard from './pages/Dashboard';
 import LoginPage from './pages/Auth/LoginPage';
 import CajaDiariaPage from './pages/Caja/CajaDiariaPage';
 import CajaGeneralPage from './pages/Caja/CajaGeneralPage';
@@ -16,6 +15,7 @@ import FondosPage from './pages/Fondos/FondosPage';
 import GastoTicketPage from './pages/Gastos/GastoTicketPage';
 import GastosPage from './pages/Gastos/GastosPage';
 import InformesPage from './pages/Informes/InformesPage';
+import ProductoLabelsPage from './pages/Productos/ProductoLabelsPage';
 import ProductosPage from './pages/Productos/ProductosPage';
 import SalidasPage from './pages/Salidas/SalidasPage';
 import SeparadoTicketPage from './pages/Separados/SeparadoTicketPage';
@@ -35,7 +35,7 @@ const App = () => {
             <ProtectedRoute>
               <AppLayout>
                 <Routes>
-                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/" element={<Navigate to="/productos" replace />} />
                   <Route
                     path="/categorias"
                     element={
@@ -49,6 +49,14 @@ const App = () => {
                     element={
                       <ProtectedRoute allowedRoles={['ADMIN']}>
                         <ProductosPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/productos/etiquetas"
+                    element={
+                      <ProtectedRoute allowedRoles={['ADMIN']}>
+                        <ProductoLabelsPage />
                       </ProtectedRoute>
                     }
                   />
@@ -125,7 +133,7 @@ const App = () => {
                       </ProtectedRoute>
                     }
                   />
-                  <Route path="*" element={<Navigate to="/" replace />} />
+                  <Route path="*" element={<Navigate to="/productos" replace />} />
                 </Routes>
               </AppLayout>
             </ProtectedRoute>

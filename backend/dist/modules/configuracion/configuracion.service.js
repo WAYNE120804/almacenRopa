@@ -7,8 +7,10 @@ exports.getConfiguracionSistema = getConfiguracionSistema;
 exports.updateConfiguracionSistema = updateConfiguracionSistema;
 const promises_1 = require("node:fs/promises");
 const node_path_1 = __importDefault(require("node:path"));
-const configDir = node_path_1.default.resolve(process.cwd(), 'storage');
+const backendRoot = node_path_1.default.resolve(__dirname, '../../..');
+const configDir = node_path_1.default.join(backendRoot, 'storage');
 const configFile = node_path_1.default.join(configDir, 'configuracion.json');
+const legacyConfigFile = node_path_1.default.resolve(process.cwd(), 'storage', 'configuracion.json');
 const defaultConfig = {
     id: 'principal',
     clave: 'principal',
@@ -51,6 +53,25 @@ async function ensureConfigFile() {
         };
     }
     catch (_error) {
+        if (legacyConfigFile !== configFile) {
+            try {
+                const raw = await (0, promises_1.readFile)(legacyConfigFile, 'utf-8');
+                const parsed = JSON.parse(raw);
+                const migratedConfig = {
+                    ...defaultConfig,
+                    ...parsed,
+                    themeColors: {
+                        ...defaultConfig.themeColors,
+                        ...(parsed.themeColors || {}),
+                    },
+                };
+                await (0, promises_1.writeFile)(configFile, JSON.stringify(migratedConfig, null, 2), 'utf-8');
+                return migratedConfig;
+            }
+            catch (_legacyError) {
+                // If no legacy file exists, create the stable config file below.
+            }
+        }
         await (0, promises_1.writeFile)(configFile, JSON.stringify(defaultConfig, null, 2), 'utf-8');
         return defaultConfig;
     }

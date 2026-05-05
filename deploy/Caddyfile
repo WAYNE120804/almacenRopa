@@ -1,19 +1,19 @@
-rifasmejia.store, www.rifasmejia.store {
+{$APP_DOMAIN:almacen.example.com}, www.{$APP_DOMAIN:almacen.example.com} {
   encode gzip zstd
   reverse_proxy frontend:80
 }
 
-api.rifasmejia.store {
+{$API_DOMAIN:api.almacen.example.com} {
   encode gzip zstd
   reverse_proxy backend:3002
 }
 
-bot.rifasmejia.store {
+{$BOT_DOMAIN:bot.almacen.example.com} {
   encode gzip zstd
   reverse_proxy n8n:5678
 }
 
-wa.rifasmejia.store {
+{$WA_DOMAIN:wa.almacen.example.com} {
   encode gzip zstd
   reverse_proxy evolution-api:8080
 }

@@ -228,21 +228,17 @@ const ConfiguracionPage = () => {
         ...prev,
         error: '',
         success: '',
-        paletteLoading: true,
+        paletteLoading: false,
       }));
-
-      const palette = await extractPaletteFromDataUrl(logoDataUrl);
-      const suggestedTheme = buildThemeFromPalette(palette);
 
       setForm((prev) => ({
         ...prev,
         logoDataUrl,
-        themeColors: suggestedTheme,
       }));
       setState((prev) => ({
         ...prev,
         error: '',
-        success: 'Se sugirieron colores automáticamente desde el logo. Puedes ajustarlos manualmente.',
+        success: 'Logo cargado. Los colores actuales se conservaron.',
         paletteLoading: false,
       }));
     } catch (error) {

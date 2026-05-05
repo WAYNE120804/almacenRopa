@@ -15,16 +15,16 @@ services:
       - n8n
       - evolution-api
     networks:
-      - rifas_net
+      - almacen_net
 
   frontend:
     build:
       context: ./frontend
       args:
-        VITE_API_URL: ${FRONTEND_VITE_API_URL:-https://api.rifasmejia.store/api}
+        VITE_API_URL: ${FRONTEND_VITE_API_URL:-https://api.almacen.example.com/api}
     restart: unless-stopped
     networks:
-      - rifas_net
+      - almacen_net
 
   backend:
     build:
@@ -39,17 +39,10 @@ services:
       BOOTSTRAP_ADMIN_NAME: ${BACKEND_BOOTSTRAP_ADMIN_NAME}
       BOOTSTRAP_ADMIN_EMAIL: ${BACKEND_BOOTSTRAP_ADMIN_EMAIL}
       BOOTSTRAP_ADMIN_PASSWORD: ${BACKEND_BOOTSTRAP_ADMIN_PASSWORD}
-      WOMPI_ENV: ${BACKEND_WOMPI_ENV:-production}
-      WOMPI_PUBLIC_KEY: ${BACKEND_WOMPI_PUBLIC_KEY}
-      WOMPI_PRIVATE_KEY: ${BACKEND_WOMPI_PRIVATE_KEY}
-      WOMPI_EVENTS_SECRET: ${BACKEND_WOMPI_EVENTS_SECRET}
-      WOMPI_INTEGRITY_SECRET: ${BACKEND_WOMPI_INTEGRITY_SECRET}
-      WOMPI_REDIRECT_URL: ${BACKEND_WOMPI_REDIRECT_URL}
-      WOMPI_WEBHOOK_URL: ${BACKEND_WOMPI_WEBHOOK_URL}
     depends_on:
       - postgres
     networks:
-      - rifas_net
+      - almacen_net
 
   n8n:
     image: n8nio/n8n:2.11.2
@@ -59,8 +52,8 @@ services:
       N8N_HOST: ${N8N_HOST}
       N8N_PROTOCOL: ${N8N_PROTOCOL:-https}
       N8N_PORT: ${N8N_PORT:-5678}
-      N8N_EDITOR_BASE_URL: https://bot.rifasmejia.store
-      WEBHOOK_URL: https://bot.rifasmejia.store
+      N8N_EDITOR_BASE_URL: ${N8N_EDITOR_BASE_URL:-https://bot.almacen.example.com}
+      WEBHOOK_URL: ${WEBHOOK_URL:-https://bot.almacen.example.com}
       N8N_DISABLE_UI: "false"
       N8N_SECURE_COOKIE: "false"
       N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
@@ -75,7 +68,7 @@ services:
     volumes:
       - n8n_data_clean:/home/node/.n8n
     networks:
-      - rifas_net
+      - almacen_net
 
   evolution-api:
     image: evoapicloud/evolution-api:v2.3.6
@@ -101,7 +94,7 @@ services:
       CACHE_REDIS_ENABLED: ${EVOLUTION_CACHE_REDIS_ENABLED:-true}
       CACHE_REDIS_URI: ${EVOLUTION_CACHE_REDIS_URI:-redis://redis:6379/0}
       DEL_INSTANCE: ${EVOLUTION_DEL_INSTANCE:-false}
-      CONFIG_SESSION_PHONE_CLIENT: ${EVOLUTION_CONFIG_SESSION_PHONE_CLIENT:-RifasMejia}
+      CONFIG_SESSION_PHONE_CLIENT: ${EVOLUTION_CONFIG_SESSION_PHONE_CLIENT:-AlmacenRopa}
       CONFIG_SESSION_PHONE_NAME: ${EVOLUTION_CONFIG_SESSION_PHONE_NAME:-Chrome}
       WEBSOCKET_ENABLED: ${EVOLUTION_WEBSOCKET_ENABLED:-true}
       WEBSOCKET_GLOBAL_EVENTS: ${EVOLUTION_WEBSOCKET_GLOBAL_EVENTS:-true}
@@ -114,7 +107,7 @@ services:
       - evolution_instances:/evolution/instances
       - evolution_store:/evolution/store
     networks:
-      - rifas_net
+      - almacen_net
 
   redis:
     image: redis:7-alpine
@@ -123,19 +116,19 @@ services:
     volumes:
       - redis_data:/data
     networks:
-      - rifas_net
+      - almacen_net
 
   postgres:
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-rifas}
-      POSTGRES_USER: ${POSTGRES_USER:-rifas_user}
+      POSTGRES_DB: ${POSTGRES_DB:-almacen_ropa}
+      POSTGRES_USER: ${POSTGRES_USER:-almacen_user}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - rifas_net
+      - almacen_net
 
 volumes:
   caddy_data:
@@ -147,5 +140,5 @@ volumes:
   evolution_store:
 
 networks:
-  rifas_net:
+  almacen_net:
     driver: bridge

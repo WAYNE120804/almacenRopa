@@ -1,7 +1,7 @@
 {
-  "name": "rifas-backend",
+  "name": "almacen-ropa-backend",
   "version": "2.0.0",
-  "description": "Backend del sistema de rifas reconstruido sobre Express y Prisma",
+  "description": "Backend del sistema administrativo para almacen de ropa sobre Express y Prisma",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
@@ -17,7 +17,8 @@
     "test": "node -e \"console.log('No hay tests automatizados todavia')\""
   },
   "keywords": [
-    "rifas",
+    "almacen",
+    "ropa",
     "prisma",
     "express",
     "postgresql"

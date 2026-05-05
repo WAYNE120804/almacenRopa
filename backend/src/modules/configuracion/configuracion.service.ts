@@ -3,8 +3,10 @@ import path from 'node:path';
 
 import type { ConfiguracionPayload } from './configuracion.schemas';
 
-const configDir = path.resolve(process.cwd(), 'storage');
+const backendRoot = path.resolve(__dirname, '../../..');
+const configDir = path.join(backendRoot, 'storage');
 const configFile = path.join(configDir, 'configuracion.json');
+const legacyConfigFile = path.resolve(process.cwd(), 'storage', 'configuracion.json');
 const defaultConfig: ConfiguracionPayload & { id: string; clave: string } = {
   id: 'principal',
   clave: 'principal',
@@ -49,6 +51,26 @@ async function ensureConfigFile() {
       },
     };
   } catch (_error) {
+    if (legacyConfigFile !== configFile) {
+      try {
+        const raw = await readFile(legacyConfigFile, 'utf-8');
+        const parsed = JSON.parse(raw);
+        const migratedConfig = {
+          ...defaultConfig,
+          ...parsed,
+          themeColors: {
+            ...defaultConfig.themeColors,
+            ...(parsed.themeColors || {}),
+          },
+        };
+
+        await writeFile(configFile, JSON.stringify(migratedConfig, null, 2), 'utf-8');
+        return migratedConfig;
+      } catch (_legacyError) {
+        // If no legacy file exists, create the stable config file below.
+      }
+    }
+
     await writeFile(configFile, JSON.stringify(defaultConfig, null, 2), 'utf-8');
     return defaultConfig;
   }

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import client from '../../api/client';
 import { endpoints } from '../../api/endpoints';
@@ -120,11 +121,13 @@ const formatVariantSummary = (variant: any) => {
 };
 
 const ProductosPage = () => {
+  const navigate = useNavigate();
   const [productos, setProductos] = useState<any[]>([]);
   const [categorias, setCategorias] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [labelModalProduct, setLabelModalProduct] = useState<any | null>(null);
   const [pageError, setPageError] = useState<string | null>(null);
   const [modalError, setModalError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -132,6 +135,7 @@ const ProductosPage = () => {
   const [search, setSearch] = useState('');
   const [selectedCategoriaId, setSelectedCategoriaId] = useState('');
   const [selectedEstado, setSelectedEstado] = useState('');
+  const [labelQuantities, setLabelQuantities] = useState<Record<string, number>>({});
 
   const categoriaOptions = useMemo(
     () =>
@@ -352,6 +356,59 @@ const ProductosPage = () => {
     }
   };
 
+  const openLabelModal = (producto: any) => {
+    const initialQuantities = Object.fromEntries(
+      (producto.variantes || []).map((variant: any) => [
+        variant.id,
+        Number(variant.stockActual || 0) > 0 ? 1 : 0,
+      ])
+    );
+
+    setLabelQuantities(initialQuantities);
+    setLabelModalProduct(producto);
+    setModalError(null);
+  };
+
+  const closeLabelModal = () => {
+    setLabelModalProduct(null);
+    setLabelQuantities({});
+    setModalError(null);
+  };
+
+  const handlePrintLabels = () => {
+    if (!labelModalProduct) {
+      return;
+    }
+
+    const labels = (labelModalProduct.variantes || [])
+      .flatMap((variant: any) => {
+        const quantity = Math.max(0, Math.trunc(Number(labelQuantities[variant.id] || 0)));
+        const barcode = variant.codigos?.find((item: any) => item.principal)?.codigo || variant.codigos?.[0]?.codigo || '';
+
+        return Array.from({ length: quantity }, () => ({
+          productoId: labelModalProduct.id,
+          varianteId: variant.id,
+          marca: labelModalProduct.marca || '',
+          categoria: labelModalProduct.categoria?.nombre || '',
+          nombre: labelModalProduct.nombre || '',
+          codigo: barcode,
+          precio: Number(variant.precioVenta || 0),
+          color: variant.color || NOT_APPLICABLE,
+          talla: variant.talla || NOT_APPLICABLE,
+          sku: variant.sku || '',
+        }));
+      });
+
+    if (labels.length === 0) {
+      setModalError('Debes indicar al menos una etiqueta para imprimir.');
+      return;
+    }
+
+    window.sessionStorage.setItem('producto_labels', JSON.stringify(labels));
+    closeLabelModal();
+    navigate('/productos/etiquetas');
+  };
+
   const columns = [
     {
       key: 'nombre',
@@ -424,6 +481,13 @@ const ProductosPage = () => {
             onClick={() => void handleToggleEstado(row)}
           >
             {row.estado === 'ACTIVO' ? 'Inactivar' : 'Activar'}
+          </button>
+          <button
+            type="button"
+            className="text-sm font-semibold text-slate-700 underline"
+            onClick={() => openLabelModal(row)}
+          >
+            Etiquetas
           </button>
         </div>
       ),
@@ -826,6 +890,79 @@ const ProductosPage = () => {
             </button>
           </div>
         </form>
+      </FormModal>
+
+      <FormModal
+        open={Boolean(labelModalProduct)}
+        title="Imprimir etiquetas"
+        description="Selecciona cuantas etiquetas quieres imprimir por variante. Se abriran en una vista continua para impresora termica."
+        onClose={closeLabelModal}
+        size="xl"
+      >
+        <ErrorBanner message={modalError} />
+        {labelModalProduct ? (
+          <div className="space-y-4">
+            <div className="rounded-xl border border-slate-200 bg-slate-50 px-4 py-3">
+              <div className="font-semibold text-slate-900">{labelModalProduct.nombre}</div>
+              <div className="text-sm text-slate-600">
+                {labelModalProduct.marca || 'Sin marca'} | {labelModalProduct.categoria?.nombre || 'Sin categoria'}
+              </div>
+            </div>
+            <div className="overflow-hidden rounded-lg border border-slate-200 bg-white">
+              <div className="grid grid-cols-[minmax(0,1fr)_120px_120px_120px] gap-3 border-b border-slate-200 bg-slate-100 px-4 py-3 text-xs font-semibold uppercase tracking-[0.06em] text-slate-600">
+                <div>Variante</div>
+                <div>Codigo</div>
+                <div>Precio</div>
+                <div>Cantidad</div>
+              </div>
+              {labelModalProduct.variantes?.map((variant: any) => {
+                const barcode = variant.codigos?.find((item: any) => item.principal)?.codigo || variant.codigos?.[0]?.codigo || 'Sin codigo';
+
+                return (
+                  <div
+                    key={variant.id}
+                    className="grid grid-cols-[minmax(0,1fr)_120px_120px_120px] gap-3 border-b border-slate-100 px-4 py-3 last:border-b-0"
+                  >
+                    <div>
+                      <div className="font-semibold text-slate-900">{formatVariantSummary(variant)}</div>
+                      <div className="text-xs text-slate-500">SKU: {variant.sku || 'Sin SKU'} | Stock: {variant.stockActual || 0}</div>
+                    </div>
+                    <div className="text-sm text-slate-700">{barcode}</div>
+                    <div className="text-sm font-semibold text-slate-900">{formatCOP(variant.precioVenta)}</div>
+                    <input
+                      type="number"
+                      min="0"
+                      className="w-full rounded-md border border-slate-300 px-3 py-2"
+                      value={labelQuantities[variant.id] || 0}
+                      onChange={(event) =>
+                        setLabelQuantities((current) => ({
+                          ...current,
+                          [variant.id]: Number(event.target.value || 0),
+                        }))
+                      }
+                    />
+                  </div>
+                );
+              })}
+            </div>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                className="rounded-md bg-slate-900 px-4 py-2 text-sm text-white"
+                onClick={handlePrintLabels}
+              >
+                Generar etiquetas
+              </button>
+              <button
+                type="button"
+                className="rounded-md border border-slate-300 px-4 py-2 text-sm"
+                onClick={closeLabelModal}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        ) : null}
       </FormModal>
     </div>
   );
